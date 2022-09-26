@@ -1,0 +1,45 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+.title{
+    @apply font-bold text-2xl;
+  }
+.description{
+    @apply text-sm
+}
+
+.toptranscipt{
+  background-color: black;
+}
+
+.content-toggle{
+  display: flex;
+  align-items: center;
+  justify-content: start;
+  width: 22px;
+  height: 30px;
+  cursor: pointer;
+  color: black;
+  background-color: #f9f9f9;
+  position: absolute;
+  top: 18px;
+  right: auto;
+  left: 0;
+  bottom: auto;
+  border-radius: 0 50% 50% 0;
+  z-index: 10;
+  box-shadow: -4px 0px 6px 0px rgba(0,0,0,0.13) inset;
+  -webkit-box-shadow: -4px 0px 6px 0px rgba(0,0,0,0.13) inset;
+  -moz-box-shadow: -4px 0px 6px 0px rgba(0,0,0,0.13) inset;
+}
+.content-toggle:hover{
+  color: #EB6100;
+}
+@media only screen and (max-width: 768px)
+{
+  .content-toggle{
+    display: none;
+  }
+}

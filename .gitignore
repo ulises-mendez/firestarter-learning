@@ -1,0 +1,36 @@
+/vendor/
+node_modules/
+npm-debug.log
+yarn-error.log
+.editorconfig
+# Laravel 4 specific
+bootstrap/compiled.php
+app/storage/
+
+# Laravel 5 & Lumen specific
+public/storage
+public/hot
+storage/*.key
+.env
+Homestead.yaml
+Homestead.json
+/.vagrant
+node_modules
+
+
+/node_modules
+/public/hot
+/public/mix-manifest.json
+/public/storage
+/public/uploads
+/storage/*.key
+/database/*.sqlite
+/vendor
+.DS_Store
+.env
+.php_cs.dist
+.phpunit.result.cache
+Homestead.json
+Homestead.yaml
+npm-debug.log
+yarn-error.log
