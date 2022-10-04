@@ -30,6 +30,21 @@ export default ({ name, className }) => {
     )
   }
 
+  if (name === 'categories') {
+    return(
+      <svg
+      className={className}
+      viewBox="0 0 24 24"
+      xmlns="http://www.w3.org/2000/svg">
+        <path d="M7,6H23a1,1,0,0,0,0-2H7A1,1,0,0,0,7,6Z"/>
+        <path d="M23,11H7a1,1,0,0,0,0,2H23a1,1,0,0,0,0-2Z"/>
+        <path d="M23,18H7a1,1,0,0,0,0,2H23a1,1,0,0,0,0-2Z"/>
+        <circle cx="2" cy="5" r="2"/><circle cx="2" cy="12" r="2"/>
+        <circle cx="2" cy="19" r="2"/>
+      </svg>
+    )
+  }
+
   if (name === 'calendar') {
     return(
       <svg 
@@ -185,6 +200,17 @@ export default ({ name, className }) => {
        xmlns="http://www.w3.org/2000/svg"
        viewBox="0 0 24 24">
         <circle cx="2" cy="12" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="22" cy="12" r="2"/>
+      </svg>
+    )
+  }
+
+  if(name === 'edit'){
+    return(
+      <svg
+       className={className}
+       xmlns="http://www.w3.org/2000/svg"
+       viewBox="0 0 24 24">
+        <path d="M1.172,19.119A4,4,0,0,0,0,21.947V24H2.053a4,4,0,0,0,2.828-1.172L18.224,9.485,14.515,5.776Z"/><path d="M23.145.855a2.622,2.622,0,0,0-3.71,0L15.929,4.362l3.709,3.709,3.507-3.506A2.622,2.622,0,0,0,23.145.855Z"/>
       </svg>
     )
   }

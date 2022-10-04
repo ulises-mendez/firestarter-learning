@@ -2,6 +2,19 @@
 @tailwind components;
 @tailwind utilities;
 
+.form-label {
+  @apply mb-2 block font-semibold select-none;
+}
+
+.form-input,
+.form-textarea,
+.form-select {
+  @apply relative p-2 leading-normal block w-full border border-black rounded text-left appearance-none focus:outline-none focus:ring-1 focus:ring-orange focus:border-orange;
+  @apply placeholder-gray-500 placeholder-opacity-100;
+  box-shadow: 0px 0px 2px 0px rgba(0,0,0,0.05) inset;
+  -webkit-box-shadow: 0px 0px 2px 0px rgba(0,0,0,0.05) inset;
+  -moz-box-shadow: 0px 0px 2px 0px rgba(0,0,0,0.05) inset;
+}
 
 .title{
     @apply font-bold text-2xl;

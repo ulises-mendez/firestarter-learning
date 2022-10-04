@@ -20,7 +20,7 @@ module.exports = {
                 'darkGray': '#E5E5E5',
             },
             fontFamily: {
-                sans: ['Nunito', ...defaultTheme.fontFamily.sans],
+                sans: ['Montserrat', ...defaultTheme.fontFamily.sans],
             },
         },
     },
