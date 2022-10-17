@@ -1,0 +1,1 @@
+import{R as e}from"./app.9fb965fa.js";const t=({text:r})=>e.createElement("div",{className:"p-3 border border-black rounded-full mr-2 my-1"},e.createElement("span",{className:"text-sm"},r));export{t as T};

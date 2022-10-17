@@ -35,11 +35,8 @@ const Profile = () =>{
                 <Item text='In Progress' link='me' length={3}/>
                 <Item text='Saved' link='me.saved' length={2}/>
                 <Item text='My Collections' link='me.collections'/>
-                
-                
-                <div className='my-4 font-semibold p-2 px-4 hover:bg-orange hover:bg-opacity-10 rounded select-none cursor-pointer'>
-                    Learning History
-                </div>
+                <Item text='Learning History' link='me.history'/>
+
             </div>
             <div className='w-full flex-1 h-full bg-white p-6 overflow-auto flex flex-col relative justify-center'>
                 <div className='w-full text-right my-4'>

@@ -35,21 +35,17 @@ const History = () =>{
                 <Item text='In Progress' link='me' length={3}/>
                 <Item text='Saved' link='me.saved' length={2}/>
                 <Item text='My Collections' link='me.collections'/>
+                <Item text='Learning History' link='me.history'/>
                 
                 
-                <div className='my-4 font-semibold p-2 px-4 hover:bg-orange hover:bg-opacity-10 rounded select-none cursor-pointer'>
-                    Learning History
-                </div>
+                
             </div>
             <div className='w-full flex-1 h-full bg-white p-6 overflow-auto flex flex-col relative justify-center'>
-                <div className='w-full text-right my-4'>
-                    <button className='text-orange font-semibold'>Create New Collection</button>
-                </div>
                 <div className='flex flex-col flex-1 justify-center'>
                 <div className='w-full text-center'>
-                    <h2 className='font-semibold text-2xl'>You don’t have any collections.</h2>
-                    <img src='/img/empty/collections.png' className='w-48 my-8 mx-auto' />
-                    <p className='my-2'>When you create a collection you can find it here.</p>
+                    <h2 className='font-semibold text-2xl'>You don’t have any completed courses - yet.</h2>
+                    <img src='/img/empty/history.png' className='w-48 my-8 mx-auto' />
+                    <p className='my-2'>When you complete a course, you can find it here</p>
                 </div>
                 <div className='w-full text-center'>
                     <InertiaLink href={route('course')}>

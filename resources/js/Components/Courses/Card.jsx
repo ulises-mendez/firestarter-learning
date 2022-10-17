@@ -1,8 +1,8 @@
 import React from 'react'
 
-const Card = () => {
+const Card = ({className}) => {
     return(
-        <div className='bg-white rounded-lg p-4 w-full md:w-1/4 mx-2'>
+        <div className={`bg-white rounded-lg p-4 w-full md:w-1/4 mx-2 ${className}`}>
             <div className='relative'>
                 <img src='/img/thumbnails/sales.jpeg' className='w-full' />
             </div>

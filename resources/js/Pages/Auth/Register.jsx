@@ -4,7 +4,7 @@ import InputError from '@/Components/InputError';
 import InputLabel from '@/Components/InputLabel';
 import PrimaryButton from '@/Components/PrimaryButton';
 import TextInput from '@/Components/TextInput';
-import { Head, Link, useForm } from '@inertiajs/inertia-react';
+import { Head, InertiaLink, Link, useForm } from '@inertiajs/inertia-react';
 
 export default function Register() {
     const { data, setData, post, processing, errors, reset } = useForm({
@@ -34,7 +34,7 @@ export default function Register() {
         <GuestLayout>
             <Head title="Register" />
 
-            <form onSubmit={submit}>
+            <form >
                 <div>
                     <InputLabel forInput="name" value="Name" />
 
@@ -104,9 +104,9 @@ export default function Register() {
                         Already registered?
                     </Link>
 
-                    <PrimaryButton className="ml-4" processing={processing}>
+                    <InertiaLink href={route('subscription.checkout')} type='button' className="bg-black p-4 text-white font-semibold rounded ml-4" processing={processing}>
                         Register
-                    </PrimaryButton>
+                    </InertiaLink>
                 </div>
             </form>
         </GuestLayout>

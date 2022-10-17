@@ -38,7 +38,10 @@ const Products= () =>{
                         <p className='px-8'>1-month free trial then MX$49CAD/month*</p>
                     </div>
                     <div className='p-4'>
+                        <InertiaLink href={route('login')}>
                         <button className='bg-black text-white font-semibold p-4 rounded-lg w-full'>Try for free</button>
+
+                        </InertiaLink>
                     </div>
                 </div>
             </div>
@@ -48,7 +51,9 @@ const Products= () =>{
                         <h2 className='font-bold text-lg my-2'>Monthly</h2>
                         <p>1-month free trial then MX$49CAD/month*</p>
                     </div>
+                    <InertiaLink href={route('login')}>
                     <button className='bg-black text-white font-semibold p-4 rounded-lg w-full'>Try for free</button>
+                    </InertiaLink>
                 </div>
             </div>
         </div>

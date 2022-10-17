@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link, Head } from '@inertiajs/inertia-react';
+import { InertiaLink, Head } from '@inertiajs/inertia-react';
 import Layout from '@/Layouts/Guest';
 import Icon from '@/Components/Icon'
 import Featured from '@/Components/Courses/Featured';
@@ -13,7 +13,9 @@ function Welcome(props) {
                 <div className='max-w-5xl mx-auto flex flex-wrap items-center p-8 md:p-24'>
                     <div className='w-full md:w-1/2'>
                         <h1 className='text-5xl font-bold text-white'>We help grow your skills</h1>
-                        <button className='bg-black p-4 text-white rounded-lg font-semibold my-4'>Get started</button>
+                        <InertiaLink href={route('subscription')}>
+                            <button className='bg-black p-4 text-white rounded-lg font-semibold my-4'>Get started</button>
+                        </InertiaLink>
                     </div>
                     <div className='w-full md:w-1/2'>
                         <div className='w-full bg-white bg-opacity-30 rounded-xl overflow-hidden'>
@@ -25,14 +27,14 @@ function Welcome(props) {
                 
             </div>
             <div className='bg-gray-100 w-full flex flex-wrap items-center '>
-                <div className='w-full flex items-center justify-between max-w-7xl mx-auto pt-12'>
-                    <div>
+                <div className='w-full flex flex-wrap items-center justify-between max-w-7xl mx-auto pt-12'>
+                    <div className='px-8 w-full md:w-1/5'>
                         <h3 className='text-4xl leading-tight font-semibold'>Most <br/> Popular<br/> Courses</h3>
                     </div>
                     <div className='flex'>
                         <Featured/>
-                        <Featured/>
-                        <Featured/>
+                        <Featured className='hidden sm:block'/>
+                        <Featured className='hidden lg:block'/>
                     </div>
                 </div>
                 <div className='w-full max-w-7xl mx-auto flex justify-end py-4'>
@@ -64,9 +66,9 @@ function Welcome(props) {
                 <h4 className='font-semibold text-lg text-orange'>TRENDING TIME MANAGEMENT COURSES</h4>
                 <div className='flex'>
                 <Card />
-                <Card />
-                <Card />
-                <Card />
+                <Card className='hidden sm:block'/>
+                <Card className='hidden md:block'/>
+                <Card className='hidden lg:block'/>
                 </div>
                 <div className='w-full flex justify-end py-4'>
                         <div className='bg-white rounded-full p-2'>

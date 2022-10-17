@@ -5,7 +5,7 @@ import InputError from '@/Components/InputError';
 import InputLabel from '@/Components/InputLabel';
 import PrimaryButton from '@/Components/PrimaryButton';
 import TextInput from '@/Components/TextInput';
-import { Head, Link, useForm } from '@inertiajs/inertia-react';
+import { Head, InertiaLink, Link, useForm } from '@inertiajs/inertia-react';
 
 export default function Login({ status, canResetPassword }) {
     const { data, setData, post, processing, errors, reset } = useForm({
@@ -76,7 +76,17 @@ export default function Login({ status, canResetPassword }) {
                     </label>
                 </div>
 
-                <div className="flex items-center justify-end mt-4">
+                
+                <div className='w-full my-4'>
+                    <InertiaLink href={route('me')} >
+                        <button href={route('me')} className="w-full bg-black p-2 rounded-lg text-white" 
+                        //processing={processing}
+                        >
+                            Log in
+                        </button>
+                    </InertiaLink>
+                </div>
+                <div className="flex items-center justify-center my-4">
                     {canResetPassword && (
                         <Link
                             href={route('password.request')}
@@ -85,12 +95,10 @@ export default function Login({ status, canResetPassword }) {
                             Forgot your password?
                         </Link>
                     )}
-
-                    <Link href={route('me')} className="ml-4 bg-black p-2 rounded-lg text-white" 
-                    //processing={processing}
-                    >
-                        Log in
-                    </Link>
+                </div>
+                <hr className='h-.5 bg-slate-400 rounded'></hr>
+                <div className='my-2'>
+                    <span className='text-gray-500 '>Dont have an account?</span> <InertiaLink href={route('register')} className='font-semibold underline' >Sign up for free</InertiaLink>
                 </div>
             </form>
         </GuestLayout>

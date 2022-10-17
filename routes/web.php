@@ -24,9 +24,17 @@ Route::get('/dashboard', function () {
 })->middleware(['auth', 'verified'])
     ->name('dashboard');
 
+Route::get('courses', function () {
+        return Inertia::render('Courses/Index');
+    })->name('courses');
+
 Route::get('course', function () {
     return Inertia::render('Courses/Show');
 })->name('course');
+
+Route::get('course/preview', function () {
+    return Inertia::render('Courses/Preview');
+})->name('course.preview');
 
 Route::get('me', function () {
     return Inertia::render('Profile/Show');
@@ -40,12 +48,51 @@ Route::get('me/collections', function () {
     return Inertia::render('Profile/Collections');
 })->name('me.collections');
 
-Route::get('/curriculum', function () {
+Route::get('me/history', function () {
+    return Inertia::render('Profile/History');
+})->name('me.history');
+
+Route::get('curriculum', function () {
     return Inertia::render('Profile/Curriculum');
 })->name('curriculum');
 
+Route::get('settings', function () {
+    return Inertia::render('Settings/Index');
+})->name('settings');
+
+Route::get('settings/billing-info', function () {
+    return Inertia::render('Settings/Billing');
+})->name('settings.billing');
+
+Route::get('topics', function () {
+    return Inertia::render('Topics/Show');
+})->name('topics');
+
+Route::get('settings/premium-manage-account', function () {
+    return Inertia::render('Settings/ManagePremium');
+})->name('settings.manage_premium');
+
+
+// SUBS
 Route::get('subscription', function () {
     return Inertia::render('Subscription/Products');
 })->name('subscription');
+
+Route::get('subscription/checkout', function () {
+    return Inertia::render('Subscription/Checkout');
+})->name('subscription.checkout');
+
+// Help Center
+Route::get('help', function () {
+    return Inertia::render('HelpCenter/Index');
+})->name('help.index');
+
+Route::get('help/topic', function () {
+    return Inertia::render('HelpCenter/Topic');
+})->name('help.topic');
+
+Route::get('help/article', function () {
+    return Inertia::render('HelpCenter/Article');
+})->name('help.article');
 
 require __DIR__.'/auth.php';

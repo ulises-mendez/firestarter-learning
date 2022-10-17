@@ -3,20 +3,23 @@ import Layout from '@/Layouts/Auth';
 import Icon from '@/Components/Icon';
 import classNames from 'classnames';
 import Section from '@/Components/Courses/Section'
+import Video from '@/Components/Courses/Video'
 
 const ShowCourse = () =>{
+    const videoContainer = useRef(null);
+    const videoRef = useRef(null);
+    const [playing, setPlaying] = useState(false);
+    const [currentTime, setCurrentTime] = useState(0);
+    const [videoTime, setVideoTime] = useState(0);
+    const [progress, setProgress] = useState(0);
+
     const [showContent, setShowContent] = useState(true)
     const [note, setNote] = useState('')
     const [notes, setNotes] = useState([])
-    console.log('note',note)
-    console.log('notes',notes)
     const [like, setLike] = useState(false)
     const [reply, setReply] = useState(false)
     const video = useRef(null)
-    function time(){
-        console.log(video.current.currentTime)
-        video.current.currentTime = 5
-    }
+
     function jump(i){
         video.current.currentTime = i
     }
@@ -24,7 +27,29 @@ const ShowCourse = () =>{
     function tabClick(i){
         setTab(i)
     }
+    function play(){
+        setPlaying(true)
+        video.current.play()
+    }
+    function pause(){
+        setPlaying(false)
+        video.current.pause()
+    }
 
+    function fullScreen(){
+        if (videoContainer.current.requestFullscreen) {
+            videoContainer.current.requestFullscreen();
+          } else if (videoContainer.current.mozRequestFullScreen) {
+            videoContainer.current.mozRequestFullScreen();
+          } else if (videoContainer.current.webkitRequestFullscreen) {
+            videoContainer.current.webkitRequestFullscreen(videoContainer.current.ALLOW_KEYBOARD_INPUT);
+          } else if (videoContainer.current.msRequestFullscreen) {
+            videoContainer.current.msRequestFullscreen();
+          }
+    }
+    function exitFullScreen(){
+        video.current.exitFullScreen()
+    }
     function submitQuote(e){
         e.preventDefault()
         console.log(note)
@@ -41,7 +66,7 @@ const ShowCourse = () =>{
     }
 
     const content = classNames('relative p-4 h-full bg-lightGray hidden ',{
-        'w-1/4 lg:block' : showContent,
+        'w-1/3 lg:block' : showContent,
         'w-0': !showContent
     })
 
@@ -54,7 +79,30 @@ const ShowCourse = () =>{
         return(
             <div className={classses} onClick={() => tabClick(value)}>{label}</div>
         )
-    } 
+    }
+
+
+  const fastForward = () => {
+    video.current.currentTime += 5
+    const currentTime = video.current.currentTime
+    const forwardTime = currentTime + 5
+    //video.current.currentTime = 10
+    //console.log('forward', forwardTime)
+
+  };
+
+  const revert = () => {
+    video.current.currentTime -= 5
+    //console.log(video.current.currentTime)
+    //video.current.currentTime -= 5
+    
+  };    
+
+  const playback = (x) => {
+    video.current.playbackRate = x
+  }
+
+
     return(
         <div className='w-full h-full flex items-stretch'>
             <div className={content}>
@@ -71,21 +119,17 @@ const ShowCourse = () =>{
             </div>
             <div className='w-full flex-1 h-full bg-white p-6 overflow-auto relative'>
             <div
-                    onClick={()=>setShowContent(!showContent)}
-                    className='content-toggle'
-                    >
-                    <Icon  name='cheveron-left' className='w-5 -ml-0.5 fill-current' />
-                </div>
-            <video 
-            ref={video}
-            controls
-            onEnded={() => console.log('Ended video')}
-            //autoPlay
-            className='w-full rounded'>
-                <source src="/videos/1621626043674.mp4"
-                        type="video/mp4"/>
-                Sorry, your browser doesn't support embedded videos.
-            </video>
+                onClick={()=>setShowContent(!showContent)}
+                className='content-toggle'
+                >
+                <Icon  name='cheveron-left' className='w-5 -ml-0.5 fill-current' />
+            </div>
+            <Video src={[
+                {
+                    src: '/videos/1621626043674.mp4',
+                    type: 'video/mp4'
+                }
+            ]} />
             <div className='my-3'>
                 <h1 className='title'>Leadership Mindsets</h1>
             </div>

@@ -23,18 +23,18 @@ export default function Layout({ title, children }) {
         </InertiaLink>
         </div>
         <div className='hidden md:flex flex-col w-full  items-start text-xs'>
-          <MenuItem icon='courses' link='course' text='Courses'/>
+          <MenuItem icon='courses' link='courses' text='Courses'/>
           <MenuItem icon='user' link='me' text='Me'/>
           <MenuItem icon='cv' link='curriculum' text='Curriculum'/>
-
+          <MenuItem icon='settings' link='settings' text='Settings'/>
 
         </div>
         <div className='hidden md:flex w-full flex-wrap items-end'>
           <div className='w-full text-center'>
-            <div className='text-black'>
+            <InertiaLink href='/' className='text-black'>
               <Icon name="log-out" className="w-4 mb-2 h-4 mx-auto fill-current"/>
               <p className='text-xs'>Log out</p>
-            </div>
+            </InertiaLink>
           </div>
         </div>
         
