@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Http\Request;
 
+
 class EmailVerificationNotificationController extends Controller
 {
     /**
@@ -16,11 +17,13 @@ class EmailVerificationNotificationController extends Controller
      */
     public function store(Request $request)
     {
+        //$otp = random_int(100000, 999999);
         if ($request->user()->hasVerifiedEmail()) {
             return redirect()->intended(RouteServiceProvider::HOME);
         }
 
-        $request->user()->sendEmailVerificationNotification();
+        // POST
+        //$request->user()->sendEmailVerificationNotification();
 
         return back()->with('status', 'verification-link-sent');
     }

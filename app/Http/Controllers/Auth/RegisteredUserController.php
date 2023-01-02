@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules;
 use Inertia\Inertia;
+use App\Notifications\NewRegister;
 
 class RegisteredUserController extends Controller
 {
@@ -35,18 +36,21 @@ class RegisteredUserController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'required|string|max:255',
+            //'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
         ]);
 
+        //$otp = random_int(100000, 999999);
+
         $user = User::create([
-            'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
-        ]);
+            'otp' => 999999,
+        ])->assignRole('student');
 
-        event(new Registered($user));
+        //event(new Registered($user));
+        $user->notify(new NewRegister($user));
 
         Auth::login($user);
 
