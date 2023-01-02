@@ -1,10 +1,12 @@
 import React from 'react'
-
-const Topic = ({text}) => {
+import { InertiaLink } from '@inertiajs/inertia-react'
+const Topic = ({text, id}) => {
     return(
-        <div className='p-3 border border-black rounded-full mr-2 my-1'>
-            <span className='text-sm'>{text}</span>
-        </div>
+        <InertiaLink
+        href={id && route('topic', id)}
+        className='p-3 bg-orange text-white rounded-full mr-2 my-1 w-auto hover:shadow-sm'>
+            <span >{text}</span>
+        </InertiaLink>
     )
 }
 

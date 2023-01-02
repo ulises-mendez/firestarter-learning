@@ -1,13 +1,51 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
+import {loadStripe} from '@stripe/stripe-js';
+import {
+  CardElement,
+  Elements,
+  useStripe,
+  useElements,
+  
+} from '@stripe/react-stripe-js';
+
 import { InertiaLink } from '@inertiajs/inertia-react'
 import dateFormat from '@/Components/Date'
 import Logo from '@/Components/Logo'
 import classNames from 'classnames'
 import TextInput from '@/Components/TextInput'
 import InputLabel from '@/Components/InputLabel'
-import { Head, Link, useForm } from '@inertiajs/inertia-react'
+import { Head, Link, useForm, usePage } from '@inertiajs/inertia-react'
 import Icon from '@/Components/Icon'
+import CheckoutForm from '@/Components/CheckoutForm'
 
+/*
+const CheckoutForm = () => {
+    const stripe = useStripe();
+    const elements = useElements();
+  
+    const handleSubmit = async (event) => {
+      event.preventDefault();
+  
+      if (elements == null) {
+        return;
+      }
+  
+      const {error, paymentMethod} = await stripe.createPaymentMethod({
+        type: 'card',
+        card: elements.getElement(CardElement),
+      });
+    };
+  
+    return (
+      <form onSubmit={handleSubmit}>
+        <CardElement />
+        <button type="submit" disabled={!stripe || !elements}>
+          Pay
+        </button>
+      </form>
+    );
+  };
+*/
 
 const Checkbox = (props) => {
     function handleChange() {
@@ -34,8 +72,26 @@ const Checkbox = (props) => {
     )
   }
 
-const Products= () =>{
+const stripePromise = loadStripe('pk_test_51JYiCeHOSZzHYeBQ0KjMSaGX7VS649UAxnVr8xOFpJfzfqjG5z3ytxQw0Ut6xivhYEiPpdojOnzx03yRmLhqTVvH00JZJ7g4bi');
+
+const Checkout= () =>{
+    //const [options,setOptions] = useState(null)
+    const {intent} = usePage().props
+    
+    const options = {
+        // passing the client secret obtained from the server
+        /*
+        amount: intent.amount,
+        currency: intent.currency,
+        id: intent.id,
+        */
+        clientSecret: intent.client_secret,
+      };
+    
+
     const [processing, setProcessing] = useState(false)
+    const [message, setMessage] = useState(null)
+    const [isProcessing, setIsProcessing] = useState(false)
     const [method, setMethod] = useState(null)
     const [cycle, setCycle] = useState(null)
     const today = new Date()
@@ -56,8 +112,15 @@ const Products= () =>{
     })
 
     const onHandleChange = (event) => {
-        setData(event.target.name, event.target.type === 'checkbox' ? event.target.checked : event.target.value);
-    };
+        setData(event.target.name, event.target.type === 'checkbox' ? event.target.checked : event.target.value)
+    }
+
+    const handleSubmit = async (event) => {
+        event.preventDefault();
+        
+    }
+
+    console.log(options)
     
     return(
         <>
@@ -163,13 +226,23 @@ const Products= () =>{
                             <img src='/img/logos/pp.jpg' className='mx-auto w-14'/>
                         </Select>
                 </div>
+                <div>
+                    {
+                        options &&
+
+                        <Elements stripe={stripePromise} options={ options }>
+                            <CheckoutForm />
+                        </Elements>
+                    }
+                
+                </div>
                 <div className='p-4'>
 
 
                     
                     {
                         method === 0 &&
-                    <form>
+                    <form >
                         <InputLabel forInput="firstName" value="First Name*" />
                         <TextInput
                             type="text"
@@ -329,4 +402,4 @@ const Products= () =>{
     )
 }
 
-export default Products
+export default Checkout

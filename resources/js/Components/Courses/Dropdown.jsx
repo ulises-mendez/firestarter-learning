@@ -1,13 +1,18 @@
 import React, { useState } from 'react'
+import { InertiaLink, usePage } from '@inertiajs/inertia-react'
 import Icon from '@/Components/Icon'
+import classNames from 'classnames'
 
 
-
-const Dropdown = ({item, index}) =>{
+const Dropdown = ({item, last}) =>{
+    const { course } = usePage().props;
     const [open, setOpen] = useState(false)
-    
+    const {lessons} = item
+    console.log(last)
+    console.log(item)
+
     return(
-        <div className={`${index == true ? '' : 'border-b'}`}>
+        <div className={`${last == true ? '' : 'border-b'}`}>
         <button onClick={() => setOpen(!open)} className='w-full h-full flex p-2 justify-between'>
             <div className='flex-1 text-left'>
                 <span className='font-semibold text-sm'>{item.title}</span>
@@ -17,21 +22,42 @@ const Dropdown = ({item, index}) =>{
         {
         open &&
         <div>
-                {
-                    item.content.map((item, i)=>{
-                        return(
-                            <div key={i} className='flex items-start p-2  border-gray-900 hover:bg-gray-200'>
-                            <button  className='py-2 mr-2'>
-                                <Icon name='play-linear' className='w-2 h-2'/>
-                            </button>
-                                <div>
-                                    <p className='text-sm'>{item.title}</p>
-                                    <p className='text-xs text-gray-500'>{item.duration}</p>
+            {
+                lessons.map(
+                    (lesson, i) => {
+                        const isActive = route().current('course.lesson', [course.slug, lesson.slug ])
+                    return(
+                        <div key={i} className={`border-gray-900  ${isActive ? 'bg-orange bg-opacity-20' : 'hover:bg-gray-200' }`}>
+                            {
+                                isActive ?
+                                <div className='border-l-2 border-orange flex items-center p-2 select-none'>
+                                    <button  className='py-2 mr-2'>
+                                    <Icon name={lesson.premium ? 'lock' : 'play-linear'} className='w-3 h-3'/>
+                                    </button>
+                                    <div>
+                                        <p className='text-sm'>{lesson.title}</p>
+                                        <p className='text-xs text-gray-500'>{lesson.duration}</p>
+                                    </div>
                                 </div>
-                            </div>
-                        )
-                    })
-                }
+                                :
+                                <InertiaLink
+                                className='flex items-center p-2'
+                                href={route('course.lesson', [course.slug, lesson.slug])}
+                                >
+                                    <button  className='py-2 mr-2'>
+                                    <Icon name={lesson.premium ? 'lock' : 'play-linear'} className='w-3 h-3'/>
+                                    </button>
+                                    <div>
+                                        <p className='text-sm'>{lesson.title}</p>
+                                        <p className='text-xs text-gray-500'>{lesson.duration}</p>
+                                    </div>
+                                </InertiaLink>
+                            }
+                            
+                        </div>
+                    )
+                })
+            }
         </div>
         }
         </div>

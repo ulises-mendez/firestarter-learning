@@ -9,7 +9,7 @@
 .form-input,
 .form-textarea,
 .form-select {
-  @apply relative p-2 leading-normal block w-full border border-black rounded text-left appearance-none focus:outline-none focus:ring-1 focus:ring-orange focus:border-orange;
+  @apply relative p-2 leading-normal block w-full border border-gray-300 rounded text-left appearance-none focus:outline-none focus:ring-1 focus:ring-orange focus:border-orange;
   @apply placeholder-gray-500 placeholder-opacity-100;
   box-shadow: 0px 0px 2px 0px rgba(0,0,0,0.05) inset;
   -webkit-box-shadow: 0px 0px 2px 0px rgba(0,0,0,0.05) inset;
@@ -50,7 +50,7 @@
 .content-toggle:hover{
   color: #EB6100;
 }
-@media only screen and (max-width: 768px)
+@media only screen and (max-width: 1024px)
 {
   .content-toggle{
     display: none;
@@ -116,26 +116,33 @@
 .timecontrols {
   display: flex;
   align-items: center;
-  justify-content: space-evenly;
-  position: absolute;
-  bottom: 4rem;
-  margin-left: 10vw;
+  bottom: 0;
 }
 
 .time_progressbarContainer {
-  background-color: gray;
+  background-color: rgb(151, 151, 151);
   border-radius: 15px;
-  width: 75vw;
+  width: 100%;
   height: 5px;
   z-index: 30;
   position: relative;
-  margin: 0 20px;
+  margin: 0;
 }
 
 .time_progressBar {
   border-radius: 15px;
-  background-color: indigo;
+  background-color: #EB6100;
   height: 100%;
+}
+
+.volume_indicator{
+  position: absolute;
+  border-radius: 50%;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 12px;
+  height: 12px;
+  background-color: #EB6100;
 }
 
 .controlsTime {
@@ -144,4 +151,482 @@
 
 .btn-orange {
   @apply bg-orange text-white p-4 font-semibold rounded-lg
+}
+
+.btn-white {
+  @apply bg-white text-orange hover:bg-gray-100 p-4 font-semibold rounded-lg
+}
+
+.btn-black {
+  @apply bg-black text-white p-4 font-semibold rounded-lg
+}
+
+.btn-delete{
+  @apply bg-red-100 text-red-600 text-sm hover:bg-gray-100 p-4 px-6 font-semibold rounded-lg
+}
+
+.btn-red{
+  @apply bg-red-500 text-white text-sm hover:bg-red-300 hover:text-red-800 p-4 px-6 font-semibold rounded-lg
+}
+
+input[type="checkbox"]:checked{
+  color:#EB6100;
+}
+
+input:checked + label {
+  width: 100%;
+  color: white;
+  background-color: #EB6100;
+  border: 1px solid #EB6100;
+}
+
+
+input:checked  + label .item{
+  width: 100%;
+  color: white;
+  background-color: white!important;
+  border: 1px solid #EB6100;
+}
+
+.topic{
+  cursor: pointer;
+  padding:12px;
+  width: 100%;
+  background: white;
+  border:  1px solid rgb(209,213,219);
+  font-weight: 600 ;
+}
+.slick-slider {
+  display: flex;
+  align-items: center;
+  
+  margin: 0 auto;
+}
+.slick-track {
+  display: flex !important;
+  padding: 6px 0;
+}
+
+.slick-slide {
+  padding-right: 10px;
+  height: inherit !important;
+}
+
+.slick-dots {
+  position: absolute;
+  bottom: 15px;
+  display: block;
+  width: 100%;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+  text-align: center;
+}
+.slick-dots li {
+  position: relative;
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  margin: 0 5px;
+  padding: 0;
+  cursor: pointer;
+}
+.slick-dots li button {
+  font-size: 0;
+  line-height: 0;
+  display: block;
+  width: 20px;
+  height: 20px;
+  padding: 5px;
+  cursor: pointer;
+  color: transparent;
+  border: 0;
+  outline: none;
+  background: transparent;
+}
+.slick-dots li button::before {
+  font-family: 'slick';
+  font-size: 20px;
+  line-height: 20px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 20px;
+  height: 20px;
+  content: '•';
+  text-align: center;
+  opacity: .25;
+  color: black;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+.slick-dots li.slick-active button::before {
+  opacity: .75;
+  color: #EB6100;
+}
+.course-slide .slick-slide > div:first-of-type{
+  height: 100%;
+  
+  @apply bg-white rounded-lg shadow-md
+}
+
+.instructors .slick-slide > div:first-of-type{
+  height: 100%;
+  
+  @apply rounded-lg border
+}
+
+.slick-slide:last-child {
+  padding-right: 0;
+
+}
+.slick-slide img {
+  display: block;
+}
+.slick-list {
+  margin: 0 15px;
+}
+
+.slick-arrow{
+  display: none!important;
+}
+.slick-prev {
+  width: 50px;
+  left: 0;
+  top: 20%;
+  position: absolute;
+  height: 50px;
+  background: tomato;
+  z-index: 1;
+  border-radius: 50%;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
+}
+.overlay-highlight{
+  position: absolute;
+  top:0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgb(243,244,246);
+  background: -moz-linear-gradient(90deg, rgba(243,244,246,1) 10%, rgba(243,244,246,0) 52%);
+  background: -webkit-linear-gradient(90deg, rgba(243,244,246,1) 10%, rgba(243,244,246,0) 52%);
+  background: linear-gradient(90deg, rgba(243,244,246,1) 10%, rgba(243,244,246,0) 52%);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#f3f4f6",endColorstr="#f3f4f6",GradientType=1);
+}
+.slick-next {
+  width: 50px;
+  right: 0;
+  top: 20%;
+  position: absolute;
+  height: 50px;
+  background: tomato;
+  z-index: 1;
+  border-radius: 50%;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
+}
+
+.slick-prev:focus,
+.slick-prev:hover,
+.slick-next:hover,
+.slick-next:focus {
+  color: transparent;
+  outline: none;
+  background: tomato;
+}
+/* VIDEO */
+
+.video-js {
+  /*border-radius: 5px!important;
+  */
+  overflow: hidden;
+}
+
+.vjs-control-bar{
+  background-color: #EB6100!important;
+}
+
+.video-js .vjs-load-progress div{
+ background: rgba(255, 151, 79, 1)!important;
+}
+
+.video-js .vjs-slider{
+  background: #d85900!important;
+}
+
+.video-js .vjs-big-play-button{
+  background-color: rgba(230, 230, 230, 0.5)!important;
+  color: #EB6100!important;
+}
+.modal-category{
+  padding:10px;
+  position: absolute;
+  background: white;
+  width: 100%;
+  max-width:600px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  max-height: 100vh;
+  border-radius: 10px;
+}
+.modal-category-overlay{
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(244, 244, 244, 0.9);
+  padding: 20px 5px;
+  overflow: auto;
+  z-index: 99;
+}
+.modal-lesson{
+  position: absolute;
+  background: white;
+  width: 100%;
+  max-width:600px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  max-height: calc(100vh - 50px);
+  border-radius: 10px;
+  overflow-y: auto;
+}
+.modal-search{
+  position: absolute;
+  width: 100%;
+  max-width:600px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  max-height: calc(100vh - 50px);
+  border-radius: 10px;
+  overflow-y: auto;
+}
+
+.modal-collections{
+  position: absolute;
+  width: 100%;
+  max-width:600px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  max-height: calc(100vh - 50px);
+  border-radius: 10px;
+  overflow-y: auto;
+}
+
+.modal-lesson-overlay{
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(12, 12, 12, 0.9);
+  padding: 20px 5px;
+  overflow: auto;
+  z-index: 99;
+}
+
+.modal-publish{
+  position:fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  min-height: 100%;
+  padding: 0px;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 400px;
+  background-color: white;
+  background-size: 6px 6px !important;
+  box-shadow: -4px 0px 8px 0px rgba(0, 0, 0, 0.03);
+  -webkit-box-shadow: -4px 0px 8px 0px rgba(0, 0, 0, 0.03);
+  -moz-box-shadow: -4px 0px 8px 0px rgba(0, 0, 0, 0.03);
+  overflow: auto;
+}
+.modal-publish-overlay{
+  position: fixed;
+  inset: 0px;
+  z-index: 99;
+}
+
+
+.video-js .vjs-title-bar {
+  background: rgba(0, 0, 0, 0.5);
+  color: white;
+  font-size: 16px;
+  padding: 12px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+}
+
+
+
+/* START TOOLTIP STYLES */
+[tooltip] {
+  position: relative; /* opinion 1 */
+}
+
+/* Applies to all tooltips */
+[tooltip]::before,
+[tooltip]::after {
+  text-transform: none; /* opinion 2 */
+  font-size: .9em; /* opinion 3 */
+  line-height: 1;
+  user-select: none;
+  pointer-events: none;
+  position: absolute;
+  display: none;
+  opacity: 0;
+}
+[tooltip]::before {
+  content: '';
+  border: 5px solid transparent; /* opinion 4 */
+  z-index: 1001; /* absurdity 1 */
+}
+[tooltip]::after {
+  content: attr(tooltip); /* magic! */
+  
+  text-align: center;
+  
+  /* 
+    Let the content set the size of the tooltips 
+    but this will also keep them from being obnoxious
+    */
+  min-width: 3em;
+  max-width: 21em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  padding: 4px 8px;
+  border-radius: 4px;
+  box-shadow: 0 1em 2em -.5em rgba(0, 0, 0, 0.25);
+  background: #333;
+  color: #fff;
+  z-index: 1000; /* absurdity 2 */
+}
+
+/* Make the tooltips respond to hover */
+[tooltip]:hover::before,
+[tooltip]:hover::after {
+  display: block;
+}
+
+/* don't show empty tooltips */
+[tooltip='']::before,
+[tooltip='']::after {
+  display: none !important;
+}
+
+/* FLOW: UP */
+[tooltip]:not([flow])::before,
+[tooltip][flow^="up"]::before {
+  bottom: 100%;
+  border-bottom-width: 0;
+  border-top-color: rgb(0, 0, 0);
+}
+[tooltip]:not([flow])::after,
+[tooltip][flow^="up"]::after {
+  bottom: calc(100% + 5px);
+}
+[tooltip]:not([flow])::before,
+[tooltip]:not([flow])::after,
+[tooltip][flow^="up"]::before,
+[tooltip][flow^="up"]::after {
+  left: 50%;
+  transform: translate(-50%, -.5em);
+}
+
+/* FLOW: DOWN */
+[tooltip][flow^="down"]::before {
+  top: 100%;
+  border-top-width: 0;
+  border-bottom-color: #333;
+}
+[tooltip][flow^="down"]::after {
+  top: calc(100% + 5px);
+}
+[tooltip][flow^="down"]::before,
+[tooltip][flow^="down"]::after {
+  left: 50%;
+  transform: translate(-50%, .5em);
+}
+
+/* FLOW: LEFT */
+[tooltip][flow^="left"]::before {
+  top: 50%;
+  border-right-width: 0;
+  border-left-color: #333;
+  left: calc(0em - 5px);
+  transform: translate(-.5em, -50%);
+}
+[tooltip][flow^="left"]::after {
+  top: 50%;
+  right: calc(100% + 5px);
+  transform: translate(-.5em, -50%);
+}
+
+/* FLOW: RIGHT */
+[tooltip][flow^="right"]::before {
+  top: 50%;
+  border-left-width: 0;
+  border-right-color: #333;
+  right: calc(0em - 5px);
+  transform: translate(.5em, -50%);
+}
+[tooltip][flow^="right"]::after {
+  top: 50%;
+  left: calc(100% + 5px);
+  transform: translate(.5em, -50%);
+}
+
+/* KEYFRAMES */
+@keyframes tooltips-vert {
+  to {
+    opacity: .9;
+    transform: translate(-50%, 0);
+  }
+}
+
+@keyframes tooltips-horz {
+  to {
+    opacity: .9;
+    transform: translate(0, -50%);
+  }
+}
+
+/* FX All The Things */ 
+[tooltip]:not([flow]):hover::before,
+[tooltip]:not([flow]):hover::after,
+[tooltip][flow^="up"]:hover::before,
+[tooltip][flow^="up"]:hover::after,
+[tooltip][flow^="down"]:hover::before,
+[tooltip][flow^="down"]:hover::after {
+  animation: tooltips-vert 300ms ease-out forwards;
+}
+
+[tooltip][flow^="left"]:hover::before,
+[tooltip][flow^="left"]:hover::after,
+[tooltip][flow^="right"]:hover::before,
+[tooltip][flow^="right"]:hover::after {
+  animation: tooltips-horz 300ms ease-out forwards;
+}
+
+
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 28;
+  background: rgba(244, 244, 244, 0.8);
+  transition: all .2s;
+}
+.direction-left{
+  direction: ltr;
 }

@@ -11,26 +11,28 @@ import { courses } from '@/data/courses';
 import Rate from '@/Components/Courses/Rate';
 import Review from '@/Components/Courses/Review';
 import Topics from '@/Components/Courses/Topic';
-
+import date from '@/Components/Date';
+import { usePage } from '@inertiajs/inertia-react';
 
 const Topic = ()  =>{
+    const { courses, topic, topics, trending } = usePage().props
     return (
         <>
             <Head title={data.title + ' Online Training Courses'} />
             
             <div className='max-w-5xl mx-auto w-full flex flex-wrap'>
                 <div className='w-full p-2 md:w-2/3'>
-                    <h1 className='text-xl font-semibold mb-4'>{data.title} <span className='font-normal'>Online Training Courses</span></h1>
-                    <p className='text-sm mb-2'>{data.desc}</p>
+                    <h1 className='text-xl font-semibold mb-4'>{topic.title} <span className='font-normal'>Online Training Courses</span></h1>
+                    <p className='text-sm mb-2'>{topic.description}</p>
                     <div className='my-4'>
                         <h2 className='text-xl font-semibold'>Trending courses</h2>
                         <div className='w-full my-2 overflow-x-auto'>
                             <div className='w-auto inline-flex'>
-                                {data.trending.map((course, i)=>{
+                                {trending.map((course, i)=>{
                                 return(
-                                    <InertiaLink href={route('course.preview')}>
-                                        <div key={i} className='relative w-48 p-2 px-4 border-r'>
-                                            <img src={course.thumb} className='w-full' />
+                                    <InertiaLink href={route('course.show',course.slug)} key={i}>
+                                        <div  className='relative w-48 p-2 px-4 border-r'>
+                                            <img src={course.thumbnail} className='w-full' />
                                             <h4 className='font-semibold mb-2 text-sm'>{course.title.length > 34 ? course.title.slice(0,34) + '...' : course.title}</h4>
                                         </div>
                                     </InertiaLink>
@@ -41,29 +43,29 @@ const Topic = ()  =>{
                         
                         </div>
                     </div>
-                    
-                    
                     <div className='p-2'>
                         <div>
-                            <p className='text-xs'><span className='text-sm'>763</span> Results for "Business Analysis"</p>
+                            <p><span>{courses.length}</span> results for "{topic.title}"</p>
                         </div>
-                        {data.results.map((video,i)=>{
+                        {
+                        courses.map((course,i)=>{
                             return(
-                                <InertiaLink href={route('course.preview')} key={i}>
-                                    <div className='w-full flex py-4 border-b'>
+                                <InertiaLink href={route('course.show',course.slug)} key={i}>
+                                    <div className='w-full flex py-8 border-b'>
                                         <div className='relative w-48'>
-                                            <img src={video.thumb} className='w-full' />
+                                            <img src={course.thumbnail} className='w-full' />
                                         </div>
                                         <div className='px-2 flex-1 flex flex-col justify-between'>
-                                            <p className='font-semibold text-sm text-gray-600'>{video.type}</p>
-                                            <h4 className='font-semibold mb-2'>{video.title}</h4>
-                                            <p className='text-sm'>By: {video.by}</p>
-                                            <p className='text-sm text-gray-500'>{video.released}</p>
+                                            <p className='font-semibold text-sm text-gray-600'>Course</p>
+                                            <h4 className='font-semibold mb-2'>{course.title}</h4>
+                                            <p className='text-sm'>By: {course.by}</p>
+                                            <p className='text-sm text-gray-500'>{date(course.created_at)}</p>
                                         </div>
                                     </div>
                                 </InertiaLink>
                             )
-                        })}
+                        })
+                        }
                     </div>
                     
                     
@@ -73,9 +75,9 @@ const Topic = ()  =>{
                     <h2 className='text-xl font-semibold mb-4'>Explore Related Topics</h2>
                     <div className='flex flex-wrap'> 
                         {
-                            data.topics.map((topic,i)=>{
+                            topics.map((topic,i)=>{
                                 return(
-                                    <Topics key={i} text={topic}/>
+                                    <Topics id={topic.id} key={i} text={topic.title}/>
                                 )
                             })
                         }

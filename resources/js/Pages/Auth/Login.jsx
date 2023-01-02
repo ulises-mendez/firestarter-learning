@@ -9,8 +9,8 @@ import { Head, InertiaLink, Link, useForm } from '@inertiajs/inertia-react';
 
 export default function Login({ status, canResetPassword }) {
     const { data, setData, post, processing, errors, reset } = useForm({
-        email: 'user@example.com',
-        password: 'firestarter',
+        email: '',
+        password: '',
         remember: '',
     });
 
@@ -78,13 +78,13 @@ export default function Login({ status, canResetPassword }) {
 
                 
                 <div className='w-full my-4'>
-                    <InertiaLink href={route('me')} >
-                        <button href={route('me')} className="w-full bg-black p-2 rounded-lg text-white" 
+                    
+                        <button type='submit' className="w-full bg-black p-2 rounded-lg text-white" 
                         //processing={processing}
                         >
                             Log in
                         </button>
-                    </InertiaLink>
+                    
                 </div>
                 <div className="flex items-center justify-center my-4">
                     {canResetPassword && (

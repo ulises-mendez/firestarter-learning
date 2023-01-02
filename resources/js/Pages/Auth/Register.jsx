@@ -8,7 +8,6 @@ import { Head, InertiaLink, Link, useForm } from '@inertiajs/inertia-react';
 
 export default function Register() {
     const { data, setData, post, processing, errors, reset } = useForm({
-        name: '',
         email: '',
         password: '',
         password_confirmation: '',
@@ -34,24 +33,7 @@ export default function Register() {
         <GuestLayout>
             <Head title="Register" />
 
-            <form >
-                <div>
-                    <InputLabel forInput="name" value="Name" />
-
-                    <TextInput
-                        type="text"
-                        name="name"
-                        value={data.name}
-                        className="mt-1 block w-full"
-                        autoComplete="name"
-                        isFocused={true}
-                        handleChange={onHandleChange}
-                        required
-                    />
-
-                    <InputError message={errors.name} className="mt-2" />
-                </div>
-
+            <form onSubmit={submit}>
                 <div className="mt-4">
                     <InputLabel forInput="email" value="Email" />
 
@@ -104,9 +86,9 @@ export default function Register() {
                         Already registered?
                     </Link>
 
-                    <InertiaLink href={route('subscription.checkout')} type='button' className="bg-black p-4 text-white font-semibold rounded ml-4" processing={processing}>
+                    <PrimaryButton type='submit' className="bg-black p-4 text-white font-semibold rounded ml-4" processing={processing}>
                         Register
-                    </InertiaLink>
+                    </PrimaryButton>
                 </div>
             </form>
         </GuestLayout>

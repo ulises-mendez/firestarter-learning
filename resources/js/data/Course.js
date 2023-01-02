@@ -7,7 +7,8 @@ export default {
             content: [
                 {
                     title: 'Women lead differently',
-                    duration:'1m 22s'
+                    duration:'1m 22s',
+                    transcript: '/cc/01.vtt'
                 },
                 {
                     title: 'What organizations owe women',

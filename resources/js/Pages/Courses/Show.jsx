@@ -3,9 +3,14 @@ import Layout from '@/Layouts/Auth';
 import Icon from '@/Components/Icon';
 import classNames from 'classnames';
 import Section from '@/Components/Courses/Section'
-import Video from '@/Components/Courses/Video'
+//import Video from '@/Components/Courses/Video'
+import VideoJS from '@/Components/Courses/Video'
+
+import { usePage } from '@inertiajs/inertia-react'
+import timeFormat from '@/Components/TimeFormat'
 
 const ShowCourse = () =>{
+    const { transcription } = usePage().props;
     const videoContainer = useRef(null);
     const videoRef = useRef(null);
     const [playing, setPlaying] = useState(false);
@@ -20,9 +25,6 @@ const ShowCourse = () =>{
     const [reply, setReply] = useState(false)
     const video = useRef(null)
 
-    function jump(i){
-        video.current.currentTime = i
-    }
     const [tab, setTab] = useState(1)
     function tabClick(i){
         setTab(i)
@@ -102,7 +104,30 @@ const ShowCourse = () =>{
     video.current.playbackRate = x
   }
 
+/// VIDEOJS
+    const playerRef = React.useRef(null);
 
+    const videoJsOptions = {
+        title: 'Title',
+        autoplay: true,
+        controls: true,
+        responsive: true,
+        fluid: true,
+        sources: [{
+        src: '/videos/01_women_lead_differently.mp4',
+        type: 'video/mp4'
+        }]
+    };
+
+
+    
+
+    const handlePlayerReady = (player) => {
+    playerRef.current = player;
+    };
+    function jump(i){
+    playerRef.current.currentTime(i)
+    }
     return(
         <div className='w-full h-full flex items-stretch'>
             <div className={content}>
@@ -122,14 +147,17 @@ const ShowCourse = () =>{
                 onClick={()=>setShowContent(!showContent)}
                 className='content-toggle'
                 >
-                <Icon  name='cheveron-left' className='w-5 -ml-0.5 fill-current' />
+                <Icon  name='cheveron-left' className={`w-5 -ml-0.5 fill-current transition-all duration-500 ${!showContent ? 'rotate-180' : ''}`} />
             </div>
-            <Video src={[
-                {
-                    src: '/videos/1621626043674.mp4',
-                    type: 'video/mp4'
-                }
-            ]} />
+            <VideoJS title='lesson' options={videoJsOptions} onReady={handlePlayerReady} >
+                <track
+                    src='/cc/01.vtt'
+                    kind="subtitles"
+                    srcLang="en"
+                    label="English"
+                    default
+                />
+            </VideoJS>
             <div className='my-3'>
                 <h1 className='title'>Leadership Mindsets</h1>
             </div>
@@ -335,10 +363,13 @@ const ShowCourse = () =>{
                     <div className='w-full py-4'>
                         <div className='max-w-3xl mx-auto'>
                             <div className='leading-relaxed text-gray-500'>
-                                <span  onClick={() => jump(0)} className='cursor-pointer mx-1 relative hover:underline group hover:text-black'>- Are you looking to launch a business <div className='absolute toptranscipt -top-8 left-1/2 -translate-x-1/2 bg-black bg-opacity-75 text-white px-2 opacity-100 group-hover:opacity-100 group-hover:block hidden'><div>Jump to 0:00</div></div></span>
-                                <span onClick={() => jump(2)} className='mx-1 relative cursor-pointer hover:underline'>but you don't know where to start? </span>
-                                <span onClick={() => jump(4)} className='mx-1 cursor-pointer hover:underline'>Are you concerned about some of the risks you might face </span>
-                                 in getting your business off the ground? How do you define your product or your service, and then sell it to customers in a way that they'll care about? How do you run the operations such that you can support that business, as well as managing a lot of the administrative functions of your organization? A business plan is a great way to plan for launching your business, as well as accounting for and planning for some of those risks you might face. I'm Mike Figliuolo. I'm the managing director at thoughtLEADERS. And I consult firms all around the world on how to do exactly this. I've also used this same exact process when I launched my business 10 years ago. Look, creating a business plan doesn't have to be an intimidating process. It's really straightforward with some clear-cut components that I'll walk you through step-by-step. So let's dive in.
+                                {
+                                    transcription.map((line, i) => {
+                                        return (
+                                            <span key={i} onClick={() => jump(line.start)} className='cursor-pointer mx-1 relative hover:underline group hover:text-black'>{line.lines[0]}<div className='absolute w-36 toptranscipt -top-8 left-1/2 -translate-x-1/2 bg-black bg-opacity-75 text-white text-center px-2 opacity-100 group-hover:opacity-100 group-hover:block hidden'><div>Jump to {timeFormat(line.start)}</div></div></span>
+                                        )
+                                    })
+                                }
                             </div>
                         </div>
                     </div>

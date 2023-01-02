@@ -6,11 +6,18 @@
     "license": "MIT",
     "require": {
         "php": "^8.0.2",
+        "barryvdh/laravel-dompdf": "^2.0",
         "guzzlehttp/guzzle": "^7.2",
         "inertiajs/inertia-laravel": "^0.6.3",
+        "james-heinrich/getid3": "^1.9",
+        "laravel/cashier": "^14.3",
         "laravel/framework": "^9.19",
         "laravel/sanctum": "^2.8",
         "laravel/tinker": "^2.7",
+        "mantas-done/subtitles": "^0.3.10",
+        "owen-oj/laravel-getid3": "^2.1",
+        "podlove/webvtt-parser": "^1.1",
+        "spatie/laravel-permission": "^5.5",
         "tightenco/ziggy": "^1.0"
     },
     "require-dev": {

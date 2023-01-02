@@ -55,9 +55,9 @@ const Topic = ()  =>{
                     </div>
                     <div className='w-full md:w-3/4'>
                         {
-                            data.topics.map((topic)=>{
+                            data.topics.map((topic, i)=>{
                                 return(
-                                    <section className='mb-4 mx-2'>
+                                    <section key={i} className='mb-4 mx-2'>
                                         <h2 className='text-2xl font-bold mb-2'>{topic.title}</h2>
                                         <ul>
                                             {topic.content.map((link, i)=>{
@@ -90,7 +90,7 @@ const Topic = ()  =>{
 const data = {
     topics: [
         {
-            title: 'How to Get Started With Udemy',
+            title: 'How to Get Started With FireStarter',
             content: [
                 {
                     title:'How to Sign up With FireStarter and Log in (on a Browser)',

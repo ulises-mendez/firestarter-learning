@@ -1,14 +1,15 @@
-import React, {useState} from 'react'
+import React, { useState, useEffect } from 'react'
 import Logo from '@/Components/Logo'
 import Icon from '@/Components/Icon'
 import MainMenu from '@/Layouts/Guest/MainMenu'
 import { Inertia } from '@inertiajs/inertia'
-
+import { usePage, useForm } from '@inertiajs/inertia-react'
 import { InertiaLink } from '@inertiajs/inertia-react'
+
 
 const Category = ({text,onMouseEnter}) =>{
     return(
-        <div onMouseEnter={onMouseEnter} className='flex hover:bg-black hover:text-white px-2' >
+        <div onMouseEnter={onMouseEnter} className='flex hover:bg-black hover:text-white px-2'>
             <p
             className="w-full text-left px-4 py-2 text-sm select-none ">
                 {text}
@@ -19,14 +20,24 @@ const Category = ({text,onMouseEnter}) =>{
 }
 
 const Header = () =>{
-    
+    const {categories, filters } = usePage().props
     const [menu, setMenu] = useState(false)
-    const [menuOpened, setMenuOpened] = useState(false);
-    const [toooltip, setTooltip] = useState(false);
+    const [menuOpened, setMenuOpened] = useState(false)
+    const [toooltip, setTooltip] = useState(false)
     const [selectCategory, setSelectCategory] = useState(null)
-    Inertia.on('navigate', () => {
-        setMenu(false)
-      })
+    const {data, setData, errors, post, processing} = useForm({
+        keywords: filters?.keywords || ''
+    })
+
+    function changeSearch(e){
+        setData('keywords', e.target.value)
+    }
+
+    function search(e){
+        e.preventDefault()
+        post(`/search?keywords=${data.keywords}`)
+    }
+
     return(
         <nav className='p-4 max-w-7xl mx-auto flex items-center justify-between'>
             <div>
@@ -44,22 +55,27 @@ const Header = () =>{
                     <div className='flex'>
                     <div className="w-[15rem] bg-white relative text-left border-r">
                         {
-                            data.categories.map((cat, i)=>(
+                            categories.map((cat, i)=>(
                                 <Category key={i} text={cat.title} onMouseEnter={()=> setSelectCategory(i)}/>
                             ))
                         }
                     </div>
                     {
                         selectCategory !== null &&
-                        <div className="w-[20rem] bg-white relative text-left">
+                        <div className="w-[20rem] relative text-left">
                             {
-                                data.categories[selectCategory].content.map((sub)=>{
+                                categories[selectCategory].topics.map((topic,i)=>{
                                     return(
                                         <InertiaLink
-                                        href={route('topics')}
+                                        key={i}
+                                        href={route('topic',topic.id)}
                                         >
-                                            <div className="w-full text-left px-4 py-2 text-sm text-black select-none hover:bg-black hover:text-white">
-                                            {sub}
+                                            <div className="w-full text-left px-4 py-2 text-sm text-black
+                                            border-b
+                                            border-gray-200
+                                            select-none 
+                                            bg-white hover:bg-black hover:text-white">
+                                            {topic.title}
                                             </div>
                                         </InertiaLink>
                                     )
@@ -71,9 +87,14 @@ const Header = () =>{
                     </div>
                 </div>
             </div>
-            <div className='hidden md:block p-2 flex-1'>
-                <input className='bg-lightGray rounded-full p-2 px-4 w-full' placeholder='Search for anything'></input>
-            </div>
+            <form onSubmit={search} className='hidden md:block p-2 flex-1'>
+                <input
+                value={data.keywords}
+                className='bg-lightGray rounded-full p-2 px-4 w-full'
+                placeholder='Search for anything'
+                onChange={changeSearch}
+                />
+            </form>
             <div className='hidden md:block'>
                 <MainMenu />
                 
@@ -81,7 +102,7 @@ const Header = () =>{
             
             
             
-<div className={`fixed flex flex-col z-30 inset-0 w-full sm:w-80 overflow-auto bg-white p-4 transition duration-300 ${menuOpened ? 'translate-x-0' : '-translate-x-full'}`}>
+    <div className={`fixed flex flex-col z-30 inset-0 w-full sm:w-80 overflow-auto bg-white p-4 transition duration-300 ${menuOpened ? 'translate-x-0' : '-translate-x-full'}`}>
         <div className="flex justify-between mb-8">
         <InertiaLink href='/'>
                     <Logo className='w-40'/>
@@ -98,7 +119,7 @@ const Header = () =>{
         >
             <h3 className='font-semibold text-gray-600'>Most Popular</h3>
             {
-                data.categories.map((cat, i)=>(
+                categories.map((cat, i)=>(
                     <Category key={i} text={cat.title} onMouseEnter={()=> setSelectCategory(i)}/>
                 ))
             }
@@ -134,60 +155,6 @@ const Header = () =>{
         </div>
         </nav>
     )
-}
-
-const data = {
-    categories: [
-        {
-            title:'Training and Education',
-            content:[
-                'Student Success Skills',
-                'Teaching',
-                'Higher Education',
-                'Instructional Design',
-                'Corporate Training'
-            ],
-        },
-        {
-            title:'Business Analysis and Strategy',
-            content:[
-                'Business Analysis',
-                'Business Intelligence',
-                'Business Strategy',
-                'Crisis Management',
-                'Data Analysis',
-                'Data Visualization',
-                'Ethics and Law',
-                'Operations Management',
-                'Product Management',
-                'Supply Chain Management',
-            ],
-        },
-        {
-            title:'Career Development',
-            content:[
-                'Job Searching',
-                'Personal Branding',
-                'Career Management'
-            ],
-        },
-        {
-            title:'Finance and Accounting',
-            content:[
-                'Lorem Ipsum',
-            ],
-        },
-        {
-            title:'Leadership and Management',
-            content:[
-                'Organizational Leadership',
-                'Talent Management',
-                'Management Skills',
-                'Diversity and Inclusion',
-                'Teams and Collaboration',
-            ],
-        }
-    ]
 }
 
 export default Header

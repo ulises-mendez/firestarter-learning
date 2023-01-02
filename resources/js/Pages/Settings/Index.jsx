@@ -6,7 +6,7 @@ import { Head, Link, useForm, InertiaLink } from '@inertiajs/inertia-react';
 import Input from '@/Components/Input'
 import SelectInput from '@/Components/SelectInput';
 import Section from '@/Components/Courses/Section'
-
+import ToggleCheck from '@/Components/ToggleCheck';
 const Checkbox = (props) => {
     function handleChange() {
       return null
@@ -17,6 +17,13 @@ const Checkbox = (props) => {
   }
 
 const Settings = () =>{
+    const [autoPlay,setAutoPlay] = useState(true)
+
+    function onChange()
+    {
+        setAutoPlay(!autoPlay)
+    }
+    console.log(autoPlay)
     return(
         <div className='w-full h-full p-8 overflow-y-auto'>
             <div className='mx-auto mb-4 w-full max-w-3xl rounded-lg'>
@@ -31,10 +38,10 @@ const Settings = () =>{
                                 <p>Automatically play media when learning content is opened</p>
                             </div>
                             <div>
-                            <label for="default-toggle" class="inline-flex relative items-center cursor-pointer">
-                                <input type="checkbox" value="" id="default-toggle" class="sr-only peer"/>
-                                <div class="w-11 h-6 bg-gray-100 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300  rounded-full peer  peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-orange"></div>
-                            </label>
+                            
+                            </div>
+                            <div>
+                            <ToggleCheck value={autoPlay} onChange={onChange}/>
                             </div>
                         </div>
                     </div>
