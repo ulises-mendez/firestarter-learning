@@ -322,7 +322,7 @@ const Curriculum = () =>{
                             </div>
                         </div>
                         <div>
-                            <p>{userProfile.headline}</p>
+                            <p className='font-semibold text-xs uppercase'>{userProfile.headline}</p>
                             <p>{userProfile.street}, {userProfile.city}. {userProfile.postal_code}</p>
                         </div>
                         <div>

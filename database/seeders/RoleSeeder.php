@@ -17,22 +17,18 @@ class RoleSeeder extends Seeder
     {
         $admin = Role::create([
             'name' => 'admin',
-
         ]);
 
         $editor = Role::create([
             'name' => 'editor',
-
         ]);
 
         $instructor = Role::create([
             'name' => 'instructor',
-
         ]);
 
         $student = Role::create([
             'name' => 'student',
-
         ]);
 
         

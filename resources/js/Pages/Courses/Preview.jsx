@@ -61,7 +61,7 @@ const Preview = ()  =>{
                                     fluid: true,
                                     playbackRates: [0.5, 0.75, 1, 1.25, 1.5, 1.75, 2],
                                     sources: [{
-                                    src: '/storage/' + lesson.video.path,
+                                    src: lesson.video.path,
                                     }],
                                 }}
                                 title={lesson.title}>

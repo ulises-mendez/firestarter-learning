@@ -19,9 +19,12 @@ class ReviewFactory extends Factory
         return [
             'user_id' => fake()->numberBetween(2,8),
             'course_id' => 1,
+            'chapter_id' => fake()->numberBetween(2,8),
+            'lesson_id' => fake()->numberBetween(2,8),
             'rate' => fake()->numberBetween(3,5),
+            'reply_to' => null,
+            'time' => fake()->numberBetween(0,80),
             'content' => fake()->realText(),
-            'helpful' => fake()->numberBetween(0,10),
         ];
     }
 }

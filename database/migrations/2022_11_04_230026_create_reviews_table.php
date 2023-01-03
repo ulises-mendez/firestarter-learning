@@ -16,9 +16,13 @@ return new class extends Migration
         Schema::create('reviews', function (Blueprint $table) {
             $table->id();
             $table->integer('user_id');
-            $table->integer('course_id');
-            $table->integer('rate');
             $table->text('content');
+            $table->integer('chapter_id');
+            $table->integer('course_id');
+            $table->integer('lesson_id');
+            $table->integer('reply_to')->nullable();
+            $table->integer('rate');
+            $table->integer('time');
             $table->timestamps();
         });
     }

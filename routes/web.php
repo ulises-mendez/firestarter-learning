@@ -332,8 +332,8 @@ Route::post('stripe',
     ->name('stripe.subscription');
 */
 Route::get('plans', [PlanController::class, 'index']);
-    Route::get('plans/{plan}', [PlanController::class, 'show'])->name("plans.show");
-    Route::post('subscription', [PlanController::class, 'subscription'])->name("subscription.create");
+Route::get('plans/{plan}', [PlanController::class, 'show'])->name("plans.show");
+Route::post('subscription', [PlanController::class, 'subscription'])->name("subscription.create");
 
 
 

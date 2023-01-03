@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('extension');
             $table->string('path');
             $table->bigInteger('size');
+            $table->integer('time');
             $table->integer('created_by');
             $table->timestamps();
         });

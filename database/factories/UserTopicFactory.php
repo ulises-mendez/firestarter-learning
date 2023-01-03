@@ -5,9 +5,9 @@ namespace Database\Factories;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Category>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\UserTopic::class>
  */
-class CategoryFactory extends Factory
+class UserTopicFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -17,7 +17,8 @@ class CategoryFactory extends Factory
     public function definition()
     {
         return [
-            'title' => fake()->words(rand(1, 4), true)
+            'user_id' => fake()->numberBetween(1,10),
+            'topic_id' => fake()->numberBetween(1,10),
         ];
     }
 }

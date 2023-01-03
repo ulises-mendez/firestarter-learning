@@ -2,10 +2,11 @@
 
 namespace Database\Seeders;
 
+use App\Models\VideoLesson;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
-class TopicSeeder extends Seeder
+class VideoLessonSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -14,6 +15,6 @@ class TopicSeeder extends Seeder
      */
     public function run()
     {
-        \App\Models\Topic::factory(10)->create();
+        VideoLesson::factory(1)->create();
     }
 }

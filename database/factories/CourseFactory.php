@@ -43,9 +43,11 @@ class CourseFactory extends Factory
             'slug' => Str::slug($title),
             'description' => fake()->realText(),
             'level' => fake()->randomElement($levels),
-            'thumbnail_id' => '1',
-            'category_id' => 1,
-            'highlight' => fake()->randomNumber(0,1),
+            'thumbnail_id' => 1,
+            'category_id' => fake()->numberBetween(1,10),
+            'highlight' => fake()->numberBetween(0,1),
+            'status' => 1,
+            'released' => now()
         ];
     }
 }

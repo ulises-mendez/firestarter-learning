@@ -21,6 +21,11 @@ class CategorySeeder extends Seeder
             'Career Development',
             'Finance and Accounting',
             'Leadership and Management',
+            'Personal Managment',
+            'Sales',
+            'Project Manager',
+            'Marketing Manager',
+            'Recruiter'
         ];
 
         foreach ($categories as $category)

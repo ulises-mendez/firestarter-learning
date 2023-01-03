@@ -43,9 +43,9 @@ const History = () => {
                 <Item text='Learning History' link='me.history'/>
                 
             </div>
-            {
-                completed_courses.length === 0 &&
 
+            {
+                completed_courses.length == 0 ?
                 <div className='w-full flex-1 h-full bg-white p-6 overflow-auto flex flex-col relative justify-center'>
                 <div className='lg:hidden'>
                     <h1 className='font-bold text-xl mb-2'>Saved Courses</h1>
@@ -71,8 +71,7 @@ const History = () => {
                         </div>
                     </div>
                 </div>
-            }
-            {
+                :
                 <div className='w-full h-full p-4'>
                     {
                     completed_courses.map((course, i) => {
@@ -83,6 +82,7 @@ const History = () => {
                     }
                 </div>
             }
+
         </div>
         
     )

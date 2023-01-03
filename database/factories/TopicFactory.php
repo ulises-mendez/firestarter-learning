@@ -17,8 +17,8 @@ class TopicFactory extends Factory
     public function definition()
     {
         return [
-            'category_id' => fake()->numberBetween(1,5),
-            'title' => fake()->word(),
+            'category_id' => fake()->numberBetween(1,10),
+            'title' => fake()->words(rand(1, 3), true),
             'description' => fake()->realText()
         ];
     }

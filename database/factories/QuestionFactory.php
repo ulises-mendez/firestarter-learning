@@ -22,8 +22,8 @@ class QuestionFactory extends Factory
             'chapter_id' => fake()->numberBetween(1,6),
             'lesson_id' => fake()->numberBetween(1,19),
             'content' => fake()->realText(),
-            'likes' => fake()->numberBetween(0,100),
             'reply_to' => null,
+            'time' => fake()->numberBetween(1,4),
         ];
     }
 }

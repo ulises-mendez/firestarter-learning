@@ -22,6 +22,7 @@ return new class extends Migration
             $table->string('slug');
             $table->integer('video_id');
             $table->integer('transcription_id')->nullable();
+            $table->integer('time');
             $table->boolean('premium');
             $table->timestamps();
         });

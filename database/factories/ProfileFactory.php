@@ -85,9 +85,8 @@ class ProfileFactory extends Factory
             'school_name' => fake()->randomElement($cities),
             'school_country' => 'Canada',
             'school_city' => fake()->randomElement($cities),
-            'topics' => json_encode([
-                'business', 'Project Management', 'Management', 'Leadership'
-            ])
+            'description' => fake()->realText(16),
+            'headline' => fake()->jobTitle(),
         ];
     }
 }
