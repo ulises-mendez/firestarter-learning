@@ -481,6 +481,12 @@ const Lesson = () =>{
                                         )
                                     })
                                 }
+                                {
+                                    transcription.length === 0 &&
+                                    <div>
+                                        Transcription not available
+                                    </div>
+                                }
                             </div>
                         </div>
                     </div>

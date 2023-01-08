@@ -8,5 +8,5 @@ export default(date) => {
     const min = ('0' + dateString.getMinutes()).slice(-2);
     const s = ('0' + dateString.getSeconds()).slice(-2);
     const months = ['Junuary', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
-    return (<span className="text-sm">{months[m]} {d}, {y}</span>)
+    return (<span>{months[m]} {d}, {y}</span>)
   }

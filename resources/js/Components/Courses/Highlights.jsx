@@ -1,11 +1,9 @@
 import React, { useRef, useState } from 'react'
 import { InertiaLink } from '@inertiajs/inertia-react'
-//import { courses } from '@/data/courses'
+import durationFormat from '@/lib/durationFormat'
 import Icon from '@/Components/Icon'
-
 import Slider from "react-slick"
 import "slick-carousel/slick/slick.css"; 
-//import "slick-carousel/slick/slick-theme.css";
 
 export default (props) => {
     const { courses } = props
@@ -44,7 +42,7 @@ export default (props) => {
                                 <h4 className='text-2xl text-orange font-semibold'>{course.title}</h4>
                             </div>
                             <div className='my-2'>
-                                <p className='text-gray-500'>1 hour</p>
+                                <p className='text-gray-500'>{durationFormat(course.time)}</p>
                             </div>
                             <InertiaLink href={route('course.show', course.slug)}>
                                 <button className='btn-orange'>Go to course</button>

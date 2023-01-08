@@ -19,19 +19,18 @@ class TopicCoursesCollection extends ResourceCollection
             {
                 return [
                     'title' => $topic->topic->title,
-                    'courses' => $topic->topic->courses->take(10)
-                    ->transform(
+                    'courses' => $topic->topic->courses_released->transform(
                         function($course_topic)
                         {
                             return [
                                 'category'  => $course_topic->course->category->title,
-                                'released' => $course_topic->course->created_at,
+                                'released' => $course_topic->course->released,
                                 'slug' => $course_topic->course->slug,
                                 'title' => $course_topic->course->title,
                                 'thumbnail' => $course_topic->course->thumbnail->path
                             ];
                         }
-                    )
+                    ),
                 ];
             }
         );

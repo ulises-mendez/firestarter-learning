@@ -13,27 +13,22 @@ const ManagePremium = () =>{
                         <h3 className='font-semibold ml-2 text-sm'>Back</h3>
                     </InertiaLink>
                     <div>
-                        <h1 className='text-xl font-semibold px-4'>Manage Premium account</h1>
+                        <h1 className='text-xl font-semibold px-4'>Premium benefits you'll lose when your subscription ends</h1>
                     </div>
                     <div className='p-4 py-2'>
-                        <p>You’re currently subscribed to Learning Premium.</p>
+                        <p>You&#180;re currently subscribed to Learning Premium.</p>
                     </div>
 
                     <div className='p-4'>
                         <div className='py-2'>
-                        <InertiaLink href={route('settings')} className='text-orange font-semibold'>
-                            Switch plans
-                        </InertiaLink>
-                        </div>
-                        <div className='py-2'>
-                        <InertiaLink href={route('settings')} className='text-orange font-semibold'>
+                        <InertiaLink href={route('settings.cancel_subscription')} className='text-orange font-semibold'>
                             Cancel subscription
                         </InertiaLink>
                         </div>
                         <div className='py-2'>
-                        <InertiaLink href={route('settings')} className='text-orange font-semibold'>
+                        <a href={route('billing.portal')} target='_blank' className='text-orange font-semibold'>
                             Manage payment methods
-                        </InertiaLink>
+                        </a>
                         </div>
                     </div>
                     

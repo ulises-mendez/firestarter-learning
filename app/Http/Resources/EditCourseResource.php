@@ -46,6 +46,7 @@ class EditCourseResource extends JsonResource
                             }
                         ),
             'description' => $this->description,
+            'highlight' => $this->highlight,
             'level' => $this->level,
             'released' => $this->released,
             'skills' => $this->skills

@@ -1,22 +1,19 @@
 import React, { useRef, useState } from 'react'
 import { InertiaLink } from '@inertiajs/inertia-react'
-
 import Icon from '@/Components/Icon'
-
 import { instructors } from '@/data/instructor'
-
 import Slider from "react-slick"
 import "slick-carousel/slick/slick.css"; 
 //import "slick-carousel/slick/slick-theme.css";
 
-const Instructor = ({name, pic, title}) => {
+const Instructor = ({id, name, pic, title}) => {
     return (
         <div className='p-4 '>
         <div className='bg-white rounded-lg p-4'>
-            <InertiaLink href={route('instructor.show')} className='relative'>
+            <InertiaLink href={route('instructor.show', id)} className='relative'>
                 <img src={pic} className='w-20 rounded mx-auto mb-4' />
             </InertiaLink>
-            <InertiaLink  href={route('instructor.show')} className='text-sm font-semibold my-2'>
+            <InertiaLink  href={route('instructor.show', id)} className='text-sm font-semibold my-2'>
                 {name}
             </InertiaLink>
             <p className='text-xs text-gray-500'>{title}</p>
@@ -25,9 +22,8 @@ const Instructor = ({name, pic, title}) => {
     );
   };
 
-
-
 export default (props) => {
+    const {data} = props;
     const slider = useRef(null)
     var settings = {
         className: 'instructors',
@@ -83,10 +79,10 @@ export default (props) => {
     <>
     <div className='w-full'>
     <Slider {...settings} ref={slider}>
-          {instructors.map((item, i) => {
+          {data.map((item, i) => {
             return (
                 <div key={i}>
-                    <Instructor key={i} title={item.title} name={item.name} pic={item.pic}/>
+                    <Instructor key={i} id={item.id} title={item.title} name={item.name} pic={item.avatar}/>
                 </div>
             );
           })}

@@ -1,7 +1,11 @@
 import React, { useState } from 'react'
+import "react-datepicker/dist/react-datepicker.css";
+
 import Layout from '@/Layouts/Auth'
+import { Inertia } from '@inertiajs/inertia'
 import { useForm, usePage } from '@inertiajs/inertia-react'
 import TextInput from '@/Components/TextInput'
+import DatePicker from  "react-datepicker";
 import InputLabel from '@/Components/InputLabel'
 import InputError from '@/Components/InputError'
 import VideoUpload from '@/Components/VideoUpload'
@@ -20,6 +24,7 @@ import CreateSection from '@/Components/Courses/CreateSection'
 import { Context } from '@/Components/Courses/Context'
 import EditSection from '@/Components/Courses/ModalEditSection'
 import LessonCreated from '@/Components/Courses/LessonCreated'
+import ToggleCheck from '@/Components/ToggleCheck'
 
 
 Modal.setAppElement('*')
@@ -46,31 +51,41 @@ const Checkbox = (props) => {
 
 const CreateCourse = () => {
     const container = React.useRef(null)
-    const playerRef = React.useRef(null)
-    const videoJsOptions = {
-        autoplay: true,
-        controls: true,
-        responsive: true,
-        fluid: true,
-        sources: [{
-        src: '/videos/01_women_lead_differently.mp4',
-        type: 'video/mp4'
-        }]
-    }
-    const { skills, csrf, categories, topics } = usePage().props
-    const [images, setImages] = useState([])
-    const [step,setStep] = useState(0)
-    const [details, setDetails] = useState(false)
+    const { skills, csrf, categories, topics,  select_instructors } = usePage().props
     const [content, setContent] = useState(false)
-    const [sections, setSections] = useState([])
-    const [modalEditSection, setModalEditSection] = useState(false)
-
-    const [modalDelete, setModalDelete] = useState(false)
-    const [sectionDelete, setSectionDelete] = useState(null)
-    const [indexDelete, setIndexDelete] = useState(null)
+    const { data, setData, errors, post, processing } = useForm({
+        category_id: '',
+        id: null,
+        level: '',
+        title: '',
+        description: '',
+        highlight: false,
+        skills: [],
+        slug:'',
+        video:'',
+        topics:[],
+        topic_id: '',
+        thumbnail: null,
+        section: [],
+        publish: '',
+    })
     const [editSection, setEditSection] = useState({
         title: ''
     })
+    const [filterInstructors, setFilterInstructors] = useState([...select_instructors])
+    const [highlighted, setHightlighted] = useState(false)
+    const [images, setImages] = useState([])
+    const [instructors, setInstructors] = useState([])
+    const [modalDelete, setModalDelete] = useState(false)
+    const [modalEditSection, setModalEditSection] = useState(false)
+    const [modalPublish,setModalPublish] = useState(false)
+    const [search, setSearch] = useState('')
+    const [sections, setSections] = useState([])
+    const [selection, setSelection] = useState(null)
+    const [selectedList, setSelectedList] = useState(null)
+    const [sectionDelete, setSectionDelete] = useState(null)
+    const [step,setStep] = useState(0)
+    const [indexDelete, setIndexDelete] = useState(null)
 
     const [modalSection, setModalSection] = useState(false)
 
@@ -90,24 +105,30 @@ const CreateCourse = () => {
         setModalEditSection(false)
     }
 
-    const { data, setData, errors, post, processing } = useForm({
-        title: '',
-        level: '',
-        details: '',
-        video:'',
-        skills: [],
-        category_id: '',
-        topics:[],
-        topic_id: '',
-        thumbnail: null,
-        section: [],
-        highlight: false
-    })
+    function afterPublish(){
+        const now = course.released ? new Date(course.released) : new Date()
+        setData('publish', now)
+    }
+    
+    function addInstructor(value, i){
+       const prevInstructors = [...instructors]
+       setInstructors(prevInstructors.concat(value))
+    }
 
-    const addSection = () => {
-        const sections = [...data.section]
+    function changeHighlight ()
+    {
+        setHightlighted(highlighted => !highlighted)
+        setData('highlight', !highlighted)
+    }
 
-        setData('section', sections.concat({title:'', lessons: []}))
+    function cancelPublish(){
+        setModalPublish(false)
+    }
+
+    function deleteInstructor(i){
+        const prevInstructors = [...instructors]
+        prevInstructors.splice(i,1)
+        setInstructors(prevInstructors)
     }
 
     function deleteSection(i,section)
@@ -152,6 +173,38 @@ const CreateCourse = () => {
     
     }
     
+    function publish(){
+        setModalPublish(false)
+        submit(document.createEvent('Event'))
+    }
+
+    function released()
+    {
+        const instructorsId = instructors.map((item => item.value))
+        Inertia.post(route('course.release', data.id),{
+            ...course,
+            instructors: instructorsId,
+            publish: data.publish !== '' ? data.publish.toISOString().slice(0, 19).replace('T', ' ') : null
+        })
+    }
+    
+
+    function searchFilter(value){
+        setSearch(value)
+        if (value)
+        {
+            const filtered = select_instructors.filter(instructor => {
+                const val = value.toLowerCase()
+                const name = instructor.name.toLowerCase()
+                const email = instructor.email.toLowerCase()
+                return name.includes(val) || email.includes(val)
+            })
+            console.log(filtered)
+            setFilterInstructors(filtered)
+        }
+        if (!value) setFilterInstructors(select_instructors)
+    }
+
     const submit = (e) =>{
         e.preventDefault()
         post(route('course.store'))
@@ -314,7 +367,7 @@ const CreateCourse = () => {
         })
         .then(res=> {
             setStep(1)
-            setCourse(res.data.course)
+            setData(res.data.course)
         })
         .catch(err => console.log(err))
     }
@@ -343,6 +396,8 @@ const CreateCourse = () => {
         setSectionSelect(id)
         setModalLesson(true)
     }
+
+    console.log(data)
 
     return(
         <Context.Provider 
@@ -687,34 +742,27 @@ const CreateCourse = () => {
                         <h2 className='font-semibold'>Course Info</h2>
                     </div>
                     <div className='mb-6 rounded-lg p-4 text-right bg-gray-100 flex flex-wrap'>
-                        <div className='w-full flex justify-end'>
-                            <span className='mr-2'>Highlight</span>
-                            <label htmlFor="default-toggle" className="inline-flex relative items-center cursor-pointer">
-                                <input type="checkbox" checked={true} onChange={()=> null} id="default-toggle" className="sr-only peer"/>
-                                <div className="w-11 h-6 bg-gray-100 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300  rounded-full peer  peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-orange"></div>
-                            </label>
-                        </div>
                         <div className='w-64'>
-                            <img  src={course.thumbnail.path} />
+                            <img  src={data.thumbnail.path} />
                         </div>
                         <div className='px-4 text-left flex-1'>
                             <p className='text-xs text-gray-600 '>Title:</p>
-                            <h3 className='font-semibold text-lg'>{course.title}</h3>
+                            <h3 className='font-semibold text-lg'>{data.title}</h3>
                             <p className='text-xs text-gray-600 '>Slug:</p>
-                            <h3 className='font-semibold text-sm'>{course.slug}</h3>
+                            <h3 className='font-semibold text-sm'>{data.slug}</h3>
                             <p className='text-xs text-gray-600 '>Category:</p>
                             <h3 className='font-semibold'>Training and skills</h3>
                             <p className='text-xs text-gray-600 '>Level:</p>
-                            <h3 className='font-semibold'>{course.level}</h3>
+                            <h3 className='font-semibold'>{data.level}</h3>
                         </div>
                         <div className='w-full text-left'>
                         <p className='text-xs text-gray-600 '>Description:</p>
-                            <h3 className='font-semibold text-sm'>{course.description}</h3>
+                            <h3 className='font-semibold text-sm'>{data.description}</h3>
                             <p className='text-xs text-gray-600 mb-1'>Topics:</p>
                             <div className='flex flex-wrap'>
                                 {
-                                    course.topics.map(topic => (
-                                        <div key={topic.id} className='p-2 border rounded-lg bg-white font-semibold text-sm'>
+                                    data.topics.map((topic,i) => (
+                                        <div key={i} className='p-2 border rounded-lg bg-white font-semibold text-sm'>
                                             {topic.title}
                                         </div>
                                     ))
@@ -723,8 +771,8 @@ const CreateCourse = () => {
                             <p className='text-xs text-gray-600 mb-1'>Skills:</p>
                             <div className='flex flex-wrap'>
                                 {
-                                    course.skills.map(skill => (
-                                        <div key={skill.id} className='p-2 border rounded-lg bg-white font-semibold text-sm'>
+                                    data.skills.map((skill,i) => (
+                                        <div key={i} className='p-2 border rounded-lg bg-white font-semibold text-sm'>
                                             {skill.title}
                                         </div>
                                     ))
@@ -793,6 +841,9 @@ const CreateCourse = () => {
                         <button type='button' className='bg-black text-white font-semibold p-4 px-10 rounded-lg' onClick={() => setModalSection(true)}>Add Section</button>
                     </div>
                 </div>
+                <div className='text-right'>
+                    <button className='btn-orange' onClick={()=>setModalPublish(true)}>Release Course</button>
+                </div>
                 <div>
 
                 </div>
@@ -852,6 +903,129 @@ const CreateCourse = () => {
             contentLabel="Edit Section"
         >
             <EditSection section={editSection} onRequestClose={closeModal}/>
+        </Modal>
+        <Modal
+        isOpen={modalPublish}
+        onAfterOpen={afterPublish}
+        onRequestClose={cancelPublish}
+        className="modal-publish"
+        overlayClassName="modal-publish-overlay"
+        contentLabel="Publish"
+        >
+            <div className='flex'>
+                <div className='p-2 w-1/2'>
+                    <button onClick={released} className='bg-orange p-2 text-white w-full rounded-md'>Publish</button>
+                </div>
+                <div className='p-2 w-1/2'>
+                    <button className='border p-2 w-full rounded-md' onClick={cancelPublish}>Cancel</button>
+                </div>
+            </div>
+            <div className='p-2'>
+                <h4 className='font-semibold'>Are you ready to publish?</h4>
+                <p className='text-sm'>Double-check your settings before publishing.</p>
+            </div>
+            <div className='flex items-center p-2'>
+                <div className="h-4 w-2 rounded-r bg-orange mr-2"/>
+                <h2 className='font-semibold'>Highlight Course</h2>
+            </div>
+            <div className='px-4'>
+                <ToggleCheck value={highlighted} onChange={changeHighlight}/>
+            </div>
+            <div className='p-2'>
+                    <div className='flex items-center p-2'>
+                        <div className="h-4 w-2 rounded-r bg-orange mr-2"/>
+                        <h2 className='font-semibold'>Publish date</h2>
+                    </div>
+                    <div>
+                    <DatePicker
+                    dateFormat="dd/MM/yyyy"
+                    selected={data.publish}
+                    minDate={new Date(2000, 1, 1)}
+                    onChange={(date) => setData('publish', date)}
+                    placeholderText="dd/mm/yyyy"
+                    className="w-full border-gray-200 rounded-md"
+                    />
+                </div>
+            </div>
+            <div className='flex items-center p-2'>
+                <div className="h-4 w-2 rounded-r bg-orange mr-2"/>
+                <h2 className='font-semibold'>Instructors</h2>
+            </div>
+            <div className='p-2'>
+                <div className='relative p-2 h-10'>
+                    {
+                        selectedList &&
+                    <div className='fixed flex h-full w-full top-0 left-0'>
+                        <div className='h-full flex-1'
+                        onClick={()=> {
+                            setModalSettings(false)
+                            setSelectedList(false)
+                            }}
+                            />
+                        <div className='w-full h-full max-w-[400px]' 
+                        onClick={()=> {setSelectedList(false)}}/>
+                    </div>
+                    }
+                    <input
+                    className='absolute top-0 left-0 w-full border border-gray-200 rounded-md p-2 z-1'
+                    placeholder='Search instructor'
+                    value={search} 
+                    onClick={()=> {setSelectedList(true)}}
+                    onChange={(e) => searchFilter(e.target.value)} />
+                    {
+                        selectedList &&
+                        <div className='direction-left absolute bg-white z-10 border rounded w-full top-14 left-0 max-h-72 overflow-hidden overflow-y-auto'>
+                        {
+                            filterInstructors.map((instructor,i) =>
+                            <div key={i} className='flex p-2 w-full hover:bg-lightGray'>
+                                <div>
+                                    <img src={instructor.avatar} className='rounded-full w-12'/>
+                                </div>
+                                <div className='p-2 flex-1'>
+                                    <h3 className='font-semibold'>{instructor.name}</h3>
+                                    <p className='text-xs'>{instructor.email}</p>
+                                </div>
+                                <div>
+                                    <button
+                                    className='border p-2 px-4 rounded-lg hover:bg-orange hover:text-white shadow-sm hover:shadow-md'
+                                    type='button'
+                                    onClick={() => addInstructor(instructor, i)}
+                                    >
+                                        Add
+                                    </button>
+                                </div>
+                            </div>
+                        )
+                        }
+                        </div>
+                    }
+                </div>
+            </div>
+            <div className='p-2'>
+                <h4>{instructors.length} instructors in this course</h4>
+                {
+                    instructors.map(
+                        (instructor,i) =>
+                        <div key={i} className='flex my-4'>
+                            <div>
+                            <img src={instructor.avatar} className='rounded-full w-12'/>
+                        </div>
+                        <div className='p-2 flex-1'>
+                            <h3 className='font-semibold'>{instructor.name}</h3>
+                            <p className='text-xs'>{instructor.email}</p>
+                        </div>
+                        <div>
+                            <button
+                            className='border hover:bg-orange hover:text-white p-2 rounded-lg'
+                            onClick={() => deleteInstructor(i)}
+                            type='button'>
+                                Remove
+                            </button>
+                        </div>
+                        </div>
+                    )
+                }
+            </div>
         </Modal>
         </Context.Provider>
     )

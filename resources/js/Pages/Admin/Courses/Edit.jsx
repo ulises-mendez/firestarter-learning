@@ -1,30 +1,30 @@
 import React, { useState, useEffect } from 'react'
 import "react-datepicker/dist/react-datepicker.css";
-import DatePicker, { registerLocale, setDefaultLocale } from  "react-datepicker";
-import Layout from '@/Layouts/Auth'
+import { Inertia } from '@inertiajs/inertia'
+import { Context } from '@/Components/Courses/EditContext'
 import { useForm, usePage } from '@inertiajs/inertia-react'
-import TextInput from '@/Components/TextInput'
-import InputLabel from '@/Components/InputLabel'
-import InputError from '@/Components/InputError'
-import VideoUpload from '@/Components/VideoUpload'
-import FileInput from '@/Components/FileInput'
-import MultiFiles from '@/Components/MultiFiles'
-import SectionDropdown from '@/Components/Courses/SectionDropdown'
-import Icon from '@/Components/Icon'
-import ImageUploading from "react-images-uploading";
-import fileSize from '@/lib/fileSize'
-
+import axios from 'axios'
 import classNames from 'classnames'
 import CreatableReactSelect from "react-select/creatable"
-import Select, { createFilter } from 'react-select'
-import axios from 'axios'
-import { Context } from '@/Components/Courses/EditContext'
-import LessonCreated from '@/Components/Courses/EditLesson'
 import CreateLesson from '@/Components/Courses/Edit/EditCreateLesson'
 import CreateSection from '@/Components/Courses/EditCreateSection'
+import DatePicker, { registerLocale, setDefaultLocale } from  "react-datepicker";
 import EditSection from '@/Components/Courses/Edit/EditSection'
+import fileSize from '@/lib/fileSize'
+import Icon from '@/Components/Icon'
+import ImageUploading from "react-images-uploading";
+import InputLabel from '@/Components/InputLabel'
+import InputError from '@/Components/InputError'
+import LessonCreated from '@/Components/Courses/EditLesson'
+import Layout from '@/Layouts/Auth'
 import Modal from 'react-modal'
-import { Inertia } from '@inertiajs/inertia'
+import MultiFiles from '@/Components/MultiFiles'
+import SectionDropdown from '@/Components/Courses/SectionDropdown'
+import Select, { createFilter } from 'react-select'
+import TextInput from '@/Components/TextInput'
+import Toggle from '@/Components/Toggle'
+import ToggleCheck from '@/Components/ToggleCheck'
+import VideoUpload from '@/Components/VideoUpload'
 Modal.setAppElement('*')
 const Checkbox = (props) => {
     const {text, checked, onClick} = props
@@ -89,9 +89,10 @@ const Checkbox = (props) => {
   }
 
 const EditCourse = () => {
-    const { course, courseStatus, instructors, skills, csrf, categories, select_instructors, topics } = usePage().props  
+    const { course, courseStatus, errors, instructors, skills, csrf, categories, select_instructors, topics } = usePage().props  
     const { title, level, description } = course
     const [files, setFiles] = useState([])
+    const [highlighted, setHightlighted] = useState( course.highlight == 1 ? true : false)
     const [images, setImages] = useState([])
     const [modalEditSection, setModalEditSection] = useState(false)
     const [modalDelete, setModalDelete] = useState(false)
@@ -108,7 +109,7 @@ const EditCourse = () => {
     })
     const maxNumber = 1;
     const datePublished = course.released ? new Date(course.released) : ''
-    const { data, setData, errors, processing } = useForm({
+    const { data, setData,  processing } = useForm({
         category_id: course.category.id || '',
         description: description || '',
         details: '',
@@ -123,6 +124,12 @@ const EditCourse = () => {
         publish: datePublished || '',
         video:'',
     })
+    function changeHighlight ()
+    {
+        //setData(data => { return 'highlight', !data.highlight })
+        setHightlighted(status => !status)
+        setData('highlight', !highlighted)
+    }
 
     const filterConfig = {
         ignoreCase: true,
@@ -147,7 +154,6 @@ const EditCourse = () => {
 
 
     function afterPublish(){
-        
         const now = course.released ? new Date(course.released) : new Date()
         setData('publish', now)
     }
@@ -870,20 +876,107 @@ const EditCourse = () => {
                 <h4 className='font-semibold'>Are you ready to publish?</h4>
                 <p className='text-sm'>Double-check your settings before publishing.</p>
             </div>
+            <div className='flex items-center p-2'>
+                <div className="h-4 w-2 rounded-r bg-orange mr-2"/>
+                <h2 className='font-semibold'>Highlight Course</h2>
+            </div>
+            <div className='px-4'>
+                <ToggleCheck value={highlighted} onChange={changeHighlight}/>
+            </div>
             <div className='p-2'>
-                <div>
-                    <h4 className='font-semibold text-sm'>Publish:</h4>
-                </div>
+                    <div className='flex items-center p-2'>
+                        <div className="h-4 w-2 rounded-r bg-orange mr-2"/>
+                        <h2 className='font-semibold'>Publish date</h2>
+                    </div>
                     <div>
                     <DatePicker
                     dateFormat="dd/MM/yyyy"
                     selected={data.publish}
                     minDate={new Date(2000, 1, 1)}
                     onChange={(date) => setData('publish', date)}
-                    placeholderText="Select a date"
+                    placeholderText="dd/mm/yyyy"
                     className="w-full border-gray-200 rounded-md"
                     />
                 </div>
+            </div>
+            <div className='flex items-center p-2'>
+                <div className="h-4 w-2 rounded-r bg-orange mr-2"/>
+                <h2 className='font-semibold'>Instructors</h2>
+            </div>
+            <div className='p-2'>
+                <div className='relative p-2 h-10'>
+                    {
+                        selectedList &&
+                    <div className='fixed flex h-full w-full top-0 left-0'>
+                        <div className='h-full flex-1'
+                        onClick={()=> {
+                            setModalSettings(false)
+                            setSelectedList(false)
+                            }}
+                            />
+                        <div className='w-full h-full max-w-[400px]' 
+                        onClick={()=> {setSelectedList(false)}}/>
+                    </div>
+                    }
+                    <input
+                    className='absolute top-0 left-0 w-full border border-gray-200 rounded-md p-2 z-1'
+                    placeholder='Search instructor'
+                    value={search} 
+                    onClick={()=> {setSelectedList(true)}}
+                    onChange={(e) => searchFilter(e.target.value)} />
+                    {
+                        selectedList &&
+                        <div className='direction-left absolute bg-white z-10 border rounded w-full top-14 left-0 max-h-72 overflow-hidden overflow-y-auto'>
+                        {
+                            filterInstructors.map(({avatar, email, name, value},i) =>
+                            <div key={i} className='flex p-2 w-full hover:bg-lightGray'>
+                                <div>
+                                    <img src={avatar} className='rounded-full w-12'/>
+                                </div>
+                                <div className='p-2 flex-1'>
+                                    <h3 className='font-semibold'>{name}</h3>
+                                    <p className='text-xs'>{email}</p>
+                                </div>
+                                <div>
+                                    <button
+                                    className='border p-2 px-4 rounded-lg hover:bg-orange hover:text-white'
+                                    type='button'
+                                    onClick={() => addInstructor(value)}
+                                    >
+                                        Add
+                                    </button>
+                                </div>
+                            </div>
+                        )
+                        }
+                        </div>
+                    }
+                </div>
+            </div>
+            <div className='p-2'>
+                <h4>{instructors.length} instructors in this course</h4>
+                {
+                    instructors.map(
+                        (instructor,i) =>
+                        <div key={i} className='flex my-4'>
+                            <div>
+                            <img src={instructor.avatar} className='rounded-full w-12'/>
+                        </div>
+                        <div className='p-2 flex-1'>
+                            <h3 className='font-semibold'>{instructor.name}</h3>
+                            <p className='text-xs'>{instructor.email}</p>
+                        </div>
+                        <div>
+                            <button
+                            className='border hover:bg-orange hover:text-white p-2 rounded-lg'
+                            onClick={() => deleteInstructor(instructor.id)}
+                            type='button'>
+                                Remove
+                            </button>
+                        </div>
+                        </div>
+                    )
+                }
             </div>
         </Modal>
         <Modal
@@ -896,11 +989,18 @@ const EditCourse = () => {
         >
             <div className='flex'>
                 <div className='p-2 w-1/2'>
-                    <button onClick={publish} className='bg-orange p-2 text-white w-full rounded-md'>Publish</button>
+                    <button onClick={publish} className='bg-orange p-2 text-white w-full rounded-md'>Update</button>
                 </div>
                 <div className='p-2 w-1/2'>
                     <button className='border p-2 w-full rounded-md' onClick={closeSettings}>Cancel</button>
                 </div>
+            </div>
+            <div className='flex items-center p-2'>
+                <div className="h-4 w-2 rounded-r bg-orange mr-2"/>
+                <h2 className='font-semibold'>Highlight Course</h2>
+            </div>
+            <div className='px-4'>
+                <ToggleCheck value={highlighted} onChange={changeHighlight}/>
             </div>
             <div className='flex items-center p-2'>
                 <div className="h-4 w-2 rounded-r bg-orange mr-2"/>
@@ -913,7 +1013,7 @@ const EditCourse = () => {
                     selected={data.publish}
                     minDate={new Date(2000, 1, 1)}
                     onChange={(date) => setData('publish', date)}
-                    placeholderText="Select a date"
+                    placeholderText="dd/mm/yyyy"
                     className="w-full border-gray-200 rounded-md"
                     />
                 </div>
@@ -971,9 +1071,7 @@ const EditCourse = () => {
                         }
                         </div>
                     }
-                    
                 </div>
-                
             </div>
             <div className='p-2'>
                 <h4>{instructors.length} instructors in this course</h4>

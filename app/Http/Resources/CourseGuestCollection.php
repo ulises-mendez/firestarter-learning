@@ -20,7 +20,7 @@ class CourseGuestCollection extends ResourceCollection
                     'id' => $item->id,
                     'thumbnail' => $item->thumbnail->path,
                     'title' => $item->title,
-                    'released' => $item->updated_at,
+                    'released' => $item->released,
                     'slug' => $item->slug
                 ];
                 }

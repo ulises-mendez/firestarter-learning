@@ -40,6 +40,7 @@ use App\Http\Resources\ReviewCollection;
 use App\Http\Resources\SkillCollection;
 use App\Http\Resources\QuestionCollection;
 use App\Http\Resources\CategoryCollection;
+use App\Http\Resources\InstructorCollection;
 use App\Http\Resources\TopicCollection;
 use App\Http\Resources\TopicCoursesCollection;
 use App\Models\LessonPlay;
@@ -63,13 +64,14 @@ class CourseController extends Controller
     public function admin()
     {
         return Inertia::render('Admin/Courses/Index',[
-            'filters' => RequestFilter::all('search', 'status', 'level', 'highlight'),
             'courses' => new CourseCollection(
                 Course::orderBy('id', 'desc')
                 ->filter(RequestFilter::only('search', 'status', 'level', 'highlight'))
                 ->paginate(15)
-                ->appends(RequestFilter::all()
-            ))
+                ->appends(RequestFilter::all(),
+            )),
+            'filters' => RequestFilter::all('search', 'status', 'level', 'highlight'),
+
         ]);
     }
 
@@ -81,15 +83,22 @@ class CourseController extends Controller
     public function index()
     {
         $user = Auth::user();
-        $highlights = Course::where('highlight', true)
-            ->orderBy('id', 'desc')
+        $instructors = User::whereHas("roles", function($q){ $q->where("name", "instructor"); })->get();
+        $highlights = Course::where([['highlight', true] , ['released' , '!=', null]])
+            ->orderBy('released', 'desc')
             ->get()
             ->take(10);
-
+        $newest = Course::where('released' , '!=', null)
+            ->orderBy('released', 'desc')
+            ->get()
+            ->take(10);
+        
         /// Display Courses by category
         return Inertia::render('Courses/Index',[
-            'all' => new CourseThumbnailCollection(Course::orderBy('id', 'desc')->get()->take(10)),
+            'all' => new CourseThumbnailCollection(Course::where('released' , '!=', null)->get()->take(10)),
             'highlights' => new CourseThumbnailCollection($highlights),
+            'instructors' => new InstructorCollection($instructors),
+            'newest' => new CourseThumbnailCollection($newest),
             'topics' =>  new TopicCoursesCollection($user->topics),
         ]
     );
@@ -105,11 +114,26 @@ class CourseController extends Controller
         $categories = Category::all();
         $skills = Skill::all();
         $topics = Topic::all();
+        $select_instructors = User::whereHas("roles", function($q){ $q->where("name", "instructor"); })->get()->map(
+            function ($user) {
+                return [
+                    'avatar' => $user->avatar ? $user->avatar->path : '/img/empty/profile.png',
+                    'label' => $user->email,
+                    'email' => $user->email,
+                    'name' => $user->first_name . ' ' . $user->last_name,
+                    'value' => $user->id
+                ];
+            }
+        );
+
         return Inertia::render('Admin/Courses/Create',[
+            'course' => null,
             'categories' => $categories,
             'skills' => new SkillCollection($skills),
             'topics' => $topics,
-            'csrf' => csrf_token()
+            'csrf' => csrf_token(),
+            'select_instructors' => $select_instructors,
+            'instructors' => []
         ]);
     }
 
@@ -227,29 +251,21 @@ class CourseController extends Controller
         $lesson = Lesson::where([
                                 ['course_id', $course->id],
                                 ['slug', $lesson_slug,]
-                                    ])->firstOrFail();
-        $lesson->transcription;
+                                ])->firstOrFail();
+
+        if($lesson->transcription)
+        {
         $transcript = $lesson->transcription->path;
-        //dd($transcript);
-
-        //$subtitleLoad = Subtitles::load($transcript);
-        //$subs = $subtitleLoad->getInternalFormat();
-
         $time = null;
-
- 
-
         $handle = file_get_contents($transcript, true);
-        //$subtitles = Subtitles::load($handle, 'srt');
         $parser = new Parser();
         $content = $handle;
         $result = $parser->parse($content);
-
+        }
 
         if($request->time){
             $time = $request->time;
         }
-        //$plays = $played->course()->where('id', $course->id);
  
         if($user !== null){
             $played = LessonPlay::where([['user_id' , '=' , $user->id], ['lesson_id', '=', $lesson->id]])->first();
@@ -258,10 +274,10 @@ class CourseController extends Controller
 
             return Inertia::render('Courses/Lesson',[
                 'course' => new LessonCourseResource($course),
-                'transcript' => $transcript,
+                'transcript' => $lesson->transcription ? $transcript : null,
                 'lesson' => new LessonInfoResource($lesson),
-                'transcription' => $result['cues'], // subtitleLoad
-                'translation' => $transcript,
+                'transcription' => $lesson->transcription ? $result['cues'] : [],
+                'translation' => $lesson->transcription ? $transcript : [],
                 'title' => $lesson->title,
                 'csrf' => csrf_token(),
                 'questions' => new QuestionCollection(
@@ -350,6 +366,34 @@ class CourseController extends Controller
         ]);
     }
 
+    public function release(Request $request, $id)
+    {
+    
+        $course = Course::find($id);
+        $user = Auth::user()->id;
+
+        $instructors = $request->instructors;
+        if (count($instructors) > 0)
+        {
+        foreach($instructors as $instructor)
+        {
+            CourseInstructor::create([
+                'course_id' => $course->id,
+                'user_id' => $instructor
+            ]);
+        }
+        }
+
+        $course->update([
+           'released' => $request->publish,
+           'status' => 1,
+           'highlight' => $request->highlight
+        ]);
+
+        //return dd($request);
+
+        return Redirect::back()->with('success','Course Released Success');
+    }
     /**
      * Update the specified resource in storage.
      *

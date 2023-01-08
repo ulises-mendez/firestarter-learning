@@ -135,7 +135,7 @@ export default({index,lesson, section}) => {
             <div onClick={() => setDropdown(!dropdown)} className='cursor-pointer w-full text-left flex items-center justify-between'>
                 <div className='flex items-center'>
                     <Icon name='play' className='w-3 h-3 mr-2 fill-orange'/>
-                    <h4>{lesson.title} <span className='text-xs text-gray-400'>{lesson.premium == 1 ? 'Premium Lesson' : ''} {lesson.premium}</span></h4>
+                    <h4>{lesson.title} <span className='text-xs text-gray-400'>{lesson.premium == 1 ? 'Premium Lesson' : ''}</span></h4>
                 </div>
                 <div className='text-gray-400'>
                     {timeFormat(lesson.video.time)}

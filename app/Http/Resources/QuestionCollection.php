@@ -24,13 +24,13 @@ class QuestionCollection extends ResourceCollection
                     'time' => $question->time,
                     'likes' => $question->likes_count(),
                     'user_like' => $question->user_like(),
-                    'user' => $question->user->name(),
+                    'user' => $question->user->profile->first_name . ' ' . $question->user->profile->last_name,
                     'replies' => $question->replies()->get()->transform(
                         function($reply){
                             return [
                                 'content' => $reply->content,
                                 'created_at' => $reply->created_at,
-                                'user' => $reply->user->name(),
+                                'user' => $reply->user->profile->first_name . ' ' . $reply->user->profile->last_name,
                             ];
                         }
                     ),

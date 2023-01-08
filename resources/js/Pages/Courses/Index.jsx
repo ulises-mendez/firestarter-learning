@@ -14,7 +14,7 @@ import { usePage } from '@inertiajs/inertia-react'
 // END WELCOME 
 
 const Index = () =>{
-    const {all, highlights, topics} = usePage().props
+    const {all, highlights, instructors, newest, topics} = usePage().props
     // WELCOME CAROUSEL
     const Desktop = useMediaQuery(768)
     const Tablet = useMediaQuery(1200)
@@ -29,7 +29,6 @@ const Index = () =>{
     const sampleArray = [1, 2, 3, 4, 6, 7, 8];
 
     return(
-        
         <div className='w-full mx-auto'>
             <div className='w-full max-w-8xl'>
             <div className='w-full p-4 bg-white'>
@@ -51,7 +50,7 @@ const Index = () =>{
                     <h2 className='font-bold text-lg'>New Releases</h2>
                 </div>
                 <div className='px-4'>
-                    <Carousel courses={all}/>
+                    <Carousel courses={newest}/>
                 </div>
                 <div className='mt-4'>
                     <h2 className='font-bold text-lg'>This week&#180;s top courses</h2>
@@ -77,7 +76,7 @@ const Index = () =>{
                     <h2 className='font-bold text-lg'>Featured instructors</h2>
                 </div>
                 <div className='px-4'>
-                    <Instructors/>
+                    <Instructors data={instructors}/>
                 </div>
             </div>
             

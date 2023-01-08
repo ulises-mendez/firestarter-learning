@@ -23,7 +23,7 @@ class CoursePreviewResource extends JsonResource
             'likes' => $this->likes_count(),
             'time' => $this->time(),
             'level' => $this->level,
-            'released' => $this->created_at,
+            'released' => $this->released,
             'description' => $this->description,
             'rate' => 5,
             'ratings' => 5,

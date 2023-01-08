@@ -22,7 +22,7 @@ class RelatedCoursesCollection extends ResourceCollection
                     'title' => $course->title,
                     'thumbnail' => $course->thumbnail->path,
                     'time' => $course->time(),
-                    'released' => $course->created_at
+                    'released' => $course->released
                 ];
                 }
         );

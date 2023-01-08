@@ -21,7 +21,7 @@ class ReviewCollection extends ResourceCollection
                     'content' => $review->content,
                     'created_at' => $review->created_at,
                     'rate' => $review->rate,
-                    'user' => $review->user->name(),
+                    'user' => $review->user->profile->first_name . ' ' . $review->user->profile->last_name,
                     'like' => $review->like()
                 ];
                 }

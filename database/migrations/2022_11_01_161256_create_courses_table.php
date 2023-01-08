@@ -21,9 +21,9 @@ return new class extends Migration
             $table->string('level');
             $table->integer('thumbnail_id');
             $table->integer('category_id');
-            $table->boolean('highlight');
-            $table->string('status');
-            $table->timestamp('released');
+            $table->boolean('highlight')->default(0);
+            $table->string('status')->nullable();
+            $table->timestamp('released')->nullable();
             $table->timestamps();
         });
     }

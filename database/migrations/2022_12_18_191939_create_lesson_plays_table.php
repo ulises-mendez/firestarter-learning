@@ -18,7 +18,7 @@ return new class extends Migration
             $table->timestamp('completed')->nullable();
             $table->integer('course_id');
             $table->integer('lesson_id');
-            $table->integer('full_time')->nullable();
+            $table->integer('fulltime')->nullable();
             $table->integer('time')->nullable();
             $table->integer('user_id');
             $table->timestamps();

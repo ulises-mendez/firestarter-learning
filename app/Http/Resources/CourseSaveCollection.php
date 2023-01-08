@@ -21,7 +21,7 @@ class CourseSaveCollection extends ResourceCollection
                     'id' => $save->id,
                     'title' => $save->course->title,
                     'thumbnail' => $save->course->thumbnail->path,
-                    'released' => $save->course->created_at,
+                    'released' => $save->course->released,
                     'slug' => $save->course->slug,
                     'time' => $save->course->time(),
                     'played' => $save->course->user_played()

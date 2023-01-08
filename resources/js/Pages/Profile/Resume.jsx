@@ -683,7 +683,7 @@ const Curriculum = () =>{
     )
 }
 
-Curriculum.layout = page => <Layout title="My curriculum" children={page} />;
+Curriculum.layout = page => <Layout title="My Resume" children={page} />;
 
 
 export default Curriculum;

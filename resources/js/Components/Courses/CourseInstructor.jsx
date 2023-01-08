@@ -1,19 +1,20 @@
 import React, { useRef, useState } from 'react';
 import { InertiaLink } from '@inertiajs/inertia-react';
 import Icon from '@/Components/Icon';
-const CourseInfo = ({title, date, thumbnail, duration, details, contents, released}) =>{
+const CourseInfo = ({data}) =>{
+    const { id, title, released, slug, thumbnail,} = data
     const [menu, setMenu] = useState(false)
-    console.log(menu)
+    console.log(data)
     return(
-        <div href='/course' className='flex p-4 border rounded-lg w-full my-4'>
+        <div className='flex p-4 border rounded-lg w-full my-4'>
             <div>
-                <InertiaLink href='/course'>
+                <InertiaLink href={route('course.show', slug)}>
                 <img src={thumbnail} className='rounded w-full max-w-xs'/>
                 </InertiaLink>
             </div>
             <div className='p-4 flex-1 flex flex-col justify-between'>
                 <div>
-                    <InertiaLink href='/course'>
+                    <InertiaLink href={route('course.show', slug)}>
                         <h4 className='font-semibold my-2'>{title}</h4>
                     </InertiaLink>
                     <p className='text-sm text-gray-500'>{released}</p>

@@ -14,12 +14,22 @@ class Topic extends Model
         'description'
     ];
 
-    public function category(){
+    public function category()
+    {
         return $this->belongsTo(Category::class);
     }
 
-    public function courses(){
+    public function courses()
+    {
         return $this->hasMany(CourseTopic::class);
+    }
+
+    public function courses_released()
+    {
+        //return $this->courses()->where('released' , null)->get();
+        return $this->courses()->whereHas('course', function ($query){
+            $query->where('released', '!=', null);
+        });
     }
 
     public function trend(){

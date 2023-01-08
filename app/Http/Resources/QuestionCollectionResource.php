@@ -19,7 +19,7 @@ class QuestionCollectionResource extends ResourceCollection
                 return [
                     'content' => $q->content,
                     'lesson' => $q->lesson->title,
-                    'user' => $q->user->name()
+                    'user' => $q->user->profile->first_name . ' ' . $q->user->profile->last_name
                 ];
                 }
         );

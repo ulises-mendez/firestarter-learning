@@ -87,8 +87,19 @@ class HandleInertiaRequests extends Middleware
                         ];
                         break;
                     case $user->hasRole('instructor'):
-                        return 'instructor';
-                        break;
+                        return [
+                            [
+                                'text' => 'Courses',
+                                'link' => 'admin.courses',
+                                'icon' => 'courses',
+                            ],
+                            [
+                                'text' => 'Resume',
+                                'link' => 'curriculum',
+                                'icon' => 'cv',
+                            ],
+                            ];
+                            break;
                     case $user->hasRole('student'):
                         return [
                                 [

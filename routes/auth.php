@@ -11,6 +11,7 @@ use App\Http\Controllers\Auth\VerifyEmailController;
 use App\Http\Controllers\Auth\ProfileController;
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\InstructorController;
 use App\Http\Controllers\UserTopicController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -131,4 +132,8 @@ Route::middleware('auth')->group(function () {
     )
     ->name('dashboard');
 
+    Route::get('instructor/{id}', 
+        InstructorController::class
+    )
+        ->name('instructor.show');
 });

@@ -82,7 +82,7 @@ const Profile = () =>{
     )
 }
 
-Profile.layout = page => <Layout title="Course" children={page} />;
+Profile.layout = page => <Layout title="Me" children={page} />;
 
 
 export default Profile;

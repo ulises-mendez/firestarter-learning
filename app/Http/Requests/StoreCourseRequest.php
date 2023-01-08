@@ -28,7 +28,7 @@ class StoreCourseRequest extends FormRequest
             'slug' => 'nullable',
             'thumbnail' => 'required',
             'description' => 'required',
-            'skills' => 'nullable',
+            'skills' => 'required|array',
             'highlight' => 'required',
             'level' => ' required',
             'category_id' => 'required',

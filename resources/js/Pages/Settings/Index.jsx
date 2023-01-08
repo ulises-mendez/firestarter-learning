@@ -2,11 +2,12 @@ import React, { useRef, useState, Fragment } from 'react';
 import Layout from '@/Layouts/Auth';
 import Icon from '@/Components/Icon';
 import classNames from 'classnames';
-import { Head, Link, useForm, InertiaLink } from '@inertiajs/inertia-react';
+import { Head, Link, useForm, InertiaLink, usePage } from '@inertiajs/inertia-react';
 import Input from '@/Components/Input'
 import SelectInput from '@/Components/SelectInput';
 import Section from '@/Components/Courses/Section'
 import ToggleCheck from '@/Components/ToggleCheck';
+
 const Checkbox = (props) => {
     function handleChange() {
       return null
@@ -17,6 +18,7 @@ const Checkbox = (props) => {
   }
 
 const Settings = () =>{
+    const {subscription} = usePage().props
     const [autoPlay,setAutoPlay] = useState(true)
 
     function onChange()
@@ -48,35 +50,53 @@ const Settings = () =>{
                     
                 </div>
             </div>
+            
             <div className='mx-auto w-full max-w-3xl rounded-lg'>
-                <div className='border rounded-lg'>
-                    <div className='px-4 py-2'>
-                        <h2 className='font-semibold text-xl'>Subscriptions & payments</h2>
-                    </div>
-                    <InertiaLink href={route('settings.billing')}>
-                        <div className='flex justify-between border-b p-4'>
-                            <h3>Billing info</h3>
-                            <Icon name='arrow-right' className='w-6 h-6'/>
+            {
+                        !subscription &&
+                        <div className='border rounded-lg p-4'>
+                        <div className='mb-6 font-semibold'>
+                        Let's upgrade to PRO plan
                         </div>
-                    </InertiaLink>
-                    <InertiaLink href={route('settings.manage_premium')}>
-                    <div className='flex justify-between border-b p-4'>
-                        <h3>Manage Premium account</h3>
-                        <Icon name='arrow-right' className='w-6 h-6'/>
-                    </div>
-                    </InertiaLink>
-                    <div className='flex justify-between p-4'>
-                        <h3>View purchase history</h3>
-                        <Icon name='arrow-right' className='w-6 h-6'/>
-                    </div>
-                </div>
+                        <a href='/plans/premium'>
+                        <button className='w-full bg-orange text-white text-center font-semibold p-4 rounded-lg'> Get started</button>
+                        </a>
+                        </div>
+            }
+            {
+                        subscription &&
+                        <div className='border rounded-lg'>
+                            <div className='px-4 py-2'>
+                                <h2 className='font-semibold text-xl'>Subscriptions & payments</h2>
+                            </div>
+                            <InertiaLink href={route('settings.billing')}>
+                                <div className='flex justify-between border-b p-4'>
+                                    <h3>Billing info</h3>
+                                    <Icon name='arrow-right' className='w-6 h-6'/>
+                                </div>
+                            </InertiaLink>
+                            <InertiaLink href={route('settings.manage_premium')}>
+                            <div className='flex justify-between border-b p-4'>
+                                <h3>Manage Premium account</h3>
+                                <Icon name='arrow-right' className='w-6 h-6'/>
+                            </div>
+                            </InertiaLink>
+                            <a href={route('billing.portal')} target='_blank' >
+                            <div className='flex justify-between p-4'>
+                                <h3>View purchase history</h3>
+                                <Icon name='arrow-right' className='w-6 h-6'/>
+                            </div>
+                            </a>
+                        </div>
+            }
+                
             </div>
             
         </div>        
     )
 }
 
-Settings.layout = page => <Layout title="My curriculum" children={page} />;
+Settings.layout = page => <Layout title="Settings" children={page} />;
 
 
 export default Settings;

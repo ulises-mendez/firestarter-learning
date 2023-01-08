@@ -19,7 +19,7 @@ class CourseThumbnailCollection extends ResourceCollection
             {
                 return [
                     'category'  => $course->category->title,
-                    'released' => $course->created_at,
+                    'released' => $course->released,
                     'slug' => $course->slug,
                     'title' => $course->title,
                     'thumbnail' => $course->thumbnail->path,

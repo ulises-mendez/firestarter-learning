@@ -9,7 +9,7 @@ return new class extends Migration
     public function up()
     {
         Schema::create('learning_histories', function (Blueprint $table) {
-            $table->id();
+            $table->uuid();
             $table->integer('user_id');
             $table->string('model_type');
             $table->integer('model_id');

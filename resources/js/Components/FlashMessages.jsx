@@ -113,8 +113,8 @@ export default () => {
           <ButtonClose onClick={() => setVisible(false)} color="white" />
         </div>
       )}
-      {(flash.error || numOfErrors > 0) && visible && (
-        <div className="bg-red-500 fixed flex items-center justify-between max-w-3xl mb-8 right-8 rounded top-3 z-10">
+      {(flash.error || numOfErrors > 0 ) && visible && (
+        <div className="mb-8 fixed flex items-center justify-between right-8 rounded max-w-3xl shadow-md bottom-0 border-orange border-l-4 z-[100] bg-red-600 text-white">
           <div className="flex items-center">
             <IconDanger />
             <div className="py-4 text-white text-sm font-medium">
@@ -126,6 +126,8 @@ export default () => {
           <ButtonClose onClick={() => setVisible(false)} />
         </div>
       )}
+
+      
     </div>
   );
 };

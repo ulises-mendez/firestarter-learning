@@ -1,9 +1,10 @@
 import React from 'react';
 import Layout from '@/Layouts/Auth';
 import Icon from '@/Components/Icon';
-import { InertiaLink } from '@inertiajs/inertia-react';
+import { InertiaLink, usePage } from '@inertiajs/inertia-react';
 
 const Billing = () =>{
+    const { end } = usePage().props
     return(
         <div className='w-full h-full p-8 overflow-y-auto'>
             <div className='mx-auto w-full max-w-3xl  rounded-lg'>
@@ -16,15 +17,15 @@ const Billing = () =>{
                         <h1 className='text-xl font-semibold px-4'>Billing info</h1>
                     </div>
                     <div className='p-4 py-2'>
-                        <p>Your next monthly payment of CAN$49.00* for Learning Premium is scheduled for November 01, 2022, 10:14 PM.</p>
+                        <p>Your next monthly payment of CAN$49.00* for Learning Premium is scheduled for {end}.</p>
                     </div>
                     <div className='px-4'>
                        <p className='text-xs text-gray-600'>*Sales tax not included</p>
                     </div>
                     <div className='p-4'>
-                        <InertiaLink href={route('settings')} className='text-orange font-semibold'>
+                        <a href={route('billing.portal')} target='_blank' className='text-orange font-semibold'>
                             Manage payment methods
-                        </InertiaLink>
+                        </a>
                         
                     </div>
                     

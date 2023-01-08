@@ -8,12 +8,6 @@
             margin: 0cm 0cm;
         }
         body {
-            /*
-            background-image: url('img/HM-Renddy.jpg');
-            background-size: 100% auto;
-            background-position: top left;
-            background-repeat: no-repeat;
-            */
             padding: 20mm 17mm 20mm 17mm;
             text-align: justify;
             font-family: 'Open Sans', sans-serif;
@@ -67,7 +61,7 @@
             <tr>
                 <td style="width:100%;vertical-align: top">
                     <h1 class="name">{{ $name }}</h1 >
-                    <p style="letter-spacing: 0.2em;">PERSONAL TITLE</p>
+                    <p style="letter-spacing: 0.2em;text-transform:uppercase">{{ $title }}</p>
                 </td>
                 <td style="width:auto%;text-align: right">
                     <div style="width: 100%">
@@ -146,6 +140,13 @@
                     @endif
                 </td>
                 <td class="right">
+                    @if($about)
+                    <div class="works">
+                        <h3>ABOUT ME</h3>
+                        <p>{{ $about }}</p>
+                    </div>
+                    @endif
+                    @if($works->count() > 0)
                     <div class="works">
                         <h3>WORK EXPERIENCE</h3>
                     </div>
@@ -180,6 +181,7 @@
                             </table>
                         </div>
                         @endforeach
+                    @endif
                     @if($education->count() > 0)
                         <div class="works">
                         <h3>EDUCATION AND TRAINING</h3>

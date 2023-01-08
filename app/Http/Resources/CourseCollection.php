@@ -28,6 +28,7 @@ class CourseCollection extends ResourceCollection
                     'status' => $course->status,
                     'released' => $course->released,
                     'thumbnail' => $course->thumbnail->path,
+                    'time' => $course->time(),
                     'created_at' => $course->created_at,
                     'updated_at' => $course->updated_at,
                 ];

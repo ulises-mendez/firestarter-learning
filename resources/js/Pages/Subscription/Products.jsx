@@ -35,7 +35,7 @@ const Products= () =>{
                     </div>
                     <div className='text-center p-4'>
                         <h2 className='font-bold text-lg my-2'>Annually</h2>
-                        <p className='px-8'>1-month free trial then MX$49CAD/month*</p>
+                        <p className='px-8'>1-month free trial then MX$499CAD/year*</p>
                     </div>
                     <div className='p-4'>
                         <InertiaLink href={route('login')}>
@@ -58,7 +58,7 @@ const Products= () =>{
             </div>
         </div>
         <p className='text-xs text-center my-2 text-white opacity-90'>We’ll remind you 7 days before your free trial ends. You won’t be charged until November 2, 2022.</p>
-        <p className='text-center text-white text-sm font-semibold'>Need to train your team? <span> Learn more</span></p>
+
             </div>
         </div>
 

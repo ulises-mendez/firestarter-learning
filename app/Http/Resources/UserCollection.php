@@ -20,7 +20,7 @@ class UserCollection extends ResourceCollection
                     'id' => $user->id,
                     'created_at' => $user->created_at,
                     'email' => $user->email,
-                    'name' => $user->name(),
+                    'name' => $user->profile->first_name . ' ' .  $user->profile->last_name,
                     'roles' => $user->roles->map(
                                 function ($role) {
                                     return 

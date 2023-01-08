@@ -6,7 +6,6 @@ use Inertia\Inertia;
 use App\Http\Controllers\ActiveUserCourseController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ChapterController;
-use App\Http\Controllers\CourseController;
 use App\Http\Controllers\CourseSaveController;
 use App\Http\Controllers\CurriculumController;
 use App\Http\Controllers\DashboardController;
@@ -22,7 +21,9 @@ use App\Http\Controllers\NoteController;
 use App\Http\Controllers\PlanController;
 use App\Http\Controllers\Auth\ProfileController;
 use App\Http\Controllers\SearchController;
+use App\Http\Controllers\SettingsController;
 use App\Http\Controllers\SkillController;
+use App\Http\Controllers\SubscriptionController;
 use App\Http\Controllers\TeamController;
 use App\Http\Controllers\TopicController;
 use App\Http\Controllers\QuestionController;
@@ -38,6 +39,10 @@ use App\Models\CourseSave;
 use App\Models\User;
 use Owenoj\LaravelGetId3\GetId3;
 
+
+use Illuminate\Http\Request;
+
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -45,14 +50,14 @@ use Owenoj\LaravelGetId3\GetId3;
 |
 | Here is where you can register web routes for your application. These
 | routes are loaded by the RouteServiceProvider within a group which
-| contains the "web" middleware group. Now create something great!
+| contains the 'web' middleware group. Now create something great!
 |
 */
 
 Route::get('/', 
         HomeController::class
     )
-    ->name('welcome');
+    ->name('home');
 
 Route::get('search',[ 
     SearchController::class, 'search'
@@ -65,41 +70,7 @@ Route::post('search',
 ->name('search');
 
     
-// COURSES
-Route::get('courses/admin', [
-        CourseController::class, 'admin'])
-    ->name('admin.courses');
-Route::get('course/{slug}', [
-        CourseController::class, 'show'
-    ])
-    ->name('course.show');
-Route::get('course/{course_slug}/{lesson_slug}',
-        [CourseController::class, 'show_lesson'
-    ])
-    ->name('course.lesson');
-Route::get('courses/create', [
-        CourseController::class, 'create'
-    ])
-    ->name('course.create');
-Route::post('courses/create',[
-        CourseController::class, 'store'
-    ])
-    ->name('course.store');
 
-Route::get('courses/preview', function () {
-    return Inertia::render('Courses/Preview');
-})
-->name('course.preview');
-
-// ADMIN
-Route::get('courses/edit/{id}',[
-    CourseController::class, 'edit'
-    ])
-->name('course.edit');
-Route::put('courses/update/{id}',[
-    CourseController::class, 'update'
-    ])
-->name('course.update');
 
 Route::post('courses/skills', [
         SkillController::class, 'store'
@@ -270,18 +241,24 @@ Route::post('collection',[
 ->name('course.collection');
 
 
-Route::get('settings', function () {
-    return Inertia::render('Settings/Index');
-})->name('settings');
+Route::get('settings',
+        SettingsController::class
+    )->name('settings');
 
-Route::get('settings/billing-info', function () {
-    return Inertia::render('Settings/Billing');
-})->name('settings.billing');
+Route::get('settings/billing-info', [
+    SettingsController::class, 'billing'
+])->name('settings.billing');
 
 Route::get('settings/premium-manage-account', function () {
     return Inertia::render('Settings/ManagePremium');
 })->name('settings.manage_premium');
 
+Route::get('settings/cancel-subscription', function () {
+    return Inertia::render('Settings/CancelPremium');
+})->name('settings.cancel_subscription');
+Route::post('settings/cancel-subscription',[
+    SubscriptionController::class, 'cancel'
+])->name('settings.cancel_now');
 
 
 // QUESTION
@@ -332,9 +309,9 @@ Route::post('stripe',
     ->name('stripe.subscription');
 */
 Route::get('plans', [PlanController::class, 'index']);
-Route::get('plans/{plan}', [PlanController::class, 'show'])->name("plans.show");
-Route::post('subscription', [PlanController::class, 'subscription'])->name("subscription.create");
-
+Route::get('plans/{plan}', [PlanController::class, 'show'])->name('plans.show');
+Route::get('checkouts',[PlanController::class, 'checkout'])->name('checkouts');
+Route::post('subscription', [SubscriptionController::class, 'subscription'])->name('subscription.create');
 
 
 // TEAM
@@ -390,11 +367,6 @@ Route::delete('topic/{topic}', [
     ])
     ->name('topic.delete');
 
-Route::get('instructor', function () {
-    return Inertia::render('Instructors/Show');
-})
-    ->name('instructor.show');
-
 
 // MAIL
 Route::get('/mails', function () {
@@ -410,14 +382,27 @@ Route::post('learning/add', [
 ])
   ->name('learning.store');
 
-Route::get('chapter', function () {
-    $chapter = \App\Models\Chapter::findOrFail(1);
-    return response()->json([
-        'chapter' => $chapter->duration()
-    ]);
+
+Route::get('billing-portal', function (Request $request) {
+    return $request->user()->redirectToBillingPortal();
+})
+ ->name('billing.portal');
+
+
+Route::get('completion', function(){
+    $pdf = \PDF::loadView('pdf.completion', []);
+    $pdf->set_paper('letter', 'landscape');
+
+    return $pdf->stream('completion.pdf');
 });
 
-Route::get('subtitles',[CourseController::class, 'sub']);
+Route::get('resumenbill', function(){
+    $user = Auth::user();
+    $timestamp = $user->subscription('1')->asStripeSubscription()->current_period_end;
+    return \Carbon\Carbon::createFromTimeStamp($timestamp)->toDayDateTimeString();
+    //return dd($timestamp);
+});
+
 
 require __DIR__.'/course.php';
 

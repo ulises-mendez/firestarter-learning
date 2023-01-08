@@ -51,7 +51,9 @@ class CurriculumController extends Controller
         $education = $user->education;
         $skills = $user->skills;
         $pdf = \PDF::loadView('pdf.resume', [
+            'about' => $user->profile->description,
             'name' => $user->profile->first_name . ' ' . $user->profile->last_name,
+            'title' => $user->profile->headline,
             'works' => $works,
             'education' => $education,
             'skills' => $skills,

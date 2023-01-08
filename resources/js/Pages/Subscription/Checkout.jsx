@@ -182,7 +182,7 @@ const Checkout= () =>{
                     <Select checked={cycle == 1} onClick={() => setCycle(1)}>
                         <div className='text-center p-4'>
                             <h2 className='font-bold text-lg my-2'>Annually</h2>
-                            <p className='px-8'>1-month free trial then MX$49CAD/month*</p>
+                            <p className='px-8'>1-month free trial then MX$499CAD/year*</p>
                         </div>
                     </Select>
                 </div>

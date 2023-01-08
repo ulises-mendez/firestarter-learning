@@ -24,7 +24,7 @@ class ActiveCourseCollection extends ResourceCollection
                     'slug' => $item->course->slug,
                     'time' => $item->course->time(),
                     'played' => $item->course->user_played(),
-                    'released' => $item->course->created_at,
+                    'released' => $item->course->released,
                     'saved' => $item->course->user_save(),
                 ];
             }

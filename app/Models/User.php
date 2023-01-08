@@ -100,6 +100,7 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->profile()->exists();
     }
 
+    /*
     public function name()
     {
         if($this->hasProfile()){
@@ -107,10 +108,10 @@ class User extends Authenticatable implements MustVerifyEmail
         $last_name = $this->profile->last_name;
         return $first_name . ' ' . $last_name;
         }else{
-            return null;
+            return $this->name;
         }
-        
     }
+    */
 
     public function notes()
     {

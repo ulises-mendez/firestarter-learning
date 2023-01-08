@@ -28,7 +28,7 @@ class DatabaseSeeder extends Seeder
         //
         $admin = User::factory()->create([
             'email' => 'admin@firestarter.com',
-            'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
+            'password' => bcrypt('firetesting'),
             'remember_token' => Str::random(10),
         ])->assignRole('admin');
 
@@ -40,7 +40,7 @@ class DatabaseSeeder extends Seeder
 
         $editor=User::factory()->create([
             'email' => 'editor@firestarter.com',
-            'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
+            'password' => bcrypt('firetesting'),
             'remember_token' => Str::random(10),
         ])->assignRole('editor');
 
@@ -52,7 +52,7 @@ class DatabaseSeeder extends Seeder
 
         $instructor = User::factory()->create([
             'email' => 'instructor@firestarter.com',
-            'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
+            'password' => bcrypt('firetesting'),
             'remember_token' => Str::random(10),
         ])->assignRole('instructor');
 
@@ -64,7 +64,7 @@ class DatabaseSeeder extends Seeder
         
         $student = User::factory()->create([
             'email' => 'student@firestarter.com',
-            'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
+            'password' => bcrypt('firetesting'),
             'remember_token' => Str::random(10),
         ])->assignRole('student');
 
@@ -77,16 +77,18 @@ class DatabaseSeeder extends Seeder
         UserTopic::factory(5)->create([
             'user_id' => $student->id,
         ]);
-
-        $this->call(ProfileSeeder::class);
-        $this->call(CourseSeeder::class);
-        $this->call(ChapterSeeder::class);
-        $this->call(LessonSeeder::class);
-        $this->call(ReviewSeeder::class);
-        $this->call(QuestionSeeder::class);
+        
         $this->call(CategorySeeder::class);
-        $this->call(TopicSeeder::class);
+        $this->call(ChapterSeeder::class);
+        $this->call(CourseSeeder::class);
+        $this->call(LessonSeeder::class);
+        $this->call(ProfileSeeder::class);
+        $this->call(ReviewSeeder::class);
+        $this->call(PlanSeeder::class);
+        $this->call(QuestionSeeder::class);
+        $this->call(SkillSeeder::class);
         $this->call(ThumbnailSeeder::class);
+        $this->call(TopicSeeder::class);
         $this->call(TranscriptionSeeder::class);
         $this->call(VideoLessonSeeder::class);
     }

@@ -15,15 +15,6 @@ class PlanSeeder extends Seeder
     public function run()
     {
         $plans = [
-            /*
-            [
-                'name' => 'Business Plan', 
-                'slug' => 'business-plan', 
-                'stripe_plan' => 'price_1LmB1SCXbPPKAWayGsb1DAkq', 
-                'price' => 10, 
-                'description' => 'Business Plan'
-            ],
-            */
             [
                 'name' => 'Premium', 
                 'slug' => 'premium', 

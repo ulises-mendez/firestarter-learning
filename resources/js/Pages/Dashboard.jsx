@@ -227,6 +227,11 @@ const Dashboard = () =>{
                             <div className='text-center'>
                                 <h3 className='font-semibold text-orange text-xl'>Premium User</h3>
                                 <p>Develop your skills with <span className='font-bold'>FIRESTARTER</span> Learning	</p>
+                                <InertiaLink href={route('settings.billing')}>
+                                    <button className='bg-orange my-2 rounded p-2 text-white font-semibold'>
+                                        Billing Info
+                                    </button>
+                                </InertiaLink>
                             </div>
                         </>
                     }
@@ -236,8 +241,9 @@ const Dashboard = () =>{
                         <div className='mb-6 font-semibold'>
                         Let's upgrade to PRO plan
                         </div>
-                        
+                        <a href='/plans/premium'>
                         <button className='w-full bg-orange text-white text-center font-semibold p-4 rounded-lg'> Get started</button>
+                        </a>
                         </>
                     }
                     

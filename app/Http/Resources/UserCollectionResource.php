@@ -27,7 +27,7 @@ class UserCollectionResource extends JsonResource
                                             'slug' => $item->course->slug,
                                             'thumbnail' => $item->course->thumbnail->path,
                                             'title' => $item->course->title,
-                                            'released' => $item->course->created_at,
+                                            'released' => $item->course->released,
                                             'time' => $item->course->time(),
                                             'played' => $item->course->user_played(),
                                         ];

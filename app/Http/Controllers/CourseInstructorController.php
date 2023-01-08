@@ -11,14 +11,19 @@ class CourseInstructorController extends Controller
 {
     public function __invoke(StoreCourseInstructorRequest $request)
     {
-        CourseInstructor::firstOrCreate([
+        $instructor = CourseInstructor::firstOrCreate([
             'course_id' => $request->course,
             'user_id' => $request->instructor,
         ]);
 
         if ($request->expectsJson())
         {
-            return response()->json([ 'success' => 'Instructor has been created']);
+            return response()->json([ 'instructor' => [
+                'avatar' => $instructor->user->avatar ? $instructor->user->avatar->path : '/img/empty/profile.png',
+                'email' => $instructor->user->email,
+                'id' => $instructor->id,
+                'name' => $instructor->user->first_name . ' ' . $instructor->user->last_name
+            ]]);
         }
 
         return Redirect::back()->with('success', 'Instructor Added Successfully');

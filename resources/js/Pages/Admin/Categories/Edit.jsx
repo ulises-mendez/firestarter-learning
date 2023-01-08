@@ -185,7 +185,7 @@ const Category = () =>{
                             <div className='flex items-center justify-between'>
                                 <div className='flex items-center'>
                                     <h2 className='font-semibold mr-2'>{topic.title}</h2>
-                                    <button onClick={() => topicEdition(topic,i)} className='flex group hover:bg-gray-200 p-2 rounded-lg'>
+                                    <button onClick={() => topicEdition(topic,i)} className='flex group hover:bg-gray-200 p-2 rounded-lg items-center'>
                                         <Icon name="edit" className='w-3 mr-2'/>
                                         <span className='text-lightGray group-hover:text-black'>Edit</span>
                                     </button>
@@ -264,20 +264,18 @@ const Category = () =>{
             <Modal
                 isOpen={modalTopic}
                 onRequestClose={closeModalTopic}
-                className="modal-category"
+                className="modal-lesson"
                 overlayClassName="modal-category-overlay"
                 contentLabel="New category"
             >
                 <div>
-                    <p className='font-semibold my-2'>
-                        Topic edition
-                    </p>
-                    <div className='text-right'>
-                    <button className='btn-orange mr-2' onClick={() => console.log('update')}>Update</button>
-                    <button onClick={closeDelete} className='btn-white'>Cancel</button>
+                    <div className='w-full bg-orange text-white p-3 flex justify-between items-center'>
+                        <h2 className='text-lg font-semibold'>Edit topic</h2>
+                        <button onClick={closeModalTopic} className='cursor-pointer mr-2'>
+                            <Icon name='close' className='w-3 h-3 fill-white'/>
+                        </button>
                     </div>
-
-                    <form className='mt-4' onSubmit={onUpdate}>
+                     <form className='p-4' onSubmit={onUpdate}>
                         <div className='text-left my-2'>
                             <InputLabel forInput="title" value="Title"/>
                             <TextInput
@@ -301,6 +299,7 @@ const Category = () =>{
                             <InputError message={errors.description} className="mt-2"/>
                         </div>
                         <div className='text-right'>
+                            <button className='btn-white mr-2' onClick={closeModalTopic} type='button'>Cancel</button>
                             <button className='btn-orange'>Submit</button>
                         </div>
                     </form>

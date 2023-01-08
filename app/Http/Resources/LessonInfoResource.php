@@ -21,9 +21,9 @@ class LessonInfoResource extends JsonResource
             'title' => $this->title,
             'slug'	=> $this->slug,
             'video' => $this->video,
-            'transcription' => [
+            'transcription' => $this->transcription ? [
                 'path' => '/' . $this->transcription->path
-            ],
+            ] : null,
             'premium' => $this->premium,
         ];
     }

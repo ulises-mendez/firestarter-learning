@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use Auth;
 use Illuminate\Http\Request;
 use App\Models\Plan;
-use Illuminate\Support\Facades\Auth;
 use App\Models\User;
+use Illuminate\Support\Carbon;
 use Inertia\Inertia;
 
 class PlanController extends Controller
@@ -24,45 +25,33 @@ class PlanController extends Controller
 
     }
 
+    public function checkout()
+    {
+        return Inertia::render('Subscription/Checkout',[
+            'intent' => 'intents'
+        ]);
+    }
+
     public function show(Plan $plan,Request $request){
-       /*
+
         $intent = auth()->user()->createSetupIntent();
 
-        return response()->json(
-            $intent
-        );
-        */
-        $intent = auth()->user()->createSetupIntent();
-   
-        return view("subscription", compact("plan", "intent"));
+        $today = Carbon::now();
+        $end = Carbon::now()->addDays(30);
+        return view("subscription", compact("plan", "intent", "today", "end"));
     }
 
     public function subscription(Request $request)
     {
-        dd($request);
-        /*
-
-        [
-        "_token" => "y3j6O4pgvJkeN7tFG1w1jVliptgklzRlDFWlp7Rf"
-        "plan" => "1"
-        "name" => "Ulises"
-        "token" => "pm_1M8Ri7HOSZzHYeBQhn1Kpp5X"
-        ]
-
-        $plan = Plan::find(1);
-   
-        $subscription = $request->user()->newSubscription(
-            'premium',
-            $plan->stripe_plan)
-                        ->create($request->token);
-   
-        return "subscription_success";
-        */
+        $user = Auth::user();
+        //return dd($request);
         $plan = Plan::find($request->plan);
 
  
-        $subscription = $request->user()->newSubscription($request->plan, $plan->stripe_plan)
-                        ->create($request->token);
+        Auth::user()
+            ->newSubscription($request->plan, $plan->stripe_plan)
+            ->trialDays(30)
+            ->create($request->token);
    
         return view("subscription_success");
     }

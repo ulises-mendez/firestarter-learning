@@ -20,7 +20,7 @@ class CompletedCoursesCollection extends ResourceCollection
                     'id' => $item->id,
                     'title' => $item->course->title,
                     'thumbnail' => $item->course->thumbnail->path,
-                    'released' => $item->course->created_at,
+                    'released' => $item->course->released,
                     'slug' => $item->course->slug,
                     'created_at' => $item->created_at
                 ];
