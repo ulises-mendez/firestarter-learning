@@ -63,12 +63,13 @@ const Categories = () =>{
             </div>
             <div className='p-1 md:p-8 flex flex-wrap w-full max-w-7xl mx-auto'>
                 <div className='w-full'>
-                    <table className='w-full bg-gray-50 rounded-lg'>
-                        <thead className='text-gray-600 '>
+                    <table className='w-full bg-gray-50 rounded-lg  overflow-hidden'>
+                        <thead className='bg-gray-700 rounded-t-lg text-white'>
                             <tr>
                                 <th className='text-left p-4 font-semibold'>Name</th>
                                 <th className='text-left p-4 font-semibold'>Date added</th>
                                 <th className='text-right p-4 font-semibold'>Topics</th>
+                                <th><span className='sr-only'>Edit</span></th>
                             </tr>
                         </thead>
                         <tbody>

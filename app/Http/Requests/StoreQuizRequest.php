@@ -13,7 +13,7 @@ class StoreQuizRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,7 +24,10 @@ class StoreQuizRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'chapter' => 'nullable',
+            'course' => 'required|integer',
+            'newQuiz' => 'array|required',
+            'source' => 'nullable'
         ];
     }
 }

@@ -1,5 +1,5 @@
 import React, { useRef, useState, Fragment } from 'react'
-import CourseFilter from '@/Components/Courses/CouseFilter'
+import CouseFilter from '@/Components/Courses/CouseFilter'
 import TextInput from '@/Components/TextInput'
 import InputLabel from '@/Components/InputLabel'
 import InputError from '@/Components/InputError'
@@ -9,6 +9,7 @@ import Layout from '@/Layouts/Auth';
 import Pagination from '@/Components/Pagination'
 import Icon from '@/Components/Icon';
 import Modal from "react-modal";
+import QuizzesFilter from '@/Components/Quizzes/QuizzesFilter'
 Modal.setAppElement('#app')
 
 const Checkbox = (props) => {
@@ -20,17 +21,19 @@ const Checkbox = (props) => {
     )
   }
 
-const Courses = () =>{
+const Quizzes = () =>{
     const [modal, setModal] = useState(false)
-    const { courses } = usePage().props;
+    const { quizzes } = usePage().props
 
     const {
         meta: { links }
-      } = courses;
+      } = quizzes
+
+
+    
     const { data, setData, errors, post, processing } = useForm({
         title: '',
     })
-    
     const onHandleChange = (event) => {
         setData(event.target.name, event.target.type === 'checkbox' ? event.target.checked : event.target.value);
     }
@@ -55,40 +58,64 @@ const Courses = () =>{
             <div className='mx-auto mb-4 w-full max-w-7xl rounded-lg'>
                 <div className='flex flex-wrap justify-between items-center w-full'>
                     <div className='px-4 py-2 w-full md:w-auto'>
-                        <h2 className='font-semibold text-xl'>Courses</h2>
-                        <p>Manage courses here.</p>
+                        <h2 className='font-semibold text-xl'>Quizzes</h2>
+                        <p>Manage quizzes here.</p>
                     </div>
                     <div className='px-4 py-2 w-full md:w-auto'>
-                        <InertiaLink href={route('course.create')}>
-                            <button className='btn-orange'>Add course</button>
+                        <InertiaLink href={route('quiz.create')}>
+                            <button className='btn-orange'>Add Quiz</button>
                         </InertiaLink>
                     </div>
-                    
                 </div>
                 <div className='px-4 py-2 w-full md:w-auto'>
-                    <CourseFilter />
+                    <QuizzesFilter />
                 </div>
             </div>
             <div className='p-1 md:p-8 flex flex-wrap w-full max-w-7xl mx-auto'>
                 <div className='w-full'>
-                    <table className='w-full bg-gray-50 rounded-lg  overflow-hidden'>
-                    <thead className='bg-gray-700 rounded-t-lg text-white'>
+                    <table className='w-full bg-gray-50 rounded-lg overflow-hidden'>
+                        <thead className='bg-gray-700 rounded-t-lg text-white'>
                             <tr>
-                                <th className='text-left p-4 font-semibold'>Name</th>
-                                <th className='text-center p-4 font-semibold'>Highlight</th>
-                                <th className='text-left p-4 font-semibold'>Category</th>
-                                <th className='text-left p-4 font-semibold'>Level</th>
-                                <th className='text-left p-4 font-semibold'>Chapters</th>
-                                <th className='text-left p-4 font-semibold'>Lessons</th>
-                                <th className='text-right p-4 font-semibold'>Status</th>
+                                <th className='text-left p-4 font-semibold'>Id</th>
+                                <th className='text-left p-4 font-semibold'>Course</th>
+                                <th className='text-left p-4 font-semibold'>Chapter</th>
+                                <th className='text-left p-4 font-semibold'>Questions</th>
                             </tr>
                         </thead>
                         <tbody>
                             {
+                                quizzes.data.map(
+                                    ({id, course, chapter, questions}, i)=>
+                                    <tr className='border-t' key={i}>
+                                        <td className='p-2'>
+                                            <InertiaLink href={route('quiz.edit', id)} className='text-sm'>
+                                                {id}
+                                            </InertiaLink>
+                                        </td>
+                                        <td className='p-2'>
+                                            <InertiaLink href={route('quiz.edit', id)} className='text-sm'>
+                                                {course}
+                                            </InertiaLink>
+                                        </td>
+                                        <td className='p-2'>
+                                            <InertiaLink href={route('quiz.edit', id)} className='text-sm'>
+                                                {chapter}
+                                            </InertiaLink>
+                                        </td>
+                                        <td className='p-2'>
+                                            <InertiaLink href={route('quiz.edit', id)} className='text-sm'>
+                                                {questions}
+                                            </InertiaLink>
+                                        </td>
+                                    </tr>
+                                )
+                            }
+                            {
+                                /*
                                 courses.data.map(({id, category, category_id, highlight, level, title, chapters, lessons, released, status}, i) =>
                                 <tr className='border-t' key={i}>
                                     <td className='p-2'>
-                                        <InertiaLink href={route('course.edit', id)} className='text-sm flex items-center'>
+                                        <InertiaLink href={route('quiz.edit', id)} className='text-sm flex items-center'>
                                             {title}
                                             {
                                             !status &&
@@ -120,12 +147,13 @@ const Courses = () =>{
                                     </td>
                                 </tr>
                                 )
+                                */
                             }
                             {
-                                courses.data.length === 0 &&
+                                quizzes.data.length === 0 &&
                                 <tr>
                                     <td className="px-6 py-4 border-t border-gray-100" colSpan="4">
-                                        No courses were added
+                                        No quizzes were added
                                     </td>
                                 </tr>
                             }
@@ -170,7 +198,7 @@ const Courses = () =>{
 
 
 
-Courses.layout = page => <Layout title="Courses" children={page} />;
+Quizzes.layout = page => <Layout title="Quizzes" children={page} />;
 
 
-export default Courses;
+export default Quizzes;

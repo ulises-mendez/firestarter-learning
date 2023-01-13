@@ -41,7 +41,34 @@ class EditCourseResource extends JsonResource
                                             'video_id' => $lesson->video_id,
                                             'video' => $lesson->video,
                                         ];}
-                                    )
+                                    ),
+                                    'quiz' => $chapter->quiz ? [
+                                        'id' => '1',
+                                        'info' => $chapter->quiz,
+                                        'questions' => $chapter->quiz->questions
+                                        ->transform(
+                                            function ($question)
+                                            {
+                                                return [
+                                                    'id' => $question->id,
+                                                    'text' => $question->text,
+                                                    'options' => $question->options->transform(
+                                                        function ($option)
+                                                        {
+                                                            return [
+                                                                'id' => $option->id,
+                                                                'message' => $option->message,
+                                                                'text' => $option->text,
+                                                                'value' => $option->value
+                                                            ];
+                                                        }
+                                                    ),
+                                                ];
+                                            }
+                                        )
+                                    ]
+                                    :
+                                    null
                                 ];
                             }
                         ),

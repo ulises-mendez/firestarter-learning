@@ -106,8 +106,8 @@ const Team = () => {
                 </div>
                 
                 <div className='w-full lg:w-2/3 '>
-                    <table className='w-full bg-gray-100 rounded'>
-                        <thead>
+                    <table className='w-full bg-gray-50 rounded-lg overflow-hidden'>
+                        <thead className='bg-gray-700 rounded-t-lg text-white'>
                             <tr>
                                 <th className='text-left p-4'>Name</th>
                                 <th className='text-left p-4'>Date added</th>
@@ -115,7 +115,6 @@ const Team = () => {
                             </tr>
                         </thead>
                         <tbody>
-
                         {
                             prevTeam.map(
                                 (user, i) => (
@@ -136,8 +135,8 @@ const Team = () => {
                     <p>Instructors can add and manage course contents.</p>
                 </div>
                 <div className='w-full lg:w-2/3'>
-                    <table className='w-full bg-gray-100 rounded'>
-                        <thead>
+                    <table className='w-full bg-gray-50 rounded-lg overflow-hidden'>
+                            <thead className='bg-gray-700 rounded-t-lg text-white'>
                             <tr>
                                 <th className='text-left p-4'>Name</th>
                                 <th className='text-left p-4'>Date added</th>

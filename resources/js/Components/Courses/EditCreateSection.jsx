@@ -4,10 +4,12 @@ import InputLabel from '@/Components/InputLabel'
 import InputError from '@/Components/InputError'
 import axios from 'axios'
 import { Context } from '@/Components/Courses/EditContext'
+import { Inertia } from '@inertiajs/inertia'
+import { usePage } from '@inertiajs/inertia-react'
 
 export default() => {
-    const { course, csrf, sections, setSections, setModalSection } = useContext(Context)
-    console.log(sections.length)
+    const { course } = usePage().props
+    const { csrf, sections, setSections, setModalSection } = useContext(Context)
     console.log(sections)
     const [errors, setErrors] = useState(null)
     const [section, setSection] = useState({
@@ -22,11 +24,18 @@ export default() => {
 
     function createSection(e){
         e.preventDefault()
-        axios.post(route('course.section'),{
-            _token: csrf,
+        Inertia.post(route('course.section'),{
+            //_token: csrf,
             ...section
+        }, {
+            onSuccess: () => {
+                console.log(course.chapters)
+                setSections(course.chapters)
+                setModalSection(false)
+            }
+            
         })
-        .then(res => {
+        /*.then(res => {
             const newSection = res.data.section
             console.log(newSection)
             const sectionsArray = [...sections]
@@ -36,6 +45,7 @@ export default() => {
             
         })
         .catch(err => setErrors(err.response?.data.message))
+        */
     }
 
     function handleChange(e){

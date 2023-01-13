@@ -2,6 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
+::-webkit-resizer {
+  display: none;
+}
+
 .form-label {
   @apply mb-2 block font-semibold select-none;
 }

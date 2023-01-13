@@ -27,6 +27,9 @@ use App\Http\Controllers\SubscriptionController;
 use App\Http\Controllers\TeamController;
 use App\Http\Controllers\TopicController;
 use App\Http\Controllers\QuestionController;
+use App\Http\Controllers\QuizController;
+use App\Http\Controllers\QuizQuestionController;
+use App\Http\Controllers\QuizQuestionOptionController;
 use App\Http\Controllers\UserAvatarController;
 use App\Http\Controllers\UserCareerGoalController;
 use App\Http\Controllers\UserCollectionController;
@@ -402,7 +405,43 @@ Route::get('resumenbill', function(){
     return \Carbon\Carbon::createFromTimeStamp($timestamp)->toDayDateTimeString();
     //return dd($timestamp);
 });
+// QUIZZES
 
+Route::get('quiz', [
+    QuizController::class, 'create'
+])
+    ->name('quiz.create');
+
+Route::get('quizzes', [
+    QuizController::class, 'index'
+])
+    ->name('quizzes.admin');
+
+
+Route::get('quiz/{quiz}', [
+    QuizController::class, 'edit'
+])
+    ->name('quiz.edit');
+Route::post('quiz/{quiz}', [
+    QuizQuestionController::class, 'store'
+])
+    ->name('quiz.question.store');
+Route::delete('quiz/{quiz}', [
+    QuizController::class, 'destroy'
+])
+    ->name('quiz.delete');
+Route::put('question-quiz/{quiz_question}',[
+        QuizQuestionController::class, 'update'
+])
+    ->name('quiz.question.update');
+Route::delete('question-quiz/{quiz_question}',[
+    QuizQuestionController::class, 'destroy'
+])
+    ->name('quiz.question.delete');
+Route::delete('quiz-question-option/{quiz_question_option}',
+    QuizQuestionOptionController::class
+)
+->name('quiz.question.option.delete');
 
 require __DIR__.'/course.php';
 

@@ -4,7 +4,19 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreQuizRequest;
 use App\Http\Requests\UpdateQuizRequest;
+use App\Http\Resources\CourseSelectCollection;
+use App\Http\Resources\QuizCollection;
+use App\Http\Resources\QuizResource;
+use App\Models\Course;
 use App\Models\Quiz;
+use App\Models\QuizQuestion;
+use App\Models\QuizQuestionOption;
+use Illuminate\Http\Request;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Request as RequestFilter;
+use Inertia\Inertia;
 
 class QuizController extends Controller
 {
@@ -15,7 +27,17 @@ class QuizController extends Controller
      */
     public function index()
     {
-        //
+        $quizzes = Quiz::orderBy('id', 'desc')
+                    ->filter(RequestFilter::only('search'))
+                    ->paginate(15)
+                    ->appends(RequestFilter::all())
+                    ;
+        return Inertia::render(
+            'Admin/Quizzes/Index',[
+                'quizzes' => new QuizCollection($quizzes),
+                'filters' => RequestFilter::all('search', 'status', 'level', 'highlight'),
+            ]
+        );
     }
 
     /**
@@ -25,7 +47,10 @@ class QuizController extends Controller
      */
     public function create()
     {
-        //
+        $courses = Course::all();
+        return Inertia::render('Admin/Quizzes/Create',[
+            'courses' => new CourseSelectCollection($courses),
+        ]);
     }
 
     /**
@@ -36,7 +61,39 @@ class QuizController extends Controller
      */
     public function store(StoreQuizRequest $request)
     {
-        //
+        $quiz = Quiz::create([
+            'course_id' => $request->course,
+            'chapter_id' => $request->chapter
+        ]);
+
+        $questions = $request->newQuiz;
+
+        foreach ($questions as $question) {         
+            $quiz_question = QuizQuestion::create([
+                'quiz_id' => $quiz->id,
+                'text' => $question['text'],
+                'section_id' => $quiz->chapter_id
+            ]);
+
+            $options = $question['options'];
+            foreach ($options as $option) {
+
+                QuizQuestionOption::create([
+                    'quiz_id' => $quiz->id,
+                    'quiz_question_id' => $quiz_question->id,
+                    'text' => $option['text'],
+                    'message' => $option['message'],
+                    'value' => $option['value']
+                ]);
+            }
+        }
+
+        if($request->has('source'))
+        {
+            return Redirect::route('quiz.edit', $quiz->id)->with('success','Quiz Added Successfully');
+        }
+
+        return Redirect::back()->with('success','Quiz Added Successfully');
     }
 
     /**
@@ -58,7 +115,15 @@ class QuizController extends Controller
      */
     public function edit(Quiz $quiz)
     {
-        //
+        try{
+        return Inertia::render('Admin/Quizzes/Edit',[
+            'quiz' => new QuizResource($quiz),
+            'questions' => $quiz->questions
+        ]);
+        }
+        catch(ModelNotFoundException $err){
+            Redirect::route('quizzes.admin');
+        }
     }
 
     /**
@@ -81,6 +146,8 @@ class QuizController extends Controller
      */
     public function destroy(Quiz $quiz)
     {
-        //
+        $quiz->delete();
+
+        return Redirect::back()->with('success', 'Quiz deleted successfully');
     }
 }

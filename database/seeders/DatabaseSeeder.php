@@ -86,6 +86,7 @@ class DatabaseSeeder extends Seeder
         $this->call(ReviewSeeder::class);
         $this->call(PlanSeeder::class);
         $this->call(QuestionSeeder::class);
+        $this->call(QuizSeeder::class);
         $this->call(SkillSeeder::class);
         $this->call(ThumbnailSeeder::class);
         $this->call(TopicSeeder::class);

@@ -43,9 +43,14 @@ class ChapterController extends Controller
             'title' => $request->title,
             'order' => $request->order
         ]);
-        return response()->json([
-            'section' => $section
-        ]);
+        if ($request->expectsJson())
+        {
+            return response()->json([
+                'section' => $section
+            ]);
+        }
+
+        Redirect::back()->with('success','Chapter created successfully');
     }
 
     /**

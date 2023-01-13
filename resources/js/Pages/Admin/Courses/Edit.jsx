@@ -8,10 +8,12 @@ import classNames from 'classnames'
 import CreatableReactSelect from "react-select/creatable"
 import CreateLesson from '@/Components/Courses/Edit/EditCreateLesson'
 import CreateSection from '@/Components/Courses/EditCreateSection'
+import colorSelect from '@/Components/colorSelect';
 import DatePicker, { registerLocale, setDefaultLocale } from  "react-datepicker";
 import EditSection from '@/Components/Courses/Edit/EditSection'
 import fileSize from '@/lib/fileSize'
 import Icon from '@/Components/Icon'
+import Input from '@/Components/Input';
 import ImageUploading from "react-images-uploading";
 import InputLabel from '@/Components/InputLabel'
 import InputError from '@/Components/InputError'
@@ -21,11 +23,65 @@ import Modal from 'react-modal'
 import MultiFiles from '@/Components/MultiFiles'
 import SectionDropdown from '@/Components/Courses/SectionDropdown'
 import Select, { createFilter } from 'react-select'
+import TextArea from '@/Components/TextArea'
 import TextInput from '@/Components/TextInput'
 import Toggle from '@/Components/Toggle'
 import ToggleCheck from '@/Components/ToggleCheck'
 import VideoUpload from '@/Components/VideoUpload'
 Modal.setAppElement('*')
+
+/*
+const quizInfo =[{
+    chapter: 10,
+    text: 'Jada is providing Mateo with updates on a social media marketing strategy. In order to ensure that words have the same meanings, Jada should make sure she clarifies her',
+    section: '',
+    options: [
+        {
+            value: 0,
+            text: 'issues',
+            message: 'Knowing women will most likely share problems when they want to discuss them rather than fixing them will enable you to avoid misunderstandings.'
+        },
+        {
+            value: 1,
+            text: 'intentions',
+            message: 'Clarifying your intentions would give you the best chance in making sure that your words have the same meanings.'
+        },
+        {
+            value: 0,
+            text: 'questions',
+            message: 'If you are the receiver of a message, ask clarifying questions if you are not sure which direction the conversation should take.'
+        },
+        {
+            value: 0,
+            text: 'agreements',
+            message: 'Knowing that women are more likely to look for areas of agreement in a conversation than gaps will enable you to avoid misunderstandings'
+        },
+    ]
+},
+{
+    text: 'Which leadership advantage do women have based on socialization in their early life?',
+    section: '',
+    options: [
+            {
+                value: 0,
+                text: 'Use conflict strategies.',
+                message: "Women leaders use less team conflict, and have a stronger focus on the ethical considerations of the team's work."
+            }
+        ]
+}]
+*/
+const newQuestionInfo ={
+    text: 'Jada is providing Mateo with updates on a social media marketing strategy. In order to ensure that words have the same meanings, Jada should make sure she clarifies her',
+    section: '',
+    options: [
+        {
+            value: 0,
+            text: 'issues',
+            message: 'Knowing women will most likely share problems when they want to discuss them rather than fixing them will enable you to avoid misunderstandings'
+        }
+    ]
+}
+
 const Checkbox = (props) => {
     const {text, checked, onClick} = props
     const button = classNames('w-full p-2 px-4 rounded-lg border focus:ring-orange focus:ring-opacity-10',{
@@ -46,47 +102,8 @@ const Checkbox = (props) => {
     )
   }
 
-  const colorSelect = {
-    option: (styles, {  isDisabled, isFocused, isSelected }) => {
-        return {
-          ...styles,
-          backgroundColor: isDisabled
-          ? undefined
-          : isSelected
-          ? '#eb6100'
-          : isFocused
-          ? '#eb6100'
-          : undefined,
-          color: isDisabled
-            ? 'black'
-            : isSelected
-            ? 'white'
-            : isFocused
-            ? 'white'
-            : 'black',
-        };
-      },    
-    multiValue: (styles) => {
-        return {
-          ...styles,
-          backgroundColor: '#eb6100',
-          borderRadius: '4px',
-        };
-      },
-      multiValueLabel: (styles) => ({
-        ...styles,
-        color: '#fff',
-      }),
-      multiValueRemove: (styles) => ({
-        ...styles,
-        color: '#fff',
-        ':hover': {
-          backgroundColor: '#c93900',
-          color: 'white',
-          borderRadius: '4px',
-        },
-      }),
-  }
+
+
 
 const EditCourse = () => {
     const { course, courseStatus, errors, instructors, skills, csrf, categories, select_instructors, topics } = usePage().props  
@@ -94,16 +111,22 @@ const EditCourse = () => {
     const [files, setFiles] = useState([])
     const [highlighted, setHightlighted] = useState( course.highlight == 1 ? true : false)
     const [images, setImages] = useState([])
+    const [indexDelete, setIndexDelete] = useState(null)
     const [modalEditSection, setModalEditSection] = useState(false)
     const [modalDelete, setModalDelete] = useState(false)
     const [modalLesson, setModalLesson] = useState(false)
     const [modalPublish,setModalPublish] = useState(false)
     const [modalSection, setModalSection] = useState(false)
     const [modalSettings, setModalSettings] = useState(false)
+    const [modalQuiz, setModalQuiz] = useState(false)
+    const [showQuiz, setShowQuiz] = useState(false)
+    const [quizInfo, setQuizInfo] = useState([])
+    const [newQuiz, setNewQuiz] = useState( [])
+    const [newQuestion, setNewQuestion] = useState(newQuestionInfo || null)
+    const [newQuestionError, setNewQuestionError] = useState([])
     const [selection, setSelection] = useState(null)
     const [selectedList, setSelectedList] = useState(null)
     const [sectionDelete, setSectionDelete] = useState(null)
-    const [indexDelete, setIndexDelete] = useState(null)
     const [editSection, setEditSection] = useState({
         title: ''
     })
@@ -124,6 +147,128 @@ const EditCourse = () => {
         publish: datePublished || '',
         video:'',
     })
+
+    function addQuestion(){
+        const quiz = [...newQuiz]
+        const options = newQuestion.options
+        var answer = false
+        var errors = []
+
+        options.map((option, i) => {
+            if(option.text == '')
+            {
+                errors.push(`Add text to option #${i + 1}.`)
+            }
+            if(option.message == '')
+            {
+                errors.push(`Add message to option #${i + 1}.`)
+            }
+            if(option.value == 1)
+            {
+                answer = true
+            }
+        })
+        
+        if(newQuestion.text == '')
+        {
+            errors.push('Question cannot be empty')
+        }
+        if(newQuestion.options.length <= 1)
+        {
+            errors.push('Questions must have at least two options.')
+        }
+        if(answer == false)
+        {
+            errors.push('Check the answer option.')
+        }
+
+        if(errors.length == 0)
+        {
+            setNewQuiz(quiz.concat(newQuestion))
+            setNewQuestion(null)
+        }
+        setNewQuestionError(errors)
+        
+
+
+    }
+
+    function addNewQuestionOption()
+    {
+        const options = [...newQuestion.options]
+        
+        setNewQuestion({
+            ...newQuestion,
+            options: options.concat({
+                value: 0,
+                text: '',
+                message: ''
+            })
+        })
+    }
+
+    function cancelNewQuestion()
+    {
+        setNewQuestion(null)
+        setNewQuestionError([])
+    }
+
+    function cancelNewQuiz()
+    {
+        setNewQuiz([])
+        setModalQuiz(false)
+        cancelNewQuestion()
+    }
+
+    function deleteOption(i)
+    {
+        const options = [...newQuestion.options]
+        options.splice(i,1)
+        setNewQuestion({
+            ...newQuestion,
+            options: options
+        })
+    }
+
+    function deleteQuestion(i)
+    {
+        const questions =  [...newQuiz]
+        questions.splice(i, 1)
+        setNewQuiz(questions)
+    }
+
+    function createNewQuestion(){
+        setNewQuestion({
+            text: '',
+            section: '',
+            options: [
+                {
+                    value: 0,
+                    text: '',
+                    message: ''
+                }
+            ]
+        })
+    }
+    
+    function changeNewQuestion(e, i) {
+        const key = e.target.name;
+        const value = e.target.value;
+        const options = [...newQuestion.options]
+        const data = newQuestion
+        options[i][key] = value
+        setNewQuestion({...data, options: options});
+    }
+
+    function changeoption(e,i){
+        const value = e.target.value
+        const options = [...newQuestion.options]
+        options.map((v,i) => options[i].value = 0)
+        const data = newQuestion
+        options[i].value = 1
+        setNewQuestion({...data, options: options});
+    }
+
     function changeHighlight ()
     {
         //setData(data => { return 'highlight', !data.highlight })
@@ -169,7 +314,7 @@ const EditCourse = () => {
     }
 
     function deleteInstructor(id){
-        Inertia.delete(route('course.instructor.delete', id))
+        Inertia.delete(route('course.instructor.dƒelete', id))
     }
 
     const [sections, setSections] = useState(course.chapters || [])
@@ -185,6 +330,16 @@ const EditCourse = () => {
         setIndexSection(i)
         setSelection(id)
         setModalLesson(true)
+    }
+
+    // NEW QUIZ
+    const [indexQuiz, setIndexQuiz] = useState(null)
+    const [chapterQuiz, setChapterQuiz] = useState(null)
+    const addQuiz = (i, id) =>{
+        setIndexQuiz(i)
+        setChapterQuiz(id)
+        setSelection(id)
+        setModalQuiz(true)
     }
 
     const handleFileEvent =  (e,i,i2) => {
@@ -204,6 +359,19 @@ const EditCourse = () => {
             _method: 'put',
             publish: data.publish !== '' ? data.publish.toISOString().slice(0, 19).replace('T', ' ') : null
        })
+    }
+
+    function submitQuiz()
+    {
+        Inertia.post(route('quiz.store'), {
+            newQuiz,
+            course: course.id,
+            chapter: chapterQuiz
+        }, {
+            onSuccess: () => {
+                setSections(course.chapters)
+            }
+        })
     }
 
     // SELECT CATEGORY
@@ -236,6 +404,7 @@ const EditCourse = () => {
         setModalLesson(false)
         setModalSection(false)
         setModalEditSection(false)
+        setModalQuizSection(false)
     }
 
     const onChange = (imageList, addUpdateIndex) => {
@@ -399,6 +568,20 @@ const EditCourse = () => {
         submit(document.createEvent('Event'))
     }
 
+
+    function showModalQuiz (quiz)
+    {
+        setQuizInfo(quiz)
+        setShowQuiz(true)
+    }
+
+    function closeModalQuiz()
+    {
+        setShowQuiz(false)
+        setQuizInfo([])
+    }
+       
+        
 
     return(
         <Context.Provider 
@@ -738,7 +921,7 @@ const EditCourse = () => {
                     <h2 className='font-semibold'>Content</h2>
                 </div>
                 {
-                    sections.map((section,i) => {
+                    course.chapters.map((section,i) => {
                         return(
                             <SectionDropdown key={i} index={i} title={section.title} collapse={i > course.chapters.length ? true : false} lessons={section.lessons.length}>
                             <div key={i} className='mb-6 p-4 '>
@@ -749,6 +932,17 @@ const EditCourse = () => {
                                         )
                                     })
                                 }
+                                <div>
+                                    
+                                    { section.quiz && 
+                                    <div className='text-left pt-4'>
+                                        <button
+                                        className='btn-black'
+                                        onClick={() => showModalQuiz(section.quiz.questions)}
+                                        type='button'>View Quiz</button>
+                                    </div>
+                                    }
+                                </div>
                                 <div className='flex items-center justify-between mt-6'>
                                 <button
                                     type='button' 
@@ -768,9 +962,15 @@ const EditCourse = () => {
                                     </button>
                                     <button 
                                     type='button' 
-                                    className='bg-black p-4 rounded-lg text-white' 
+                                    className='bg-black p-4 rounded-lg text-white mr-2' 
                                     onClick={() => addLesson(i, section.id)}>
                                         Add Lesson
+                                    </button>
+                                    <button 
+                                    type='button' 
+                                    className='bg-black p-4 rounded-lg text-white' 
+                                    onClick={() => addQuiz(i, section.id)}>
+                                        Add Quiz
                                     </button>
                                 </div>
                                 </div>
@@ -812,7 +1012,7 @@ const EditCourse = () => {
         </Modal>
         <Modal
             isOpen={modalLesson}
-            onRequestClose={closeModal}
+            //onRequestClose={closeModal}
             className="modal-lesson"
             overlayClassName="modal-lesson-overlay"
             contentLabel="New Lesson"
@@ -1106,6 +1306,208 @@ const EditCourse = () => {
                 Switch to draft
             </button>
             
+        </Modal>
+        <Modal
+            isOpen={modalQuiz}
+            //onRequestClose={closeModal}
+            className="modal-lesson"
+            overlayClassName="modal-lesson-overlay"
+            contentLabel="New Lesson"
+        >
+            <div className='w-full bg-orange text-white p-3 flex justify-between items-center'>
+                <h2 className='text-lg font-semibold'>Create Quiz</h2>
+                <button 
+                onClick={cancelNewQuiz} 
+                className='cursor-pointer mr-2'>
+                    <Icon name='close' className='w-3 h-3 fill-white'/>
+                </button>
+            </div>
+            <div className='w-full bg-white p-4'>
+                {
+                    newQuiz.map(
+                        (question, i) =>
+                        <div key={i}className='border p-2 rounded-lg mb-2'>
+                            <div className='flex justify-between'>
+                                <h4 className='text-xs'>Question {i +1 } of {newQuiz.length}</h4>
+                                <button onClick={()=> deleteQuestion(i)}>
+                                    <Icon className='w-4 h-4 fill-gray-400 hover:fill-orange' name='trash'/>
+                                </button>
+                            </div>
+                            <h3 className='font-semibold text-sm mb-2'>{question.text}</h3>
+                            <div>
+                                {
+                                    question.options.map(
+                                        (option, i) =>
+                                        <div key={i}>
+                                            <div className='flex items-start mb-2'>
+                                                <div className={`w-5 h-5  rounded-full mr-1 ${option.value == true ? 'bg-white border-4 border-orange' : 'border bg-gray-100' }`}/>
+                                                <div className='flex-1'>
+                                                    <p className={`text-sm ${option.value == true ? 'text-orange' : 'text-gray-600'}`}>{option.text}</p>
+                                                    <p className='text-xs text-gray-500'>{option.message}</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    )
+                                }
+                            </div>
+                        </div>
+                    )
+                }
+                {
+                    newQuiz.length === 0 &&
+                    <div className='text-center'>
+                        <h3 className='font-semibold text-sm mb-4'>Quiz is empty, start creating a new question</h3>
+                        {
+                            !newQuestion &&
+                            <div className='text-center'>
+                                <button onClick={createNewQuestion} className='btn-black'>Create Question</button>
+                            </div>
+                        }
+                    </div>
+                }
+            </div>
+            {
+                newQuestion &&
+                    <div className='p-4 w-full'>
+                        <InputLabel className='mb-1 text-sm' forInput='question'  value='New Question'/>
+                        <TextArea className='w-full' placeholder='Type your question here...' handleChange={(e)=> setNewQuestion({...newQuestion, text: e.target.value})} value={newQuestion.text} />
+                        <p className='text-xs text-gray-500 my-2 uppercase'>OPTIONS</p>
+                        <div className=' rounded-lg'>
+                        {
+                            newQuestion.options.map(
+                                (option, i) =>
+                                <div key={i} className='flex items-start w-full mb-2'>
+                                    <div>
+                                        <input
+                                            checked={option.value}
+                                            type='radio'
+                                            name='val'
+                                            //value={i}
+                                            onChange={(e) =>changeoption(e,i)}
+                                            className='checked:bg-orange focus-checked: active:bg-orange hover:bg-orange focus:bg-orange focus-visible:bg-orange w-6 h-6 rounded-full border border-gray-200 mr-2 focus:ring-orange'
+                                            tooltip='Check correct option'
+                                            flow='right'
+                                        />
+                                        <div className='mt-3 w-full pl-1'>
+                                            <button className='hover:bg-gray-100 hover:text-orange text-gray-400  rounded-full' onClick={() => deleteOption(i)} tooltip='Delete option' flow='right'>
+                                            <Icon className='w-4 h-4 fill-current' name='trash'/>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div className='flex-1'>
+                                        <TextArea
+                                        className='w-full mb-2'
+                                        handleChange={(e) => changeNewQuestion(e,i)}
+                                        name='text'
+                                        placeholder='Text'
+                                        value={option.text}/>
+                                        <TextArea
+                                        className='w-full'
+                                        handleChange={(e) => changeNewQuestion(e,i)}
+                                        name='message'
+                                        placeholder='Message'
+                                        value={option.message}/>
+                                    </div>
+                                </div>
+                            )
+                        }
+                        <div className='w-full text-right'>
+                                {newQuestionError.length > 0 && <p className='text-red-600'>Check the following errors</p>}
+                                <ul className='list-disc text-red-600'>
+                                    {
+                                        newQuestionError.map(
+                                            (error, i) =>
+                                                <li key={i} className='text-red-600 text-sm'>{error}</li>
+                                            )
+                                    }
+                                </ul>
+                        </div>
+                        <div className='flex justify-between my-2 text-left w-full'>
+                            <button 
+                            onClick={addNewQuestionOption} 
+                            className='border border-orange font-semibold p-2 text-orange rounded-lg text-xs hover:bg-orange hover:text-white'
+                            >
+                                Add Option
+                            </button>
+                            
+                            <div>
+                                <button 
+                                className='border border-orange font-semibold p-2 text-orange rounded-lg text-xs hover:bg-orange hover:text-white mr-2'
+                                onClick={cancelNewQuestion}>
+                                    Cancel New Question
+                                </button>
+                                <button
+                                className='border border-orange bg-orange font-semibold p-2 rounded-lg text-white text-xs'
+                                onClick={addQuestion}
+                                >
+                                    Add Question
+                                </button>
+                            </div>
+                        </div>
+                        </div>
+                    </div>
+            }
+            {
+                !newQuestion && newQuiz.length > 0 &&
+                <div className='text-right p-4'>
+                    <button onClick={createNewQuestion} className='btn-black'>Create Question</button>
+                </div>
+            }
+            <div className='my-4'>
+                <div className='w-full text-center'>
+                    <button onClick={submitQuiz} className='btn-orange'>Save Quiz</button>
+                </div>
+            </div>
+            
+        </Modal>
+        <Modal
+            isOpen={showQuiz}
+            onRequestClose={closeModalQuiz}
+            className="modal-lesson"
+            overlayClassName="modal-lesson-overlay"
+            contentLabel="Quiz Info"
+        >
+            <div className='w-full bg-orange text-white p-3 flex justify-between items-center'>
+                <h2 className='text-lg font-semibold'>Chapter Quiz</h2>
+                <button 
+                onClick={closeModalQuiz} 
+                className='cursor-pointer mr-2'>
+                    <Icon name='close' className='w-3 h-3 fill-white'/>
+                </button>
+            </div>
+            <div className='w-full bg-white p-4'>
+                {
+                    quizInfo.map(
+                        (question, i) =>
+                        <div key={i}className='border p-2 rounded-lg mb-2'>
+                            <div className='flex justify-between'>
+                                <h4 className='text-xs'>Question {i +1 } of {quizInfo.length}</h4>
+
+                            </div>
+                            <h3 className='font-semibold text-sm mb-2'>{question.text}</h3>
+                            <div>
+                                {
+                                    question.options.map(
+                                        (option, i) =>
+                                        <div key={i}>
+                                            <div className='flex items-start mb-2'>
+                                                <div className={`w-5 h-5  rounded-full mr-1 ${option.value == true ? 'bg-white border-4 border-orange' : 'border bg-gray-100' }`}/>
+                                                <div className='flex-1'>
+                                                    <p className={`text-sm ${option.value == true ? 'text-orange' : 'text-gray-600'}`}>{option.text}</p>
+                                                    <p className='text-xs text-gray-500'>{option.message}</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    )
+                                }
+                            </div>
+                        </div>
+                    )
+                }
+                <div className='w-full text-right'>
+                    <button className='btn-white'>Edit Quiz</button>
+                </div>
+            </div>
         </Modal>
         </Context.Provider> 
     )

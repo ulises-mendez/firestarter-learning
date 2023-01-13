@@ -61,6 +61,11 @@ class HandleInertiaRequests extends Middleware
                                     'icon' => 'courses',
                                 ],
                                 [
+                                    'text' => 'Quizzes',
+                                    'link' => 'quizzes.admin',
+                                    'icon' => 'form',
+                                ],
+                                [
                                     'text' => 'Categories',
                                     'link' => 'admin.categories',
                                     'icon' => 'categories',

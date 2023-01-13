@@ -49,4 +49,8 @@ class Chapter extends Model
     public function user_notes($user){
         return $this->notes()->where('user_id', $user);
     }
+
+    public function quiz(){
+        return $this->hasOne(Quiz::class);
+    }
 }

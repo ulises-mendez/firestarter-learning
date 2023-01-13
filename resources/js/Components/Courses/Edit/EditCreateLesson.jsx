@@ -1,12 +1,14 @@
 import React, { useContext, useState } from 'react'
+import { Context } from '@/Components/Courses/EditContext'
 import axios from 'axios'
-import TextInput from '@/Components/TextInput'
+import Icon from '@/Components/Icon'
 import InputLabel from '@/Components/InputLabel'
 import InputError from '@/Components/InputError'
-import VideoUpload from '@/Components/VideoUpload'
-import TranscriptionFile from '@/Components/TranscriptionFile'
-import { Context } from '@/Components/Courses/EditContext'
+import TextInput from '@/Components/TextInput'
 import ToggleCheck from '@/Components/ToggleCheck'
+import TranscriptionFile from '@/Components/TranscriptionFile'
+import VideoUpload from '@/Components/VideoUpload'
+
 export default() => {
     const {selection, csrf, course, sections, setSections, indexSection, setModalLesson} = useContext(Context)
     const order = sections[indexSection].lessons.length + 1 
@@ -26,6 +28,10 @@ export default() => {
 
     function changePremium() {
         setPremium(premium == 1 ? 0 : 1)
+    }
+
+    function close(){
+        setModalLesson(false)
     }
     
     function videoChange (file,url){
@@ -93,8 +99,11 @@ export default() => {
 
     return(
         <>
-        <div className='w-full bg-orange text-white p-3'>
-            <h2 className='text-lg font-semibold'>Create lesson</h2>
+        <div className='w-full bg-orange text-white p-3 flex justify-between items-center'>
+            <h2 className='text-lg font-semibold'>Add to collection</h2>
+            <button onClick={close} className='cursor-pointer mr-2'>
+                <Icon name='close' className='w-3 h-3 fill-white'/>
+            </button>
         </div>
         <form className='p-4' onSubmit={submit}>
             <div className='text-left mb-2'>

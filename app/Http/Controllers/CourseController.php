@@ -25,6 +25,7 @@ use App\Models\VideoLesson;
 use Illuminate\Support\Facades\Request as RequestFilter;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Storage;
+use App\Http\Resources\CourseChapterSelectCollection;
 use App\Http\Resources\CourseCreatedResource;
 use App\Http\Resources\CourseCollection;
 use App\Http\Resources\CourseEditInstructors;
@@ -135,6 +136,26 @@ class CourseController extends Controller
             'select_instructors' => $select_instructors,
             'instructors' => []
         ]);
+    }
+
+    //public function chapters(Course $course, RequestFilter $request)
+    public function chapters($id, Request $request)
+    {
+        
+        $course = Course::find($id);
+        
+        
+        $chapters = $course->chapters;
+        
+        
+        if ($request->expectsJson())
+        {
+            return new CourseChapterSelectCollection($chapters);
+        }
+        
+        //dd($chapters);
+        
+        return new CourseChapterSelectCollection($chapters);
     }
 
     /**

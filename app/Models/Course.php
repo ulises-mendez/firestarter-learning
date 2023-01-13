@@ -31,6 +31,10 @@ class Course extends Model
         return 'slug';
     }
 
+    public function category(){
+        return $this->hasOne(Category::class,'id', 'category_id');
+    }
+    
     public function chapters(){
         return $this->hasMany(Chapter::class);
     }
@@ -108,8 +112,10 @@ class Course extends Model
         return $this->hasOne(Thumbnail::class,'id', 'thumbnail_id');
     }
 
-    public function category(){
-        return $this->hasOne(Category::class,'id', 'category_id');
+
+    public function quizzes()
+    {
+        return $this->hasMany(Quiz::class);
     }
 
     public function topics(){

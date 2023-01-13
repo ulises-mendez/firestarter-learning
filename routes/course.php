@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\CourseInstructorController;
+use App\Http\Controllers\QuizController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -47,6 +48,11 @@ Route::middleware('auth')->group(function () {
         CourseController::class, 'update'
     ])
     ->name('course.update');
+    Route::get('chapters/{course}', [
+        CourseController::class, 'chapters'
+    ])
+    ->name('course.chapters');
+
 
     ### INSTRUCTORS
     Route::post('instructors', CourseInstructorController::class)
@@ -58,6 +64,11 @@ Route::middleware('auth')->group(function () {
     ])
     ->name('course.instructor.delete');
 
+    ### QUIZES
+    Route::post('quiz', [
+        QuizController::class, 'store'
+    ])
+        ->name('quiz.store');
 
 
     /// Route::get('subtitles',[CourseController::class, 'sub']);
