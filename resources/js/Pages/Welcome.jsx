@@ -64,7 +64,9 @@ function Welcome(props) {
                     </div>
                 </div>
             </section>
-            <section className='w-full max-w-5xl mx-auto py-4'>
+            {
+                /*
+                <section className='w-full max-w-5xl mx-auto py-4'>
                 <h4 className='font-semibold text-lg text-orange'>TRENDING TIME MANAGEMENT COURSES</h4>
                 <div className='flex'>
                 <Card />
@@ -81,6 +83,9 @@ function Welcome(props) {
                         </div>
                 </div>
             </section>
+                */
+            }
+            
         </>
     );
 }

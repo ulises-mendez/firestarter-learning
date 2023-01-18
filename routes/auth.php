@@ -122,15 +122,15 @@ Route::middleware('auth')->group(function () {
             CourseController::class, 'index'
         ])
             ->name('courses');
-        
+            //DASHBOARD
+        Route::get('/dashboard', 
+        DashboardController::class
+        )
+        ->name('dashboard');
     });
 
 
-    //DASHBOARD
-    Route::get('/dashboard', 
-        DashboardController::class
-    )
-    ->name('dashboard');
+
 
     Route::get('instructor/{id}', 
         InstructorController::class
