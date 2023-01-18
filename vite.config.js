@@ -7,15 +7,17 @@ export default defineConfig({
         origin: 'http://127.0.0.1:8001',
         port: 3001,
       },
-    */
+    
       define: {
         "global": {},
       },
+      */
       plugins: [
         laravel({
             input: 'resources/js/app.jsx',
             //input: ['resources/css/app.css', 'resources/js/app.js'],
             refresh: true,
         }),
-    ],
+      ],
+      
 });
