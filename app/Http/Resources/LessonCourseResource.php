@@ -43,7 +43,13 @@ class LessonCourseResource extends JsonResource
                                             'user_history' => $lesson->user_status($user->id)
                                         ];
                                     }),
-                                    'lessons_count' => $chapter->lessons_count()
+                                    'lessons_count' => $chapter->lessons_count(),
+                                    'quiz' => $chapter->quiz ? [
+                                        'id' => $chapter->quiz->id,
+                                        'quiz' => $chapter->quiz->id,
+                                        'questions' => $chapter->quiz->questions->count(),
+                                        'completed' => $chapter->quiz->userQuiz->firstWhere('user_id', $user->id)
+                                    ] : null,
                                 ];
                             }
                         ),

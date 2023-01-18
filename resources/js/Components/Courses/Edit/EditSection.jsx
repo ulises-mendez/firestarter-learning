@@ -4,6 +4,7 @@ import { Context } from '@/Components/Courses/EditContext'
 import InputLabel from '@/Components/InputLabel'
 import InputError from '@/Components/InputError'
 import TextInput from '@/Components/TextInput'
+import { Inertia } from '@inertiajs/inertia'
 
 
 
@@ -23,16 +24,25 @@ export default(props) => {
         var formData = new FormData()
         formData.append("_method", "put")
         formData.append('title', title)
-        axios.post(route('chapter.update', section.id),formData)
+        
+        Inertia.put(route('chapter.update', section.id),{
+            title
+        }, {
+            onSuccess: () =>{
+                onRequestClose()
+            }})
+        /*
         .then(res => {
-            console.log(indexSection)
+            
             const sectionUpdate = res.data.chapter
             const prevSections = [...sections]
+            console.log(indexSection)
             prevSections[indexSection].title = sectionUpdate.title
             setSections(prevSections)
             onRequestClose()
         })
         .catch(err => console.error(err))
+        */
     }
     function handleChange(e) {
         const key = e.target.name;

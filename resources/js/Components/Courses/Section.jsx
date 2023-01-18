@@ -38,6 +38,39 @@ const Item = ({ link, title, course, user_history, video }) => {
     );
 }
 
+const QuizItem = ({course, quiz}) => {
+    const completed = quiz.completed ? quiz.completed.finished : null
+    const isActive = route().current('course.lesson', [course, 1 ]);
+    const classnames = classNames('flex my-1 p-1 rounded-lg hover:underline',{
+      'bg-orange text-white': isActive,
+      '': !isActive
+    })
+    const check = classNames('w-4 h-4 border rounded-full flex items-center justify-center',{
+        'bg-orange text-white border-orange' : completed,
+        'text-orange bg-gray-100' : !completed,
+        'border-orange' : isActive,
+
+    })
+    return(
+        <div className={classnames}>
+            <InertiaLink href={route('course.quiz', [course, 1 ])} className='flex'>
+                <div className='mr-2 mt-1'>
+                    <div className={check}>
+                        {
+                        completed &&
+                        <Icon name='check' className='w-2 h-2 fill-white'/>
+                        }
+                    </div>
+                </div>
+                <div className='text-sm'>
+                    <p>Chapter Quiz</p>
+                    <p className='text-xs text-gray-600'>{quiz.questions} questions</p>
+                </div>
+            </InertiaLink>
+        </div>
+    )
+}
+
 const Section = ({ data, slug }) => {
     const info = data || { title:'', lessons: [] }
     
@@ -71,7 +104,10 @@ const Section = ({ data, slug }) => {
                     <Item key={i} title={lesson.title} link={lesson.slug} course={slug} user_history={lesson.user_history} video={lesson.video}/>
                 )
                 }
-
+                {
+                    info.quiz &&
+                    <QuizItem quiz={info.quiz} course={slug}/>
+                }
             </div>
         </div>
     )

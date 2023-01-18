@@ -308,7 +308,6 @@ const EditCourse = () => {
     }
     function editThisSection(i,section){
         setIndexSection(i)
-        console.log(i)
         setEditSection(section)
         setModalEditSection(true)
     }
@@ -401,10 +400,10 @@ const EditCourse = () => {
     }
 
     function closeModal() {
+        setModalEditSection(false)
         setModalLesson(false)
         setModalSection(false)
-        setModalEditSection(false)
-        setModalQuizSection(false)
+       
     }
 
     const onChange = (imageList, addUpdateIndex) => {
@@ -457,7 +456,12 @@ const EditCourse = () => {
 
     function deleteConfirmation()
     {
-        axios.delete(route('chapter.delete', sectionDelete))
+        Inertia.delete(route('chapter.delete', sectionDelete),{
+            onSuccess: () => {
+                setModalDelete(false)
+            }
+        })
+        /*
         .then(res => {
             const prevSections = [...sections]
             prevSections.splice(indexDelete, 1)
@@ -465,6 +469,7 @@ const EditCourse = () => {
             setModalDelete(false)
         })
         .catch(err => console.log(err))
+        */
     }
 
     useEffect(() => {
@@ -590,6 +595,8 @@ const EditCourse = () => {
             setSelection,
             course,
             csrf,
+            data,
+            setData,
             sections,
             setSections,
             setModalSection,
@@ -937,9 +944,9 @@ const EditCourse = () => {
                                     { section.quiz && 
                                     <div className='text-left pt-4'>
                                         <button
-                                        className='btn-black'
+                                        className='btn-white'
                                         onClick={() => showModalQuiz(section.quiz.questions)}
-                                        type='button'>View Quiz</button>
+                                        type='button'>Show Section Quiz</button>
                                     </div>
                                     }
                                 </div>
@@ -954,7 +961,7 @@ const EditCourse = () => {
                                 </button>
                                 <div className='flex'>
                                     <button
-                                    typeof='button'
+                                    type='button'
                                     className='bg-gray-100 p-4 rounded-lg mr-2'
                                     onClick={() => editThisSection(i,section)}
                                     >
@@ -1384,7 +1391,7 @@ const EditCourse = () => {
                                             name='val'
                                             //value={i}
                                             onChange={(e) =>changeoption(e,i)}
-                                            className='checked:bg-orange focus-checked: active:bg-orange hover:bg-orange focus:bg-orange focus-visible:bg-orange w-6 h-6 rounded-full border border-gray-200 mr-2 focus:ring-orange'
+                                            className='checked:bg-orange active:bg-orange hover:bg-orange focus:bg-orange focus-visible:bg-orange w-6 h-6 rounded-full border border-gray-200 mr-2 focus:ring-orange'
                                             tooltip='Check correct option'
                                             flow='right'
                                         />
@@ -1468,7 +1475,7 @@ const EditCourse = () => {
             contentLabel="Quiz Info"
         >
             <div className='w-full bg-orange text-white p-3 flex justify-between items-center'>
-                <h2 className='text-lg font-semibold'>Chapter Quiz</h2>
+                <h2 className='text-lg font-semibold'>Section Quiz</h2>
                 <button 
                 onClick={closeModalQuiz} 
                 className='cursor-pointer mr-2'>

@@ -6,7 +6,6 @@ use App\Models\Thumbnail;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
-use function PHPSTORM_META\map;
 
 class ThumbnailSeeder extends Seeder
 {
@@ -17,11 +16,8 @@ class ThumbnailSeeder extends Seeder
      */
     public function run()
     {
-        Thumbnail::create([
-            'original_name' => 'leadership-strategies-for-women.jpeg',
-            'file_name' => 'leadership-strategies-for-women.jpeg',
-            'path' => '/img/thumbnails/leadership-strategies-for-women.jpeg',
-            'size' => 38003,
+
+        Thumbnail::factory(10)->create([
             'created_by' => 1,
         ]);
     }

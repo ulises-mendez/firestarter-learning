@@ -17,7 +17,9 @@ class ChapterFactory extends Factory
     public function definition()
     {
         return [
-            //
+            'course_id' => fake()->numberBetween(1,10),
+            'title' => 'Introduction',
+            'order' => 1,
         ];
     }
 }

@@ -8,10 +8,12 @@ import TextInput from '@/Components/TextInput'
 import ToggleCheck from '@/Components/ToggleCheck'
 import TranscriptionFile from '@/Components/TranscriptionFile'
 import VideoUpload from '@/Components/VideoUpload'
+import { Inertia } from '@inertiajs/inertia'
 
 export default() => {
-    const {selection, csrf, course, sections, setSections, indexSection, setModalLesson} = useContext(Context)
-    const order = sections[indexSection].lessons.length + 1 
+    const {selection, csrf, course, data, sections, setSections, indexSection, setModalLesson} = useContext(Context)
+    console.log(data)
+    const order = course.chapters[indexSection].lessons.length + 1 
     const [errors, setErrors] = useState({})
     const [premium, setPremium] = useState(1)
     const [newLesson, setNewLesson] = useState({
@@ -63,15 +65,25 @@ export default() => {
     function submit(e){
         e.preventDefault()
 
+
+
+        Inertia.post(route('lesson.store'), {
+            ...newLesson,
+            premium: premium,
+        }, {
+            onSuccess: () => {
+                setModalLesson(false)
+            }
+        })
+        /*
         var formData = new FormData();
-        formData.append('course_id', course.id)
+        formData.append('course_id', data.id)
         formData.append('chapter_id', selection)
         formData.append('order', newLesson.order)
         formData.append('title', newLesson.title)
         formData.append('video', newLesson.video)
         formData.append('premium', premium)
         newLesson.transcription !== null ? formData.append('transcription', newLesson.transcription) : null
-
         axios.post(route('lesson.store'),formData, {
             headers: {
                 'Content-Type': 'multipart/form-data'
@@ -95,6 +107,7 @@ export default() => {
                 setErrors(err.response.data.errors)
             }
         )
+        */
     }
 
     return(
@@ -136,7 +149,7 @@ export default() => {
             </div>
             <div className='flex my-4 justify-end'>
                 <button type='button' onClick={() => setModalLesson(false)} className='btn-white mr-2'>Cancel</button>
-                <button type='submit' className='btn-orange'>Upload Lesson</button>
+                <button type='submit' className='btn-orange'>Add Lesson</button>
             </div>
 
         </form>

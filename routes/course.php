@@ -6,17 +6,30 @@ use App\Http\Controllers\QuizController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
+### COURSES SHOW
+Route::get('course/{slug}', [
+    CourseController::class, 'show'
+])
+->name('course.show');
+Route::get('course/{course_slug}/{lesson_slug}',
+    [CourseController::class, 'show_lesson'
+])
+->name('course.lesson');
+
+
 
 Route::middleware('auth')->group(function () {
-    ### COURSES SHOW
-    Route::get('course/{slug}', [
-        CourseController::class, 'show'
+    ### QUIZ
+    Route::get('course/{course_slug}/quiz/{quiz}',
+    [QuizController::class, 'show'
     ])
-    ->name('course.show');
-    Route::get('course/{course_slug}/{lesson_slug}',
-        [CourseController::class, 'show_lesson'
+    ->name('course.quiz');
+    
+    Route::post('course/{course_slug}/quiz/{quiz}',
+    [QuizController::class, 'quiz_answer'
     ])
-    ->name('course.lesson');
+    ->name('quiz.answer');
+
 
     ### ADMIN
     // INDEX

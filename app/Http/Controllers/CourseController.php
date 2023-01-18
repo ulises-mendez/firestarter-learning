@@ -185,7 +185,7 @@ class CourseController extends Controller
 
         $course = Course::create([
             'title' => $request->title,
-            'slug' => Str::slug($request->title),
+            'slug' => "laravel-generate-multi-slug-on-load",
             'description' => $request->description,
             'level' => $request->level,
             'thumbnail_id' => $thumbnail->id,
@@ -241,6 +241,8 @@ class CourseController extends Controller
                 'categories' => new CategoryCollection(Category::all()),
                 'first_lesson' => $first_lesson,
                 'course' => new CoursePreviewResource($course),
+                'isLesson' => false,
+                'lesson' => null,
             ]);
         }
         if(Auth::user()){
@@ -318,6 +320,7 @@ class CourseController extends Controller
                 'preview' => true,
                 'premium' => $lesson->premium,
                 'lesson' => $lesson->premium ? [
+                    'chapter' => $lesson->chapter->order,
                     'title' => $lesson->title,
                     'slug' => $lesson->slug
                 ] : new LessonPreviewResource($lesson),

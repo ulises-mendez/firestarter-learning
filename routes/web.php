@@ -417,31 +417,49 @@ Route::get('quizzes', [
 ])
     ->name('quizzes.admin');
 
-
 Route::get('quiz/{quiz}', [
     QuizController::class, 'edit'
 ])
     ->name('quiz.edit');
+
 Route::post('quiz/{quiz}', [
     QuizQuestionController::class, 'store'
 ])
     ->name('quiz.question.store');
+
 Route::delete('quiz/{quiz}', [
     QuizController::class, 'destroy'
 ])
     ->name('quiz.delete');
+
 Route::put('question-quiz/{quiz_question}',[
         QuizQuestionController::class, 'update'
 ])
     ->name('quiz.question.update');
+
 Route::delete('question-quiz/{quiz_question}',[
     QuizQuestionController::class, 'destroy'
 ])
     ->name('quiz.question.delete');
+    
 Route::delete('quiz-question-option/{quiz_question_option}',
     QuizQuestionOptionController::class
 )
 ->name('quiz.question.option.delete');
+
+Route::post('retake', [
+    QuizController::class, 'retake'
+])
+    ->name('quiz.retake');
+
+Route::put('user/note', [
+    NoteController::class, 'update'
+])
+    ->name('note.update');
+Route::delete('user/note', [
+        NoteController::class, 'destroy'
+])
+    ->name('note.delete');
 
 require __DIR__.'/course.php';
 

@@ -402,6 +402,8 @@ const CreateCourse = () => {
     return(
         <Context.Provider 
         value={{
+            data,
+            setData,
             course,
             csrf,
             sections,

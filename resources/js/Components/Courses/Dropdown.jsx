@@ -4,13 +4,11 @@ import Icon from '@/Components/Icon'
 import classNames from 'classnames'
 
 
-const Dropdown = ({item, last}) =>{
+const Dropdown = ({index, item, last,}) =>{
+    console.log(index)
     const { course } = usePage().props;
-    const [open, setOpen] = useState(false)
+    const [open, setOpen] = useState(index || false)
     const {lessons} = item
-    console.log(last)
-    console.log(item)
-
     return(
         <div className={`${last == true ? '' : 'border-b'}`}>
         <button onClick={() => setOpen(!open)} className='w-full h-full flex p-2 justify-between'>
@@ -31,8 +29,8 @@ const Dropdown = ({item, last}) =>{
                             {
                                 isActive ?
                                 <div className='border-l-2 border-orange flex items-center p-2 select-none'>
-                                    <button  className='py-2 mr-2'>
-                                    <Icon name={lesson.premium ? 'lock' : 'play-linear'} className='w-3 h-3'/>
+                                    <button  className='py-2 mr-2 text-orange'>
+                                    <Icon name={lesson.premium ? 'lock' : 'play'} className='w-3 h-3 fill-current'/>
                                     </button>
                                     <div>
                                         <p className='text-sm'>{lesson.title}</p>

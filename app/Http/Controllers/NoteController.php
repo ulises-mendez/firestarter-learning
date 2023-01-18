@@ -9,6 +9,7 @@ use App\Models\Course;
 use App\Models\Note;
 use Illuminate\Http\Request;
 use App\Http\Resources\CourseNotesResource;
+use Illuminate\Support\Facades\Redirect;
 
 class NoteController extends Controller
 {
@@ -99,9 +100,15 @@ class NoteController extends Controller
      * @param  \App\Models\Note  $note
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateNoteRequest $request, Note $note)
+    public function update(UpdateNoteRequest $request)
     {
-        //
+        $note_id = $request->note;
+        $note= Note::find($note_id);
+
+        $note->update([
+            'content' => $request->content
+        ]);
+        return Redirect::back()->with('succes', 'Note has been updated');
     }
 
     /**
@@ -110,8 +117,12 @@ class NoteController extends Controller
      * @param  \App\Models\Note  $note
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Note $note)
+    public function destroy(UpdateNoteRequest $request)
     {
-        //
+        $note_id = $request->note;
+        $note= Note::find($note_id);
+
+        $note->delete();
+        return Redirect::back()->with('succes', 'Note has been deleted');
     }
 }

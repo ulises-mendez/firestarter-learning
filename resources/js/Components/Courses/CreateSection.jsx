@@ -6,12 +6,10 @@ import axios from 'axios'
 import { Context } from '@/Components/Courses/Context'
 
 export default() => {
-    const { course, csrf, sections, setSections, setModalSection } = useContext(Context)
-    console.log(sections.length)
-    console.log(course)
+    const { data, csrf, sections, setSections, setModalSection } = useContext(Context)
     const [errors, setErrors] = useState(null)
     const [section, setSection] = useState({
-        course_id:course.id,
+        course_id: data.id,
         order: Number(sections.length) + 1,
         title: '',
     })

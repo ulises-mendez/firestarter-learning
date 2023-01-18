@@ -9,13 +9,12 @@ import { Context } from '@/Components/Courses/Context'
 import ToggleCheck from '@/Components/ToggleCheck'
 
 export default() => {
-    const {course, sections, setSections, sectionSelect, indexSection, setModalLesson} = useContext(Context)
-    console.log(course.id)
+    const {data, sections, setSections, sectionSelect, indexSection, setModalLesson} = useContext(Context)
     const [errors, setErrors] = useState({})
     const order = sections[indexSection].lessons.length + 1 
     const [premium, setPremium] = useState(1)
     const [newLesson, setNewLesson] = useState({
-        course_id: course.id,
+        course_id: data.id,
         chapter_id: sectionSelect,
         order: order,
         title: '',
@@ -60,7 +59,7 @@ export default() => {
         e.preventDefault()
 
         var formData = new FormData();
-        formData.append('course_id', course.id)
+        formData.append('course_id', data.id)
         formData.append('chapter_id', sectionSelect)
         formData.append('order', newLesson.order)
         formData.append('title', newLesson.title)

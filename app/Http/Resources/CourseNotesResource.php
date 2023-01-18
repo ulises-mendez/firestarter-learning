@@ -34,6 +34,7 @@ class CourseNotesResource extends JsonResource
                                 ->transform(
                                     function($note){
                                         return [
+                                            'id' => $note->id,
                                             'lesson' => $note->lesson,
                                             'content' => $note->content,
                                             'time' => $note->time

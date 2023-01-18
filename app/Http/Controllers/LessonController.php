@@ -11,6 +11,7 @@ use App\Models\Lesson;
 use App\Models\VideoLesson;
 use App\Models\Transcription;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Str as Str;
 use Owenoj\LaravelGetId3\GetId3;
 
@@ -88,14 +89,19 @@ class LessonController extends Controller
             'title' => $request->title,
             'slug' => Str::slug($request->title),
             'video_id' => $video_lesson->id,
-            'transcription_id' => $request->has('transcription') ? $transcription_lesson->id : null,
+            'transcription_id' => $request->transcription !== null ? $transcription_lesson->id : null,
             'premium' => $request->premium,
             'time' => $video_lesson->time,
         ]);
         
+        if($request->expectsJson())
+        {
         return response()->json([
             'lesson' => new LessonInfoResource($lesson)
         ]);
+        }
+
+        return Redirect::back()->with('success','Lesson created successfully');
     }
 
     /**

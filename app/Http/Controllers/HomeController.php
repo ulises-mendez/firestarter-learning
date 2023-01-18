@@ -22,7 +22,7 @@ class HomeController extends Controller
      */
     public function __invoke(Request $request)
     {
-        $latest = Course::orderBy('created_at')->get()->take(12);
+        $latest = Course::where('released' , '!=', null)->orderBy('created_at')->get()->take(12);
         return Inertia::render('Welcome',[
             'categories' => new CategoryCollection(Category::all()),
             'topics'  => new TopicCollection(Topic::all()->take(10)),

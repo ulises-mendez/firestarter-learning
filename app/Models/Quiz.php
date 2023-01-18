@@ -12,6 +12,7 @@ class Quiz extends Model
     protected $fillable = [
         'course_id',
         'chapter_id',
+        'uuid',
     ];
 
     public function chapter()
@@ -42,5 +43,16 @@ class Quiz extends Model
             $query->where('status', $status);
         });
         */
+    }
+
+    /*
+    public function getRouteKeyName()
+    {
+        return 'uuid';
+    }
+    */
+    public function userQuiz()
+    {
+        return $this->hasMany(UserQuiz::class);
     }
 }

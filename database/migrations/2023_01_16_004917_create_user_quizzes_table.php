@@ -13,11 +13,14 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('quizzes', function (Blueprint $table) {
+        Schema::create('user_quizzes', function (Blueprint $table) {
             $table->id();
-            $table->uuid('uuid');
-            $table->integer('course_id');
-            $table->integer('chapter_id')->nullable();
+            $table->integer('quiz_id');
+            $table->integer('user_id');
+            $table->integer('question');
+            $table->date('finished')->nullable();
+            $table->integer('attempts')->nullable();
+            $table->boolean('approved')->nullable();
             $table->timestamps();
         });
     }
@@ -29,6 +32,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('quizzes');
+        Schema::dropIfExists('user_quizzes');
     }
 };

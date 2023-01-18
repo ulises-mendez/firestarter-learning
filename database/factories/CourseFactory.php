@@ -40,10 +40,10 @@ class CourseFactory extends Factory
 
         return [
             'title' => $title,
-            'slug' => Str::slug($title),
+            'slug' => "laravel-generate-multi-slug-on-load",
             'description' => fake()->realText(),
             'level' => fake()->randomElement($levels),
-            'thumbnail_id' => 1,
+            'thumbnail_id' => fake()->numberBetween(1,10),
             'category_id' => fake()->numberBetween(1,10),
             'highlight' => fake()->numberBetween(0,1),
             'status' => 1,

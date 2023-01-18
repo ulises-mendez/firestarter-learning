@@ -168,6 +168,7 @@ const Preview = ()  =>{
                                 return(
                                     <Dropdown
                                     key={i}
+                                    index={lesson ? i + 1 == lesson.chapter : 1}
                                     item={item}
                                     last={i == course.content.length -1}
                                     />
@@ -189,7 +190,7 @@ const Preview = ()  =>{
                         {
                             course.reviews.map(({user, content, rate}, i) => {
                                 return(
-                                    <div className='border w-full rounded-lg p-4 flex my-4'>
+                                    <div className='border w-full rounded-lg p-4 flex my-4' key={i}>
                                         <div>
                                             <div className='w-12 h-12 rounded-full p-2 bg-gray-200 mr-2 text-white'>
                                                 <Icon name="user" className='w-full fill-current'/>
@@ -228,6 +229,8 @@ const Preview = ()  =>{
         </>
     );
 }
+
+
 
 Preview.layout = page => <Layout title="Course" children={page} />;
 export default Preview;

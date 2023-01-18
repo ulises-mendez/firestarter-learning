@@ -68,7 +68,7 @@ const Lesson = () =>{
         */
         axios.post(route('note.store'),{
             _token: csrf,
-            course_id: lesson.course_id,
+            course_id: course.id,
             chapter_id: lesson.chapter_id,
             lesson_id: lesson.id,
             content:note,
@@ -210,7 +210,6 @@ const Lesson = () =>{
 
     function toggleLike()
     {
-        
         //setLikes();
         const formData = new FormData()
         formData.append('course_id',course.id)
@@ -248,7 +247,7 @@ const Lesson = () =>{
 
     return(
         <Context.Provider
-        value={{ quotes, setQuotes, video, jump, reviewsData, setReviewsData }}
+        value={{ quotes, setQuotes, video, jump, reviewsData, setReviewsData,notes, setNotes }}
         >
         <div className='w-full h-full flex items-stretch'>
             <Head title={lesson.title} />
@@ -450,7 +449,7 @@ const Lesson = () =>{
                                         {
                                         chapter.notes.map((note, n) =>{
                                             return(
-                                                <Note key={n} note={note} noteLesson={note.lesson}/>
+                                                <Note index={[i,n]} key={n} note={note} noteLesson={note.lesson}/>
                                             )
                                         })
                                         }
