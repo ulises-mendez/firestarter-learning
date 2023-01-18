@@ -1,0 +1,1 @@
+import{R as t}from"./app.b96ee58b.js";import{L as e}from"./Auth.9c9fd660.js";import"./index.1a7c34d6.js";import"./Helmet.3cdb19ce.js";import"./index.1d0124c4.js";import"./Logo.33a2fec1.js";import"./Icon.9ed4a856.js";const o=()=>t.createElement("div",{className:"p-4"},"Hello");o.layout=r=>t.createElement(e,{title:"Dashboard",children:r});export{o as default};
