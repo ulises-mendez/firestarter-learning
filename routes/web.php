@@ -314,7 +314,7 @@ Route::post('stripe',
 Route::get('plans', [PlanController::class, 'index']);
 Route::get('plans/{plan}', [PlanController::class, 'show'])->name('plans.show');
 Route::get('checkouts',[PlanController::class, 'checkout'])->name('checkouts');
-Route::post('subscription', [SubscriptionController::class, 'subscription'])->name('subscription.create');
+Route::post('subscription', [SubscriptionController::class, 'process'])->name('subscription.create');
 
 
 // TEAM
