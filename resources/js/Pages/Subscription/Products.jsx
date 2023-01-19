@@ -14,8 +14,8 @@ const Products= () =>{
                     </InertiaLink>
                 </div>
                 <div>
-                    <InertiaLink href={route('login')}>
-                        <button className='p-2 px-4 text-orange rounded-full'>Login</button>
+                    <InertiaLink href={route('register')}>
+                        <button className='p-2 px-4 text-orange rounded-full'>Sign up</button>
                     </InertiaLink>
                 </div>
             </div>
@@ -35,10 +35,10 @@ const Products= () =>{
                     </div>
                     <div className='text-center p-4'>
                         <h2 className='font-bold text-lg my-2'>Annually</h2>
-                        <p className='px-8'>1-month free trial then MX$499CAD/year*</p>
+                        <p className='px-8'>1-month free trial then CAD $499/year*</p>
                     </div>
                     <div className='p-4'>
-                        <InertiaLink href={route('login')}>
+                        <InertiaLink href={route('register')}>
                         <button className='bg-black text-white font-semibold p-4 rounded-lg w-full'>Try for free</button>
 
                         </InertiaLink>
@@ -49,9 +49,9 @@ const Products= () =>{
                 <div className='bg-white rounded p-2 h-full flex flex-col items-stretch'>
                     <div className='flex-1 flex flex-col items-center justify-center'>
                         <h2 className='font-bold text-lg my-2'>Monthly</h2>
-                        <p>1-month free trial then MX$49CAD/month*</p>
+                        <p>1-month free trial then CAD $49/month*</p>
                     </div>
-                    <InertiaLink href={route('login')}>
+                    <InertiaLink href={route('register')}>
                     <button className='bg-black text-white font-semibold p-4 rounded-lg w-full'>Try for free</button>
                     </InertiaLink>
                 </div>

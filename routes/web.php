@@ -8,7 +8,6 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ChapterController;
 use App\Http\Controllers\CourseSaveController;
 use App\Http\Controllers\CurriculumController;
-use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\EducationController;
 use App\Http\Controllers\HelpController;
 use App\Http\Controllers\HomeController;

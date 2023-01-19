@@ -12,8 +12,6 @@ export default ({user}) => {
     const [role, setRole] = useState(roles || ['student'])
 
     function changeRole(e,id) {
-        console.log(e.target.value);
-        console.log(id)
         const value = e.target.value
         
         axios.put(route('user.role.update', id), {
@@ -32,7 +30,6 @@ export default ({user}) => {
                 reset()
                 
             }else{
-                console.log('new')
                 setTeam(team.concat({...user, roles: [value]}))
             }
         })

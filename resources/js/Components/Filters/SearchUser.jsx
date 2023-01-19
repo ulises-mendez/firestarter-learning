@@ -20,10 +20,10 @@ export default () => {
       </div>
       <button
         onClick={reset}
-        className="p-4 font-bold text-sm text-white bg-orange focus:outline-none"
+        className="p-2 font-bold text-sm text-white bg-black focus:outline-none"
         type="button"
       >
-        DELETE
+        Reset search
       </button>
     </div>
   );

@@ -20,7 +20,7 @@ export default function Layout({ title, children }) {
       <Helmet titleTemplate="%s | Firestarter Club" title={title} />
       <div className='p-2 font-semibold flex flex-wrap justify-between items-center md:items-stretch overflow-y-auto overflow-x-hidden w-full md:w-20 md:h-full'>
         <div className='text-center p-1 md:w-full'>
-        <InertiaLink href='/'>
+        <InertiaLink href={route('dashboard')}>
           <img src="/svg/logo.svg" className='w-10 mx-auto'/>
         </InertiaLink>
         </div>

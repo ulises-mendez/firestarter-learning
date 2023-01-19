@@ -91,7 +91,7 @@ const Team = () => {
                         <p>Manage your team members and their account permissions here.</p>
                     </div>
                     <div className='px-4 py-2 w-full md:w-auto'>
-                        <button onClick={()=>setModal(true)} className='btn-orange'>Add member</button>
+                        <button onClick={()=>setModal(true)} className='btn-orange'>Search member</button>
                     </div>
                     
                 </div>
@@ -176,7 +176,7 @@ const Team = () => {
                         <thead>
                             <tr>
                                 <th className='text-left p-2 py-4'>Name</th>
-                                <th className='text-left p-2 py-4'>Email</th>
+                                <th className='text-left p-2 py-4'>Since</th>
                                 <th><span className='sr-only p-2 py-4'>Action</span></th>
                             </tr>
                         </thead>

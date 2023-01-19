@@ -8,7 +8,7 @@ const MainMenu = () =>{
         <div className='flex items-center'>
             <div>
                 <InertiaLink href={route('subscription')}>
-                    <button className='p-2 px-4 text-orange rounded-full'>Start free trial</button>
+                    <button className='p-2 px-4 text-orange rounded-full'>Sign up</button>
                 </InertiaLink>
             </div>
             <div className='ml-4'>
