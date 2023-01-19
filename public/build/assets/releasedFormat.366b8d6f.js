@@ -1,1 +1,0 @@
-import{R as o}from"./app.91217be9.js";const m=t=>{const e=new Date(t),r=("0"+e.getDate()).slice(-2),a=e.getMonth(),s=e.getFullYear(),n=["Junuary","February","March","April","May","June","July","August","September","October","November","December"];return o.createElement("span",{className:"text-sm"},n[a]," ",r,", ",s)};export{m as r};
