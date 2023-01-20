@@ -20,7 +20,7 @@ const Category = ({text,onMouseEnter, onClick}) =>{
 }
 
 const Header = () =>{
-    const {categories, filters } = usePage().props
+    const { auth, categories, filters } = usePage().props
     const [menu, setMenu] = useState(false)
     const [menuOpened, setMenuOpened] = useState(false)
     const [toooltip, setTooltip] = useState(false)
@@ -177,12 +177,17 @@ const Header = () =>{
             as="button"
             className="w-full rounded-xl bg-orange p-4 text-white text-center"
             >
-            Login
+            {
+                auth.user == null ?
+                'Login'
+                :
+                'Dashboard'
+            }
           </InertiaLink>
         </div>
         <div className="mt-2">
           <InertiaLink
-            href={route('register')}
+            href={route('subscription')}
             as="button"
             className="w-full rounded-xl bg-black p-4 text-white text-center"
             >
