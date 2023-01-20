@@ -1,1 +1,0 @@
-import{R as e}from"./app.d30997ab.js";const m=s=>{var t=parseInt(s,10),r=Math.floor(t/3600),o=Math.floor((t-r*3600)/60),a=t-r*3600-o*60;return r<10&&(r="0"+r),a<10&&(a="0"+a),e.createElement("span",null,r>0?r+"h "+o+"m "+a+"s":o+"m "+a+"s")};export{m as d};

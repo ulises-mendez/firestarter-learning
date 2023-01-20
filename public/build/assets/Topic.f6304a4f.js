@@ -1,0 +1,1 @@
+import{R as t,I as a}from"./app.16b08967.js";const n=({text:r,id:e})=>t.createElement(a,{href:e&&route("topic",e),className:"p-3 bg-orange text-white rounded-full mr-2 my-1 w-auto hover:shadow-sm"},t.createElement("span",null,r));export{n as T};
