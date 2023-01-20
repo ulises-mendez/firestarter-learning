@@ -41,7 +41,11 @@ class CoursePolicy
      */
     public function create(User $user)
     {
-        //
+        if(Auth::user()->hasRole('admin')){
+            return true;
+        }
+
+        return false;
     }
 
     /**

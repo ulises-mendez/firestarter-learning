@@ -50,12 +50,12 @@ function Welcome(props) {
                     </div>
                 </div>
             </div>
-            <section className='w-full max-w-5xl mx-auto my-12 flex py-4'>
+            <section className='w-full max-w-5xl mx-auto my-12 flex flex-wrap py-4'>
                 <div className='w-full md:w-1/2 px-8'>
                     <h3 className='text-4xl leading-tight'>Find the right course for you</h3>
                         <p className='my-4 hidden'>Choose from over 20,400 courses and Learning Paths, dozens added each week.</p>
                 </div>
-                <div className='w-full md:w-1/2'>
+                <div className='w-full md:w-1/2 px-8 md:px-0'>
                     <h4 className='font-semibold text-lg'>POPULAR TOPICS</h4>
                     <div className='flex flex-wrap'>
                         {topics.map((topic, i) => 

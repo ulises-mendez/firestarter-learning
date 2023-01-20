@@ -340,9 +340,12 @@ class CourseController extends Controller
      */
     public function edit($course)
     {
+        $this->authorize('create');
         $user = Auth::user();
+        
         $categories = Category::all();
         $info = Course::findOrFail($course);
+
         $skills = Skill::all();
         $topics = Topic::all();
         $courseStatus = [

@@ -7,9 +7,9 @@ import { usePage, useForm } from '@inertiajs/inertia-react'
 import { InertiaLink } from '@inertiajs/inertia-react'
 
 
-const Category = ({text,onMouseEnter}) =>{
+const Category = ({text,onMouseEnter, onClick}) =>{
     return(
-        <div onMouseEnter={onMouseEnter} className='flex hover:bg-black hover:text-white px-2'>
+        <div onMouseEnter={onMouseEnter} onClick={onClick} className='flex hover:bg-black hover:text-white px-2'>
             <p
             className="w-full text-left px-4 py-2 text-sm select-none ">
                 {text}
@@ -25,6 +25,7 @@ const Header = () =>{
     const [menuOpened, setMenuOpened] = useState(false)
     const [toooltip, setTooltip] = useState(false)
     const [selectCategory, setSelectCategory] = useState(null)
+    const [showCategories, setShowCategories] = useState(true)
     const {data, setData, errors, post, processing} = useForm({
         keywords: filters?.keywords || ''
     })
@@ -33,9 +34,19 @@ const Header = () =>{
         setData('keywords', e.target.value)
     }
 
+    function closeMenu() {
+        setMenuOpened(!menuOpened)
+        setSelectCategory(null)
+    }
+
     function search(e){
         e.preventDefault()
         post(`/search?keywords=${data.keywords}`)
+    }
+
+    function selectTopic(){
+        setMenuOpened(false)
+        setSelectCategory(null)
     }
 
     return(
@@ -107,7 +118,7 @@ const Header = () =>{
         <InertiaLink href='/'>
                     <Logo className='w-40'/>
         </InertiaLink>
-          <button onClick={() => setMenuOpened(!menuOpened)} type="button" className="inline-flex items-center justify-center rounded-md text-gray-400 hover:text-orange focus:outline-none focus:ring-2 focus:ring-inset focus:ring-orange" aria-controls="mobile-menu" aria-expanded="false">
+          <button onClick={closeMenu} type="button" className="inline-flex items-center justify-center rounded-md text-gray-400 hover:text-orange focus:outline-none focus:ring-2 focus:ring-inset focus:ring-orange" aria-controls="mobile-menu" aria-expanded="false">
             <span className="sr-only">Open main menu</span>
               <svg x-show="movilMenu" className="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
@@ -115,14 +126,50 @@ const Header = () =>{
          </button>
         </div>
         <div className="flex flex-col mb-auto"
-        onClick={() => setMenuOpened(!menuOpened)}
         >
-            <h3 className='font-semibold text-gray-600'>Most Popular</h3>
+            
             {
-                categories.map((cat, i)=>(
-                    <Category key={i} text={cat.title} onMouseEnter={()=> setSelectCategory(i)}/>
-                ))
+                selectCategory == null ?
+                <h3 className='font-semibold text-gray-600'>
+                    Most Popular Categories
+                </h3>
+                :
+                <button className='flex items-center font-semibold text-gray-600' onClick={()=>setSelectCategory(null)}>
+                    <Icon className='w-5 h-5 fill-current mr-2' name='cheveron-left'/>
+                    Return to Categories
+                </button>
             }
+            <div className='my-4'>
+            {
+                selectCategory == null ?
+                categories.map((cat, i)=>(
+                    <Category key={i} text={cat.title} onClick={()=> setSelectCategory(i)}/>
+                ))
+                :
+                    categories[selectCategory].topics.map((topic,i)=>{
+                        return(
+                            <InertiaLink
+                            key={i}
+                            href={route('topic',topic.id)}
+                            onClick={selectTopic}
+                            >
+                                <div className="w-full text-left px-4 py-2 text-sm text-black
+                                border-b
+                                border-gray-200
+                                select-none 
+                                bg-white hover:bg-black hover:text-white">
+                                {topic.title}
+                                </div>
+                            </InertiaLink>
+                        )
+                    })
+            }
+            {
+                selectCategory !== null && 
+                categories[selectCategory].topics.length == 0 &&
+                <span>No topics</span>
+            }
+            </div>
         </div>
         <div className="mt-4">
           <InertiaLink
@@ -131,6 +178,15 @@ const Header = () =>{
             className="w-full rounded-xl bg-orange p-4 text-white text-center"
             >
             Login
+          </InertiaLink>
+        </div>
+        <div className="mt-2">
+          <InertiaLink
+            href={route('register')}
+            as="button"
+            className="w-full rounded-xl bg-black p-4 text-white text-center"
+            >
+            Sign Up
           </InertiaLink>
         </div>
         
